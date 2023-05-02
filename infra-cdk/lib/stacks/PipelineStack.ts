@@ -9,7 +9,7 @@ export class PipelineStack extends cdk.Stack {
         super(scope, id, props);
 
         this.pipeline = new pipelines.CodePipeline(this, 'Pipeline', {
-            pipelineName: 'MyPipeline',
+            pipelineName: 'CL311-Pipeline',
             synth: new pipelines.ShellStep('Synth', {
                 input: pipelines.CodePipelineSource.gitHub('CodeDayLabs311/cl311', 'initial-setup'),
                 commands: ['cd infra-cdk', 'npm ci', 'npm run build', 'npx cdk synth'],
