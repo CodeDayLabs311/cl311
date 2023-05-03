@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ENVIRONMENT } from '../core/constants';
 import { Stage } from '../core/types';
-import { NextJsStack } from '../stacks';
+import { MessagesTableStack, NextJsStack } from '../stacks';
 
 export type ApplicationStageProps = {
     stage: Stage;
@@ -16,5 +16,14 @@ export class ApplicationStage extends cdk.Stage {
             stage: props.stage,
             env: ENVIRONMENT,
         });
+
+        const messagesTableStack = new MessagesTableStack(
+            this,
+            `MessagesTableStack-${props.stage}`,
+            {
+                stage: props.stage,
+                env: ENVIRONMENT,
+            }
+        );
     }
 }
