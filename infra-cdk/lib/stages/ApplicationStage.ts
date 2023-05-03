@@ -16,13 +16,5 @@ export class ApplicationStage extends cdk.Stage {
             stage: props.stage,
             env: ENVIRONMENT,
         });
-
-        // const cloudfrontStack = new CloudFrontStack(this, `CloudFrontStack-${props.stage}`, {
-        //     stage: props.stage,
-        // });
-
-        // const lambdasStack = new LambdasStack(scope, `LambdasStack-${props.stage}`, {
-        //     stage: props.stage,
-        // });
     }
 }
