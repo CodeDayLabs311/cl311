@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as path from 'path';
 import { Construct } from 'constructs';
-import { Stage } from '../types';
+import { Stage } from '../core/types';
 
 export type LambdasStackProps = {
     stage: Stage;

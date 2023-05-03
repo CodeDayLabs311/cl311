@@ -1,7 +1,8 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { CloudFrontStack, LambdasStack } from '../stacks';
-import { Stage } from '../types';
+import { ENVIRONMENT } from '../core/constants';
+import { Stage } from '../core/types';
+import { NextJsStack } from '../stacks';
 
 export type ApplicationStageProps = {
     stage: Stage;
@@ -11,9 +12,14 @@ export class ApplicationStage extends cdk.Stage {
     constructor(scope: Construct, id: string, props: ApplicationStageProps) {
         super(scope, id, props);
 
-        const cloudfrontStack = new CloudFrontStack(this, `CloudFrontStack-${props.stage}`, {
+        const nextJsStack = new NextJsStack(this, `NextJsStack-${props.stage}`, {
             stage: props.stage,
+            env: ENVIRONMENT,
         });
+
+        // const cloudfrontStack = new CloudFrontStack(this, `CloudFrontStack-${props.stage}`, {
+        //     stage: props.stage,
+        // });
 
         // const lambdasStack = new LambdasStack(scope, `LambdasStack-${props.stage}`, {
         //     stage: props.stage,

@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cf from 'aws-cdk-lib/aws-cloudfront';
 import { Construct } from 'constructs';
-import { Stage } from '../types';
+import { Stage } from '../core/types';
 
 const BUCKET_NAME_PREFIX = 'CodeDayLabs311';
 
