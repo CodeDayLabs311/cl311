@@ -7,6 +7,7 @@ const INFRA_DIRECTORY = 'infra-cdk';
 
 export class PipelineStack extends cdk.Stack {
     private pipeline: pipelines.CodePipeline;
+
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
