@@ -3,6 +3,7 @@ import { Construct } from 'constructs';
 // import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import * as pipelines from 'aws-cdk-lib/pipelines';
 
+const APP_DIRECTORY = 'app';
 const INFRA_DIRECTORY = 'infra-cdk';
 
 export class PipelineStack extends cdk.Stack {
@@ -15,7 +16,18 @@ export class PipelineStack extends cdk.Stack {
             pipelineName: 'CL311-Pipeline',
             synth: new pipelines.ShellStep('Synth', {
                 input: pipelines.CodePipelineSource.gitHub('CodeDayLabs311/cl311', 'initial-setup'),
-                commands: [`cd ${INFRA_DIRECTORY}`, 'npm ci', 'npm run build', 'npx cdk synth'],
+                commands: [
+                    // Build app
+                    `cd ${APP_DIRECTORY}`,
+                    'npm ci',
+                    'npm run build',
+                    'cd ..',
+                    // Build infra
+                    `cd ${INFRA_DIRECTORY}`,
+                    'npm ci',
+                    'npm run build',
+                    'npx cdk synth',
+                ],
                 primaryOutputDirectory: `${INFRA_DIRECTORY}/cdk.out`,
             }),
         });
