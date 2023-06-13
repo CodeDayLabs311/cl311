@@ -11,7 +11,7 @@ export interface IGuestBookMessage {
 /** Guest book entry (DynamoDB model) */
 export interface IDBGuestBookMessage {
     /** Unique message ID */
-    MessageId: { S: string };
+    MessageID: { S: string };
     /** Author name */
     Author: { S: string };
     /** Message */

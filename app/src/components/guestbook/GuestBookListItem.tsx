@@ -1,5 +1,6 @@
 import React from 'react';
 import { IGuestBookMessage } from '@/models';
+import styles from './GuestBookListItem.module.scss';
 
 export type GuestBookListItemProps = {
     message: IGuestBookMessage;
@@ -7,8 +8,9 @@ export type GuestBookListItemProps = {
 
 export default function GuestBookListItem({ message }: GuestBookListItemProps) {
     return (
-        <span>
-            {message.messageId} {message.author} {message.message}
-        </span>
+        <div className={styles.guestBookListItem}>
+            <h3>Message from {message.author}</h3>
+            <blockquote>{message.message}</blockquote>
+        </div>
     );
 }

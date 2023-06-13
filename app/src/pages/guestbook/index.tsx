@@ -22,16 +22,12 @@ export default function GuestBookListing() {
                 <title>Guest Book - Listing</title>
             </Head>
             <main>
+                <h2>Guest Book Messages</h2>
                 {isLoading && <span>Loading guest book messages...</span>}
-                {!isLoading && (
-                    <ul>
-                        {messages.map((message) => (
-                            <li key={message.messageId}>
-                                <GuestBookListItem message={message} />
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                {!isLoading &&
+                    messages.map((message) => (
+                        <GuestBookListItem key={message.messageId} message={message} />
+                    ))}
             </main>
         </>
     );

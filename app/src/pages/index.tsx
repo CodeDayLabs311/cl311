@@ -7,7 +7,9 @@ export default function Home() {
             <Head>
                 <title>CL311</title>
             </Head>
-            <main className={`${styles.main}`}>Hello!</main>
+            <main className={`${styles.main}`}>
+                Hello! <a href="/guestbook">Guestbook</a>
+            </main>
         </>
     );
 }

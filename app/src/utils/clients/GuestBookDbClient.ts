@@ -41,7 +41,7 @@ function unmarshalMessage(message?: IDBGuestBookMessage): IGuestBookMessage | un
     }
 
     return {
-        messageId: message?.MessageId?.S!,
+        messageId: message?.MessageID?.S!,
         author: message?.Author?.S!,
         message: message?.Message?.S!,
     };
