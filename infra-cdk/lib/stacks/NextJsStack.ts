@@ -16,6 +16,14 @@ export class NextJsStack extends cdk.Stack {
         new Nextjs(this, `NextJs-${props.stage}`, {
             nextjsPath: NEXTJS_PATH,
             environment: ENVIRONMENT,
+            // defaults: {
+            //     distribution: {
+            //         customDomain: {
+            //             domainName: 'cl311.org',
+            //             hostedZone: 'cl311.org',
+            //         },
+            //     },
+            // },
         });
     }
 }
