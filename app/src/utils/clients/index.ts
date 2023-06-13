@@ -1,1 +1,2 @@
-export * from './GuestBookClient';
+export * from './GuestBookApiClient';
+export * from './GuestBookDbClient';

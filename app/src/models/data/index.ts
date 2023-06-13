@@ -1,1 +1,1 @@
-export * from './IGuestBookEntry';
+export * from './IGuestBookMessage';

@@ -1,5 +1,5 @@
 import { IDBGuestBookMessage, IGuestBookClient, IGuestBookMessage } from '@/models';
-import { DynamoDB, ScanOutput } from '@aws-sdk/client-dynamodb';
+import { DynamoDB } from '@aws-sdk/client-dynamodb';
 import { getDynamoDbClient } from '../api';
 import { isUndefined } from '../common';
 
@@ -7,7 +7,7 @@ const TABLE_NAME =
     'ApplicationStage-dev-MessagesTableStack-dev-MessagesTabledevAB588232-15LANIVBLT31I';
 
 /** Client to interact with guest book DynamoDB */
-export class GuestBookClient implements IGuestBookClient {
+export class GuestBookDbClient implements IGuestBookClient {
     ddbClient: DynamoDB;
 
     constructor() {
