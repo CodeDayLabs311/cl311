@@ -8,6 +8,10 @@ import { BaseStackProps } from '../core/types';
 /** Relative path to NextJS project root */
 const NEXTJS_PATH = '../app';
 
+/** Certificate ARN */
+const CERTIFICATE_ARN =
+    'arn:aws:acm:us-east-1:377019892688:certificate/037e91f0-269e-4890-b7be-db4fdff2f927';
+
 export type NextJsStackProps = BaseStackProps;
 
 export class NextJsStack extends cdk.Stack {
@@ -32,6 +36,9 @@ export class NextJsStack extends cdk.Stack {
                     role: lambdaExecutionRole,
                 },
                 distribution: {
+                    certificate: {
+                        certificateArn: CERTIFICATE_ARN,
+                    },
                     customDomain: {
                         domainName: 'cl311.org',
                         hostedZone: 'cl311.org',
