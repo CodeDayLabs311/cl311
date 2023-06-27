@@ -1,1 +1,1 @@
-export type Stage = 'prod' | 'dev';
+export type Stage = 'prod' | 'staging' | 'dev';

@@ -1,16 +1,24 @@
 import * as cdk from 'aws-cdk-lib';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { Construct } from 'constructs';
-import { BaseStackProps } from '../core/types';
+import { Tenant } from '../core/enums';
+import { Stage, BaseStackProps } from '../core/types';
+
+const BASE_TABLE_NAME = 'MessagesTable';
 
 export class MessagesTableStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: BaseStackProps) {
         super(scope, id, props);
 
-        const messagesTable = new dynamodb.Table(this, `MessagesTable-${props.stage}`, {
-            partitionKey: { name: 'MessageID', type: dynamodb.AttributeType.STRING },
-            removalPolicy: cdk.RemovalPolicy.RETAIN,
-        });
+        const messagesTable = new dynamodb.Table(
+            this,
+            `MessagesTable-${props.stage}-${props.tenant}`,
+            {
+                tableName: this.getTableName(props.stage, props.tenant),
+                partitionKey: { name: 'MessageID', type: dynamodb.AttributeType.STRING },
+                removalPolicy: cdk.RemovalPolicy.RETAIN,
+            }
+        );
 
         messagesTable.addGlobalSecondaryIndex({
             indexName: 'AuthorIndex',
@@ -18,5 +26,9 @@ export class MessagesTableStack extends cdk.Stack {
             sortKey: { name: 'MessageID', type: dynamodb.AttributeType.STRING },
             projectionType: dynamodb.ProjectionType.ALL,
         });
+    }
+
+    private getTableName(stage: Stage, tenant: Tenant): string {
+        return `${BASE_TABLE_NAME}-${stage}-${tenant}`;
     }
 }
