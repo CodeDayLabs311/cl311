@@ -1,4 +1,4 @@
-import GuestBookListItem from '@/components/guestbook/GuestBookListItem';
+import GuestBookMessageCard from '@/components/guestbook/GuestBookMessageCard';
 import Loading from '@/components/Loading';
 import PageHeader from '@/components/PageHeader';
 import { IGuestBookClient, IGuestBookMessage } from '@/models';
@@ -32,7 +32,7 @@ export default function GuestBookListing() {
                         <Loading isLoading={isLoading}>Loading guest book messages....</Loading>
                         {!isLoading &&
                             messages.map((message) => (
-                                <GuestBookListItem key={message.messageId} message={message} />
+                                <GuestBookMessageCard key={message.messageId} message={message} />
                             ))}
                     </Stack>
                 </Container>
