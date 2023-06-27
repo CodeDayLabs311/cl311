@@ -1,4 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import * as pipelines from 'aws-cdk-lib/pipelines';
 
@@ -30,6 +31,13 @@ export class PipelineStack extends cdk.Stack {
                 ],
                 primaryOutputDirectory: `${INFRA_DIRECTORY}/cdk.out`,
             }),
+            // codeBuildDefaults: {
+            //     rolePolicy: [
+            //         new iam.PolicyStatement({
+            //             actions: ['route53:ListHostedZonesByName'],
+            //         }),
+            //     ],
+            // },
         });
     }
 
