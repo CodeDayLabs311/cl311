@@ -39,7 +39,7 @@ export class NextJsStack extends cdk.Stack {
                     customDomain: {
                         domainName: 'cl311.org',
                         hostedZone: 'cl311.org',
-                        isExternalDomain: true,
+                        isExternalDomain: false,
                         certificate: {
                             certificateArn: CERTIFICATE_ARN,
                         },
