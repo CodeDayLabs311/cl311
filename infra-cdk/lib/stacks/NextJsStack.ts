@@ -36,13 +36,13 @@ export class NextJsStack extends cdk.Stack {
                     role: lambdaExecutionRole,
                 },
                 distribution: {
-                    certificate: {
-                        certificateArn: CERTIFICATE_ARN,
-                    },
                     customDomain: {
                         domainName: 'cl311.org',
                         hostedZone: 'cl311.org',
                         isExternalDomain: true,
+                        certificate: {
+                            certificateArn: CERTIFICATE_ARN,
+                        },
                     },
                 },
             },
