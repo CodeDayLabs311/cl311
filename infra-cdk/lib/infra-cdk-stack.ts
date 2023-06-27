@@ -51,7 +51,7 @@ export class InfraCdkStack extends cdk.Stack {
         const pipeline = pipelineStack.getPipeline();
 
         WAVES.forEach((waveDef) => {
-            const wave = new Wave(`wave-${waveDef.waveId}`);
+            const wave = pipeline.addWave(`wave-${waveDef.waveId}`);
             waveDef.stages.forEach((stageDef) => {
                 wave.addStage(
                     new ApplicationStage(
@@ -65,7 +65,6 @@ export class InfraCdkStack extends cdk.Stack {
                     )
                 );
             });
-            pipeline.addWave(`wave-${waveDef.waveId}`, wave);
         });
     }
 }
