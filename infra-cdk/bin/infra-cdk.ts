@@ -2,6 +2,7 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { InfraCdkStack } from '../lib/infra-cdk-stack';
+import { ENVIRONMENT } from '../lib/core/constants';
 
 const app = new cdk.App();
 new InfraCdkStack(app, 'InfraCdkStack', {
@@ -13,6 +14,6 @@ new InfraCdkStack(app, 'InfraCdkStack', {
     // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
     /* Uncomment the next line if you know exactly what Account and Region you
      * want to deploy the stack to. */
-    env: { account: '377019892688', region: 'us-west-2' },
+    env: ENVIRONMENT,
     /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
 });

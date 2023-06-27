@@ -31,15 +31,14 @@ export class NextJsStack extends cdk.Stack {
                 lambda: {
                     role: lambdaExecutionRole,
                 },
+                distribution: {
+                    customDomain: {
+                        domainName: 'cl311.org',
+                        hostedZone: 'cl311.org',
+                        isExternalDomain: true,
+                    },
+                },
             },
-            // defaults: {
-            //     distribution: {
-            //         customDomain: {
-            //             domainName: 'cl311.org',
-            //             hostedZone: 'cl311.org',
-            //         },
-            //     },
-            // },
         });
     }
 }
