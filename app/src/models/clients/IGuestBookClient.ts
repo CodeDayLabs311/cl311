@@ -9,4 +9,6 @@ export interface IGuestBookClient {
         messages: IGuestBookMessage[];
         paginationToken: string | undefined;
     }>;
+    /** Put guest book message */
+    putMessage(message: IGuestBookMessage): Promise<IGuestBookMessage | undefined>;
 }

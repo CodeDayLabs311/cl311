@@ -1,15 +1,16 @@
 import GuestBookMessageCard from '@/components/guestbook/GuestBookMessageCard';
 import Loading from '@/components/Loading';
 import PageHeader from '@/components/PageHeader';
-import { IGuestBookClient, IGuestBookMessage } from '@/models';
-import { GuestBookApiClient, useEffectAsync } from '@/utils';
+import { useGuestBookClient } from '@/hooks';
+import { IGuestBookMessage } from '@/models';
+import { useEffectAsync } from '@/utils';
 import Head from 'next/head';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 
 export default function GuestBookListing() {
-    const guestBookClient = useMemo<IGuestBookClient>(() => new GuestBookApiClient(), []);
+    const guestBookClient = useGuestBookClient();
 
     const [messages, setMessages] = useState<IGuestBookMessage[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);

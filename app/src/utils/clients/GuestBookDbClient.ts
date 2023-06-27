@@ -1,5 +1,5 @@
 import { IDBGuestBookMessage, IGuestBookClient, IGuestBookMessage } from '@/models';
-import { DynamoDB } from '@aws-sdk/client-dynamodb';
+import { AttributeValue, DynamoDB } from '@aws-sdk/client-dynamodb';
 import { getDynamoDbClient } from '../api';
 import { isUndefined } from '../common';
 
@@ -43,6 +43,33 @@ export class GuestBookDbClient implements IGuestBookClient {
             paginationToken: undefined,
         };
     }
+
+    /** Put guest book message */
+    async putMessage(message: IGuestBookMessage) {
+        await this.ddbClient.putItem({
+            TableName: TABLE_NAME,
+            Item: marshalMessage(message),
+        });
+
+        return this.getMessage(message.messageId);
+    }
+}
+
+/** Unmarshal guest book messages to DynamoDB */
+function marshalMessage(message: IGuestBookMessage): Record<string, AttributeValue> {
+    const marshalledMessage: IDBGuestBookMessage = {
+        MessageID: {
+            S: message!.messageId,
+        },
+        Author: {
+            S: message!.author,
+        },
+        Message: {
+            S: message!.message,
+        },
+    };
+
+    return marshalledMessage as unknown as Record<string, AttributeValue>;
 }
 
 /** Unmarshal guest book messages from DynamoDB */

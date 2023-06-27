@@ -1,11 +1,13 @@
-import { IGuestBookClient } from '@/models';
+import { HttpMethod, IGuestBookClient, IGuestBookMessage } from '@/models';
 import { IListGuestBookMessagesResponse } from '@/pages/api/guestbook/list';
 import { IGetGuestBookMessageResponse } from '@/pages/api/guestbook/[id]';
 
 const GET_MESSAGE_BASE_ENDPOINT = '/api/guestbook';
 const LIST_MESSAGES_ENDPOINT = '/api/guestbook/list';
+const PUT_MESSAGE_BASE_ENDPOINT = '/api/guestbook';
 
 /** Client to interact with guest book API */
+// TODO implement error handling
 export class GuestBookApiClient implements IGuestBookClient {
     /** List guest book messages */
     async getMessage(messageId: string) {
@@ -23,5 +25,20 @@ export class GuestBookApiClient implements IGuestBookClient {
         const json: IListGuestBookMessagesResponse = await response.json();
 
         return json;
+    }
+
+    /** Put guest book message */
+    async putMessage(message: IGuestBookMessage) {
+        const response = await fetch(`${PUT_MESSAGE_BASE_ENDPOINT}/${message.messageId}`, {
+            method: HttpMethod.PUT,
+            body: JSON.stringify(message),
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        });
+        const json: IGetGuestBookMessageResponse = await response.json();
+
+        return json.message;
     }
 }
