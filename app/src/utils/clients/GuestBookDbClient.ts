@@ -14,7 +14,23 @@ export class GuestBookDbClient implements IGuestBookClient {
         this.ddbClient = getDynamoDbClient();
     }
 
-    /** List guest book entries */
+    /** Get guest book message */
+    async getMessage(messageId: string) {
+        const key: Omit<IDBGuestBookMessage, 'Author' | 'Message'> = {
+            MessageID: {
+                S: messageId,
+            },
+        };
+
+        const getData = await this.ddbClient.getItem({
+            TableName: TABLE_NAME,
+            Key: key,
+        });
+
+        return unmarshalMessage(getData.Item as unknown as IDBGuestBookMessage);
+    }
+
+    /** List guest book messages */
     async listMessages(paginationToken?: string) {
         // TODO handle pagination
 
@@ -29,7 +45,7 @@ export class GuestBookDbClient implements IGuestBookClient {
     }
 }
 
-/** Unmarshal guest book entries from DynamoDB */
+/** Unmarshal guest book messages from DynamoDB */
 function unmarshalMessages(messages?: IDBGuestBookMessage[]): IGuestBookMessage[] {
     return messages?.map((message) => unmarshalMessage(message)!) || [];
 }

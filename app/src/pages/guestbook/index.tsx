@@ -1,8 +1,12 @@
-import { useMemo, useState } from 'react';
 import GuestBookListItem from '@/components/guestbook/GuestBookListItem';
+import Loading from '@/components/Loading';
+import PageHeader from '@/components/PageHeader';
 import { IGuestBookClient, IGuestBookMessage } from '@/models';
 import { GuestBookApiClient, useEffectAsync } from '@/utils';
 import Head from 'next/head';
+import { useMemo, useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Stack from 'react-bootstrap/Stack';
 
 export default function GuestBookListing() {
     const guestBookClient = useMemo<IGuestBookClient>(() => new GuestBookApiClient(), []);
@@ -19,15 +23,19 @@ export default function GuestBookListing() {
     return (
         <>
             <Head>
-                <title>Guest Book - Listing</title>
+                <title>Guest Book Messages</title>
             </Head>
             <main>
-                <h2>Guest Book Messages</h2>
-                {isLoading && <span>Loading guest book messages...</span>}
-                {!isLoading &&
-                    messages.map((message) => (
-                        <GuestBookListItem key={message.messageId} message={message} />
-                    ))}
+                <Container>
+                    <Stack gap={3}>
+                        <PageHeader>Guest Book Messages</PageHeader>
+                        <Loading isLoading={isLoading}>Loading guest book messages....</Loading>
+                        {!isLoading &&
+                            messages.map((message) => (
+                                <GuestBookListItem key={message.messageId} message={message} />
+                            ))}
+                    </Stack>
+                </Container>
             </main>
         </>
     );

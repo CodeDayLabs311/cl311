@@ -1,4 +1,4 @@
-/** Guest book entry (application model) */
+/** Guest book message (application model) */
 export interface IGuestBookMessage {
     /** Unique message ID */
     messageId: string;
@@ -8,7 +8,7 @@ export interface IGuestBookMessage {
     message: string;
 }
 
-/** Guest book entry (DynamoDB model) */
+/** Guest book messages (DynamoDB model) */
 export interface IDBGuestBookMessage {
     /** Unique message ID */
     MessageID: { S: string };
