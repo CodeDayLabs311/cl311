@@ -10,7 +10,7 @@ import ButtonLink from '../ButtonLink';
 const PLACEHOLDER_NAMES = ['Zhanping', 'Min', 'Sophie', 'Andrey'];
 
 export type GuestBookMessageEditProps = {
-    message: IGuestBookMessage | undefined;
+    message: Omit<IGuestBookMessage, 'messageId'> | undefined;
     setMessage: (newMessage: IGuestBookMessage) => void;
     submitLabel: string;
     isSubmitLoading: boolean;

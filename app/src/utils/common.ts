@@ -1,4 +1,5 @@
 import { DependencyList, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 /** Return whether parameter is undefined */
 export function isUndefined(param: any): boolean {
@@ -16,4 +17,9 @@ export function useEffectAsync(fn: Function, deps?: DependencyList) {
         fn();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, deps);
+}
+
+/** Get UUID */
+export function getUuid(): string {
+    return uuidv4();
 }

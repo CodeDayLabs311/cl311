@@ -2,6 +2,10 @@ import { IGuestBookMessage } from '../data';
 
 /** Interface for guest book clients */
 export interface IGuestBookClient {
+    /** Create guest book message */
+    createMessage(
+        message: Omit<IGuestBookMessage, 'messageId'>
+    ): Promise<IGuestBookMessage | undefined>;
     /** Get guest book message */
     getMessage(messageId: string): Promise<IGuestBookMessage | undefined>;
     /** List guest book messages */

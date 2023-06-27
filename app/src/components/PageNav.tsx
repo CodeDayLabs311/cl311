@@ -42,7 +42,7 @@ export default function PageNav() {
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
                     <Nav>
-                        <ButtonLink variant="success" href="/guestbook/new">
+                        <ButtonLink variant="success" href="/guestbook/create">
                             Add Guestbook Message
                         </ButtonLink>
                     </Nav>

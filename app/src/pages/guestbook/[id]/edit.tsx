@@ -38,12 +38,12 @@ export default function GuestBookEdit() {
         ? BASE_PAGE_TITLE
         : `${BASE_PAGE_TITLE} - Message from ${message?.author!}`;
 
-    const handleSubmit = useCallback(async () => {
+    const handleSubmit = async () => {
         if (!isUndefined(draftMessage)) {
             await updateMessage(draftMessage!);
             router.push(detailsHref);
         }
-    }, [draftMessage, updateMessage]);
+    };
 
     return (
         <>

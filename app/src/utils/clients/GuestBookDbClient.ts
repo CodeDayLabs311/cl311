@@ -1,7 +1,7 @@
 import { IDBGuestBookMessage, IGuestBookClient, IGuestBookMessage } from '@/models';
 import { AttributeValue, DynamoDB } from '@aws-sdk/client-dynamodb';
 import { getDynamoDbClient } from '../api';
-import { isUndefined } from '../common';
+import { getUuid, isUndefined } from '../common';
 
 const TABLE_NAME =
     'ApplicationStage-dev-MessagesTableStack-dev-MessagesTabledevAB588232-15LANIVBLT31I';
@@ -12,6 +12,21 @@ export class GuestBookDbClient implements IGuestBookClient {
 
     constructor() {
         this.ddbClient = getDynamoDbClient();
+    }
+
+    /** Create guest book message */
+    async createMessage(message: Omit<IGuestBookMessage, 'messageId'>) {
+        const messageId = getUuid();
+
+        await this.ddbClient.putItem({
+            TableName: TABLE_NAME,
+            Item: marshalMessage({
+                ...message,
+                messageId,
+            }),
+        });
+
+        return this.getMessage(messageId);
     }
 
     /** Get guest book message */
