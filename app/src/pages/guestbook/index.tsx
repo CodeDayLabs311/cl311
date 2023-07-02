@@ -9,6 +9,7 @@ import { useMemo, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 
+/** List existing guest book messages */
 export default function GuestBookListing() {
     const [authorFilter, setAuthorFilter] = useState<string>('');
     const { messages, isLoading, refreshMessages } = useGuestBookMessages(authorFilter);

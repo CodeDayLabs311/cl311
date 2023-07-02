@@ -5,7 +5,6 @@ import {
     IGuestBookMessage,
     INTERNAL_SERVER_ERROR,
     METHOD_NOT_ALLOWED,
-    NOT_FOUND,
 } from '@/models';
 import { GuestBookDbClient, isUndefined } from '@/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -14,7 +13,21 @@ export interface ICreateGuestBookMessageResponse {
     message: IGuestBookMessage;
 }
 
-/** Get guest book messages */
+/**
+ * Create new guest book message
+ *
+ * Allowed methods: POST
+ *
+ * Parameters:
+ *  - body: IGuestBookMessage, new guest book message to pUT
+ *
+ * Response: IGetGuestBookMessageResponse
+ *
+ * Potential errors:
+ *  - 400: when body is invalid or not provided
+ *  - 405: when non-allowed method is used
+ *  - 500: internal server error
+ */
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<ICreateGuestBookMessageResponse | IApiErrorResponse>
@@ -41,7 +54,8 @@ export default async function handler(
         const message = await guestBookClient.createMessage(params);
 
         if (isUndefined(message)) {
-            return res.status(404).send({ message: NOT_FOUND });
+            // Message was successfully created but could not be found
+            return res.status(500).send({ message: INTERNAL_SERVER_ERROR });
         }
 
         return res.status(200).json({ message: message! });

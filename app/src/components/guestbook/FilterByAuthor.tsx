@@ -8,7 +8,7 @@ export type FilterByAuthorProps = {
     onSubmitFilter: () => void;
 };
 
-/** Guest book message card */
+/** Component to filter guest book messages by author */
 export default function FilterByAuthor({
     authorFilter,
     setAuthorFilter,

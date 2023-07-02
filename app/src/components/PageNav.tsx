@@ -28,7 +28,7 @@ function NavLink({ label, href }: { label: string; href: string }) {
     );
 }
 
-/** Page header */
+/** Page navigation */
 export default function PageNav() {
     return (
         <Navbar expand="lg" className="bg-body-tertiary">

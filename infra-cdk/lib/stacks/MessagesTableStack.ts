@@ -6,6 +6,7 @@ import { BaseStackProps } from '../core/types';
 
 const BASE_TABLE_NAME = 'MessagesTable';
 
+/** DynamoDB table storing guest book messages */
 export class MessagesTableStack extends cdk.Stack {
     private stage: Stage;
     private tenant: Tenant;

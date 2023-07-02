@@ -18,7 +18,7 @@ export type GuestBookMessageEditProps = {
     cancelHref: string;
 };
 
-/** Guest book message editor */
+/** Guest book message editor, used for create and edit flows */
 export default function GuestBookMessageEdit({
     message,
     setMessage,

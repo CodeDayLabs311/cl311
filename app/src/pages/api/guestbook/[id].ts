@@ -14,7 +14,23 @@ export interface IGetGuestBookMessageResponse {
     message: IGuestBookMessage;
 }
 
-/** Get guest book messages */
+/**
+ * Get or update existing guest book message
+ *
+ * Allowed methods: GET, PUT
+ *
+ * Parameters:
+ *  - id: string, guest book message ID
+ *  - body: IGuestBookMessage, new guest book message to pUT
+ *
+ * Response: IGetGuestBookMessageResponse
+ *
+ * Potential errors:
+ *  - 400: when body is invalid or not provided
+ *  - 404: when message does not exist
+ *  - 405: when non-allowed method is used
+ *  - 500: internal server error
+ */
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<IGetGuestBookMessageResponse | IApiErrorResponse>

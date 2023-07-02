@@ -9,7 +9,7 @@ export type LoadingProps = {
     isLoading: boolean;
 };
 
-/** Page header */
+/** Loading spinner */
 export default function Loading({ children, isLoading }: LoadingProps) {
     if (!isLoading) {
         return null;

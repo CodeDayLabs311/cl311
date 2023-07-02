@@ -13,6 +13,7 @@ export type NextJsStackProps = {
     iamPolicy: iam.Policy;
 } & BaseStackProps;
 
+/** S3 bucket, CloudFront distribution, Lambda function to host NextJS site */
 export class NextJsStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: NextJsStackProps) {
         super(scope, id, props);

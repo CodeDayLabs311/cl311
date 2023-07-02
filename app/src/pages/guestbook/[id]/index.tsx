@@ -9,6 +9,7 @@ import Stack from 'react-bootstrap/Stack';
 
 const BASE_PAGE_TITLE = 'Guest Book Message';
 
+/** View an existing guest book message */
 export default function GuestBookDetail() {
     const router = useRouter();
     const { message, isLoading } = useGuestBookMessage(router.query.id as string);

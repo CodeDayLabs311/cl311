@@ -9,11 +9,23 @@ import { GuestBookDbClient } from '@/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export interface IListGuestBookMessagesResponse {
+    /** Guest book messages */
     messages: IGuestBookMessage[];
+    /** Pagination token */
     paginationToken: string | undefined;
 }
 
-/** List guest book messages */
+/**
+ * List guest book messages
+ *
+ * Allowed methods: GET
+ *
+ * Response: IListGuestBookMessagesResponse
+ *
+ * Potential errors:
+ *  - 405: when non-allowed method is used
+ *  - 500: internal server error
+ */
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<IListGuestBookMessagesResponse | IApiErrorResponse>

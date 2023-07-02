@@ -9,6 +9,7 @@ export type IAMStackProps = {
     tableName: string;
 } & BaseStackProps;
 
+/** IAM policy stack to grant permissions to DynamoDB table */
 export class IAMStack extends cdk.Stack {
     private iamPolicy: iam.Policy;
 

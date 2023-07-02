@@ -5,6 +5,7 @@ import { Construct } from 'constructs';
 const APP_DIRECTORY = 'app';
 const INFRA_DIRECTORY = 'infra-cdk';
 
+/** Pipeline for CI/CD */
 export class PipelineStack extends cdk.Stack {
     private pipeline: pipelines.CodePipeline;
 

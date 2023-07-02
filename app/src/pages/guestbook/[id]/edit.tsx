@@ -6,12 +6,13 @@ import { IGuestBookMessage } from '@/models';
 import { isUndefined } from '@/utils';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 
 const BASE_PAGE_TITLE = 'Edit Guest Book Message';
 
+/** Edit an existing guest book message */
 export default function GuestBookEdit() {
     const router = useRouter();
     const {

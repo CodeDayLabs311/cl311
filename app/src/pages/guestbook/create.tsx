@@ -16,6 +16,7 @@ const getInitialMessage = (): NewGuestBookMessage => ({
     message: '',
 });
 
+/** Create a new guest book message */
 export default function GuestBookCreate() {
     const router = useRouter();
     const guestBookClient = useGuestBookClient();

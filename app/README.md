@@ -1,38 +1,62 @@
+# CL311 - app
+
+Application using React (frontend) and Lambda (backend) for CodeDay Labs 311!
+
+## Development Guide
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+### Setup local environment
+
+Create an `.env.local` file in the root of this project with the following keys:
+
+```
+QP_AWS_ACCESS_KEY=
+QP_AWS_SECRET_ACCESS_KEY=
+CL_STAGE=
+CL_TENANT=
+```
+
+`CL_STAGE` should always be `dev` when running locally.
+
+### Run development server
 
 First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+# Technical Architecture
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Clients
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+When writing our application logic, we don't want to worry about the exact implementation of the API calls - we just want to be able to call a function that acccomplishes our objective. In many cases, we will have corresponding API calls in the frontend and the backend. Over time, we may also migrate between backends (for example, from DynamoDB to a SQL database).
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+For these reasons, all APIs in this project are defined with an interface, a frontend client, and a backend client. For example:
 
-## Learn More
+-   `IGuestBookClient` defines the interface for all clients for guest book APIs. All guest book API clients should be able to get, create, and list guest book messages.
+-   `GuestBookApiClient` implements `IGuestBookClient` for frontend use. This client uses the browser `fetch` function to make calls to the CL311 API to get, create, and list guest book messages.
+-   `GuestBookDbClient` implements `IPortfolioClient` for backend use. This client uses the AWS SDK to make calls to the DynamoDB API to get, create, and list guest book messages.
 
-To learn more about Next.js, take a look at the following resources:
+### File Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-   `components/` - Common components that can be used across multiple pages.
+    -   `guestbook/` - Components for guestbook.
+-   `hooks/` - Common React hooks that can be used across multiple pages.
+    -   `guestbook/` - Hooks for guestbook.
+-   `models/`
+    -   `clients/` - API client interfaces are declared in this directory.
+    -   `constants/` - Constants are declared in this directory.
+    -   `data/` - Data structures are declared in this directory.
+    -   `types/` - Types are declared in this directory.
+-   `pages/` - All pages and APIs are implemented in this directory.
+    -   `api/` - All APIs are implemented in this directory. When adding APIs, please update this readme.
+        -   `guestbook/` - All guestbook APIs are implemented in this directory.
+    -   `guestbook/` - All guestbook pages are implemented in this directory.
+-   `styles/` - All custom styles are implemented in this directory.
+-   `utils/` - All utility functions are implemented in this directory.
+    -   `api/` - All backend-specific utility functions are implemented in this directory
+    -   `clients/` - All clients are implemented in this directory.

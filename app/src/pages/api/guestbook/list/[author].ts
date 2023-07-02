@@ -10,11 +10,27 @@ import { GuestBookDbClient, isUndefined } from '@/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export interface IListGuestBookMessagesByAuthorResponse {
+    /** Messages by the author */
     messages: IGuestBookMessage[];
+    /** Pagination token */
     paginationToken: string | undefined;
 }
 
-/** List guest book messages by author */
+/**
+ * List guest book messages by author
+ *
+ * Allowed methods: GET
+ *
+ * Parameters:
+ *  - author: string, author filter value
+ *
+ * Response: IListGuestBookMessagesByAuthorResponse
+ *
+ * Potential errors:
+ *  - 400: when author parameter is invalid or not provided
+ *  - 405: when non-allowed method is used
+ *  - 500: internal server error
+ */
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<IListGuestBookMessagesByAuthorResponse | IApiErrorResponse>
