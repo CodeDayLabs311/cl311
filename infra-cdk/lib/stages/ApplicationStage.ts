@@ -1,9 +1,9 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ENVIRONMENT } from '../core/constants';
-import { Stage } from '../core/enums';
+import { Stage, Tenant } from '../core/enums';
 import { BaseStackProps } from '../core/types';
-import { IAMStack, MessagesTableStack, NextJsStack } from '../stacks';
+import { DevIAMStack, IAMStack, MessagesTableStack, NextJsStack } from '../stacks';
 
 export type ApplicationStageProps = BaseStackProps;
 
@@ -43,6 +43,13 @@ export class ApplicationStage extends cdk.Stage {
                     ...baseStackProps,
                 }
             );
+        }
+
+        if (props.tenant === Tenant.ANDREY) {
+            new DevIAMStack(this, `DevIAMStack-${props.stage}-${props.tenant}`, {
+                applicationPolicy: iamStack.getIamPolicy(),
+                ...baseStackProps,
+            });
         }
     }
 }
