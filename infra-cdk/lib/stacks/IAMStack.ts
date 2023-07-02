@@ -27,7 +27,6 @@ export class IAMStack extends cdk.Stack {
                     ],
                 }),
             ],
-            force: true,
         });
     }
 
