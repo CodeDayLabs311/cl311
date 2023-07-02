@@ -1,6 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { Tenant } from '../enums';
-import { Stage } from './Stage';
+import { Stage, Tenant } from '../enums';
 
 export type BaseStackConfig = {
     stage: Stage;

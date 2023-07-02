@@ -2,31 +2,30 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { PipelineStack } from './stacks';
 import { ApplicationStage } from './stages';
-import { BaseStackConfig, Stage } from './core/types';
+import { BaseStackConfig } from './core/types';
 import { ENVIRONMENT } from './core/constants';
-import { Tenant } from './core/enums';
-import { Wave } from 'aws-cdk-lib/pipelines';
+import { Stage, Tenant } from './core/enums';
 
 const WAVES: { waveId: string; stages: BaseStackConfig[] }[] = [
     {
         waveId: 'dev',
         stages: [
             {
-                stage: 'dev',
+                stage: Stage.DEV,
                 tenant: Tenant.ANDREY,
             },
             {
-                stage: 'dev',
+                stage: Stage.DEV,
                 tenant: Tenant.SOPHIE,
             },
         ],
     },
     {
-        waveId: 'staging',
+        waveId: 'beta',
         stages: [
             {
-                stage: 'staging',
-                tenant: Tenant.PRIMARY,
+                stage: Stage.BETA,
+                tenant: Tenant.DEFAULT,
             },
         ],
     },
@@ -34,8 +33,8 @@ const WAVES: { waveId: string; stages: BaseStackConfig[] }[] = [
         waveId: 'prod',
         stages: [
             {
-                stage: 'prod',
-                tenant: Tenant.PRIMARY,
+                stage: Stage.PROD,
+                tenant: Tenant.DEFAULT,
             },
         ],
     },

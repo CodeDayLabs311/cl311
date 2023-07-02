@@ -3,12 +3,16 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import { Nextjs } from 'cdk-nextjs-standalone';
 import { Construct } from 'constructs';
 import { ENVIRONMENT } from '../core/constants';
-import { BaseStackProps, Stage } from '../core/types';
+import { Stage, Tenant } from '../core/enums';
+import { BaseStackProps } from '../core/types';
 
 /** Relative path to NextJS project root */
 const NEXTJS_PATH = '../app';
 
-export type NextJsStackProps = BaseStackProps;
+export type NextJsStackProps = {
+    /** IAM policy to use for Lambda execution role */
+    iamPolicy: iam.Policy;
+} & BaseStackProps;
 
 export class NextJsStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: NextJsStackProps) {
@@ -22,11 +26,7 @@ export class NextJsStack extends cdk.Stack {
                 roleName: `lambda-execution-role-${props.stage}`,
             }
         );
-        const dynamoDBReadPolicy = new iam.PolicyStatement({
-            actions: ['dynamodb:Scan', 'dynamodb:GetItem'],
-            resources: ['arn:aws:dynamodb:*:*:table/*'],
-        });
-        lambdaExecutionRole.addToPolicy(dynamoDBReadPolicy);
+        props.iamPolicy.attachToRole(lambdaExecutionRole);
 
         new Nextjs(this, `NextJs-${props.stage}-${props.tenant}`, {
             nextjsPath: NEXTJS_PATH,
@@ -37,7 +37,7 @@ export class NextJsStack extends cdk.Stack {
                 },
                 distribution: {
                     customDomain: {
-                        domainName: this.getDomainName(props.stage),
+                        domainName: this.getDomainName(props.tenant, props.stage),
                         hostedZone: 'cl311.org',
                         isExternalDomain: false,
                     },
@@ -46,11 +46,11 @@ export class NextJsStack extends cdk.Stack {
         });
     }
 
-    private getDomainName(stage: Stage): string {
-        if (stage === 'prod') {
+    private getDomainName(tenant: Tenant, stage: Stage): string {
+        if (stage === Stage.PROD) {
             return 'cl311.org';
         }
 
-        return `${stage}.cl311.org`;
+        return `${tenant}.${stage}.cl311.org`;
     }
 }
