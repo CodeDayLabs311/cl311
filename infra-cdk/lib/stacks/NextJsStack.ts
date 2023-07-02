@@ -2,8 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Nextjs } from 'cdk-nextjs-standalone';
 import { Construct } from 'constructs';
-import { ENVIRONMENT } from '../core/constants';
-import { Stage, Tenant } from '../core/enums';
+import { EnvironmentVariableKey, Stage, Tenant } from '../core/enums';
 import { BaseStackProps } from '../core/types';
 
 /** Relative path to NextJS project root */
@@ -28,9 +27,14 @@ export class NextJsStack extends cdk.Stack {
         );
         props.iamPolicy.attachToRole(lambdaExecutionRole);
 
+        const environmentVariables: Record<EnvironmentVariableKey, string> = {
+            [EnvironmentVariableKey.STAGE]: props.stage,
+            [EnvironmentVariableKey.TENANT]: props.tenant,
+        };
+
         new Nextjs(this, `NextJs-${props.stage}-${props.tenant}`, {
             nextjsPath: NEXTJS_PATH,
-            environment: ENVIRONMENT,
+            environment: environmentVariables,
             defaults: {
                 lambda: {
                     role: lambdaExecutionRole,

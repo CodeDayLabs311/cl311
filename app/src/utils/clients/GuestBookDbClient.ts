@@ -2,9 +2,9 @@ import { IDBGuestBookMessage, IGuestBookClient, IGuestBookMessage } from '@/mode
 import { AttributeValue, DynamoDB } from '@aws-sdk/client-dynamodb';
 import { getDynamoDbClient } from '../api';
 import { getUuid, isUndefined } from '../common';
+import { getStage, getTenant } from '../environment';
 
-const TABLE_NAME =
-    'ApplicationStage-dev-MessagesTableStack-dev-MessagesTabledevAB588232-15LANIVBLT31I';
+const BASE_TABLE_NAME = 'MessagesTable';
 
 /** Client to interact with guest book DynamoDB */
 export class GuestBookDbClient implements IGuestBookClient {
@@ -19,7 +19,7 @@ export class GuestBookDbClient implements IGuestBookClient {
         const messageId = getUuid();
 
         await this.ddbClient.putItem({
-            TableName: TABLE_NAME,
+            TableName: getTableName(),
             Item: marshalMessage({
                 ...message,
                 messageId,
@@ -38,7 +38,7 @@ export class GuestBookDbClient implements IGuestBookClient {
         };
 
         const getData = await this.ddbClient.getItem({
-            TableName: TABLE_NAME,
+            TableName: getTableName(),
             Key: key,
         });
 
@@ -50,7 +50,7 @@ export class GuestBookDbClient implements IGuestBookClient {
         // TODO handle pagination
 
         const scanData = await this.ddbClient.scan({
-            TableName: TABLE_NAME,
+            TableName: getTableName(),
         });
 
         return {
@@ -62,12 +62,17 @@ export class GuestBookDbClient implements IGuestBookClient {
     /** Put guest book message */
     async putMessage(message: IGuestBookMessage) {
         await this.ddbClient.putItem({
-            TableName: TABLE_NAME,
+            TableName: getTableName(),
             Item: marshalMessage(message),
         });
 
         return this.getMessage(message.messageId);
     }
+}
+
+/** Get DynamoDB table name */
+function getTableName(): string {
+    return `${BASE_TABLE_NAME}-${getStage()}-${getTenant()}`;
 }
 
 /** Unmarshal guest book messages to DynamoDB */
