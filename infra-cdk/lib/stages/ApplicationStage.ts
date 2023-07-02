@@ -17,7 +17,7 @@ export class ApplicationStage extends cdk.Stage {
             env: ENVIRONMENT,
         };
 
-        // Guestbook messages DynamoDB stack
+        // DynamoDB table storing guest book messages
         const messagesTableStack = new MessagesTableStack(
             this,
             `MessagesTableStack-${props.stage}-${props.tenant}`,
@@ -26,14 +26,15 @@ export class ApplicationStage extends cdk.Stage {
             }
         );
 
-        // IAM permissions stack
+        // IAM policy stack to grant permissions to DynamoDB table and other AWS services
         const iamStack = new IAMStack(this, `IAMStack-${props.stage}-${props.tenant}`, {
             tableName: messagesTableStack.getTableName(),
             ...baseStackProps,
         });
 
         if (props.stage !== Stage.DEV) {
-            // NextJS web server stack only for beta and prod, as devs use local web servers
+            // S3 bucket, CloudFront distribution, Lambda function to host NextJS site
+            // Only for beta and prod, as devs use local web servers
             const nextJsStack = new NextJsStack(
                 this,
                 `NextJsStack-${props.stage}-${props.tenant}`,
