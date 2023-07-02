@@ -1,5 +1,6 @@
 import { HttpMethod, IGuestBookClient, IGuestBookMessage } from '@/models';
 import { IListGuestBookMessagesResponse } from '@/pages/api/guestbook/list';
+import { IListGuestBookMessagesByAuthorResponse } from '@/pages/api/guestbook/list/[author]';
 import { IGetGuestBookMessageResponse } from '@/pages/api/guestbook/[id]';
 
 const CREATE_MESSAGE_ENDPOINT = '/api/guestbook/create';
@@ -39,6 +40,16 @@ export class GuestBookApiClient implements IGuestBookClient {
             `${LIST_MESSAGES_ENDPOINT}?paginationToken=${paginationToken}`
         );
         const json: IListGuestBookMessagesResponse = await response.json();
+
+        return json;
+    }
+
+    /** List guest book messages by author */
+    async listMessagesByAuthor(author: string, paginationToken?: string) {
+        const response = await fetch(
+            `${LIST_MESSAGES_ENDPOINT}/${author}?paginationToken=${paginationToken}`
+        );
+        const json: IListGuestBookMessagesByAuthorResponse = await response.json();
 
         return json;
     }

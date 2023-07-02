@@ -24,6 +24,7 @@ export default async function handler(
 
     try {
         const guestBookClient = new GuestBookDbClient();
+
         const { messages, paginationToken } = await guestBookClient.listMessages();
 
         return res.status(200).json({ messages, paginationToken });

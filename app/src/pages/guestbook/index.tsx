@@ -1,30 +1,21 @@
 import ButtonLink from '@/components/ButtonLink';
+import FilterByAuthor from '@/components/guestbook/FilterByAuthor';
 import GuestBookMessageCard from '@/components/guestbook/GuestBookMessageCard';
 import Loading from '@/components/Loading';
 import PageHeader from '@/components/PageHeader';
-import { useGuestBookClient } from '@/hooks';
-import { IGuestBookMessage } from '@/models';
-import { useEffectAsync } from '@/utils';
+import { useGuestBookMessages } from '@/hooks';
 import Head from 'next/head';
 import { useMemo, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 
 export default function GuestBookListing() {
-    const guestBookClient = useGuestBookClient();
-
-    const [messages, setMessages] = useState<IGuestBookMessage[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [authorFilter, setAuthorFilter] = useState<string>('');
+    const { messages, isLoading, refreshMessages } = useGuestBookMessages(authorFilter);
     const isEmpty = useMemo<boolean>(
         () => !isLoading && messages?.length === 0,
         [isLoading, messages]
     );
-
-    useEffectAsync(async () => {
-        const result = await guestBookClient.listMessages();
-        setMessages(result?.messages!);
-        setIsLoading(false);
-    }, []);
 
     return (
         <>
@@ -35,16 +26,28 @@ export default function GuestBookListing() {
                 <Container>
                     <Stack gap={3}>
                         <PageHeader>Guest Book Messages</PageHeader>
+
+                        <Stack gap={1}>
+                            <FilterByAuthor
+                                authorFilter={authorFilter}
+                                setAuthorFilter={setAuthorFilter}
+                                onSubmitFilter={refreshMessages}
+                            />
+                            <ButtonLink
+                                variant="outline-success"
+                                href="/guestbook/create"
+                                size="sm"
+                            >
+                                Add guestbook message
+                            </ButtonLink>
+                        </Stack>
+
                         <Loading isLoading={isLoading}>Loading guest book messages....</Loading>
                         {isEmpty && <p>No guest book messages yet.</p>}
                         {!isLoading &&
-                            messages.map((message) => (
+                            messages!.map((message) => (
                                 <GuestBookMessageCard key={message.messageId} message={message} />
                             ))}
-
-                        <ButtonLink variant="success" href="/guestbook/create" size="sm">
-                            Add guestbook message
-                        </ButtonLink>
                     </Stack>
                 </Container>
             </main>

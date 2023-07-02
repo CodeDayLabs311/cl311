@@ -5,6 +5,7 @@ import { getUuid, isUndefined } from '../common';
 import { getStage, getTenant } from '../environment';
 
 const BASE_TABLE_NAME = 'MessagesTable';
+const AUTHOR_INDEX_NAME = 'AuthorIndex';
 
 /** Client to interact with guest book DynamoDB */
 export class GuestBookDbClient implements IGuestBookClient {
@@ -55,6 +56,27 @@ export class GuestBookDbClient implements IGuestBookClient {
 
         return {
             messages: unmarshalMessages(scanData.Items as unknown as IDBGuestBookMessage[]),
+            paginationToken: undefined,
+        };
+    }
+
+    /** List guest book messages by author */
+    async listMessagesByAuthor(author: string, paginationToken?: string) {
+        // TODO handle pagination
+
+        const queryData = await this.ddbClient.query({
+            TableName: getTableName(),
+            IndexName: AUTHOR_INDEX_NAME,
+            KeyConditionExpression: 'Author = :author',
+            ExpressionAttributeValues: {
+                ':author': {
+                    S: author,
+                },
+            },
+        });
+
+        return {
+            messages: unmarshalMessages(queryData.Items as unknown as IDBGuestBookMessage[]),
             paginationToken: undefined,
         };
     }
