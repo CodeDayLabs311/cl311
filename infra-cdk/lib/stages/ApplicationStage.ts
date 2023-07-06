@@ -45,7 +45,8 @@ export class ApplicationStage extends cdk.Stage {
             );
         }
 
-        if (props.tenant === Tenant.ANDREY) {
+        if (props.stage === Stage.DEV) {
+            // IAM user stack to grant devs access to the AWS Console (readonly) and application resources
             new DevIAMStack(this, `DevIAMStack-${props.stage}-${props.tenant}`, {
                 applicationPolicy: iamStack.getIamPolicy(),
                 ...baseStackProps,
