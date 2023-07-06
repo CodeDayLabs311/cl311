@@ -28,3 +28,13 @@ export const getStage = (): string | undefined => {
 export const getTenant = (): string | undefined => {
     return getRequiredEnvVar(EnvironmentVariableKey.TENANT);
 };
+
+/** Get access key ID from environment variables */
+export const getAccessKeyId = () => {
+    return getRequiredEnvVar(EnvironmentVariableKey.CL_AWS_ACCESS_KEY);
+};
+
+/** Get secret access key ID from environment variables */
+export const getSecretAccessKeyId = () => {
+    return getRequiredEnvVar(EnvironmentVariableKey.CL_AWS_SECRET_ACCESS_KEY);
+};
