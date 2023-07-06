@@ -8,16 +8,21 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### Setup local environment
 
-Create an `.env.local` file in the root of this project with the following keys:
+Create an `.env.local` file in the `app/` directory with the following keys:
 
 ```
-QP_AWS_ACCESS_KEY=
-QP_AWS_SECRET_ACCESS_KEY=
+CL_AWS_ACCESS_KEY=
+CL_AWS_SECRET_ACCESS_KEY=
 CL_STAGE=
 CL_TENANT=
 ```
 
-`CL_STAGE` should always be `dev` when running locally.
+Set the following values on the right-hand side of the equal sign (no quotes):
+
+1. `CL_AWS_ACCESS_KEY` should be your AWS access key.
+2. `CL_AWS_SECRET_ACCESS_KEY` should be your AWS secret access key.
+3. `CL_STAGE` should always be `dev` when running locally.
+4. `CL_TENANT` should be your name (`min`, `sophie`, `zhanping`, or `andrey`).
 
 ### Run development server
 
