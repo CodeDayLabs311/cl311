@@ -11,32 +11,21 @@ import Stack from 'react-bootstrap/Stack';
 
 type NewGuestBookMessage = Omit<IGuestBookMessage, 'messageId'>;
 
-const getInitialMessage = (): NewGuestBookMessage => ({
-    author: '',
-    message: '',
-});
-
 /** Create a new guest book message */
 export default function GuestBookCreate() {
     const router = useRouter();
     const guestBookClient = useGuestBookClient();
 
-    const [draftMessage, setDraftMessage] = useState<NewGuestBookMessage>(getInitialMessage());
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
     const createMessage = async (newMessage: NewGuestBookMessage): Promise<IGuestBookMessage> => {
-        setIsSubmitting(true);
         const createdMessage = await guestBookClient.createMessage(newMessage);
-        setIsSubmitting(false);
         return createdMessage!;
     };
 
-    const handleSubmit = async () => {
-        if (!isUndefined(draftMessage)) {
-            const createdMessage = await createMessage(draftMessage!);
-            router.push(`/guestbook/${createdMessage.messageId}`);
-        }
-    };
+    const handleSubmit = async (message: NewGuestBookMessage) => {
+        console.log(message)
+        const createdMessage = await createMessage(message!);
+        router.push(`/guestbook/${createdMessage.messageId}`);
+    }
 
     return (
         <>
@@ -48,10 +37,7 @@ export default function GuestBookCreate() {
                     <Stack gap={3}>
                         <PageHeader>New Guest Book Message</PageHeader>
                         <GuestBookMessageEdit
-                            message={draftMessage!}
-                            setMessage={setDraftMessage}
                             submitLabel="Create"
-                            isSubmitLoading={false}
                             onSubmit={handleSubmit}
                             cancelHref={'/guestbook'}
                         />
