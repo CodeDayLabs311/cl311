@@ -37,8 +37,9 @@ export default function GuestBookCreate() {
                     <Stack gap={3}>
                         <PageHeader>New Guest Book Message</PageHeader>
                         <GuestBookMessageEdit
+                            message={undefined}
                             submitLabel="Create"
-                            onSubmit={handleSubmit}
+                            onCreate={handleSubmit}
                             cancelHref={'/guestbook'}
                         />
                     </Stack>

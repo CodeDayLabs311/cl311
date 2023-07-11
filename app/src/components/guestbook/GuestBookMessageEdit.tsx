@@ -5,6 +5,7 @@ import ButtonLink from '../ButtonLink';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { init } from 'next/dist/compiled/@vercel/og/satori';
+import { isUndefined } from '@/utils';
 
 // Names to randomly select from for name placeholder
 const PLACEHOLDER_NAMES = ['Zhanping', 'Min', 'Sophie', 'Andrey'];
@@ -18,15 +19,19 @@ const getInitialMessage = (): NewGuestBookMessage => ({
 });
 
 export type GuestBookMessageEditProps = {
+    message: IGuestBookMessage | undefined;
     submitLabel: string;
-    onSubmit: (message: NewGuestBookMessage) => void;
+    onCreate?: (message: NewGuestBookMessage) => void;
+    onEdit?: (message: IGuestBookMessage) => void;
     cancelHref: string;
 };
 
 /** Guest book message editor, used for create and edit flows */
 export default function GuestBookMessageEdit({
+    message,
     submitLabel,
-    onSubmit,
+    onCreate,
+    onEdit,
     cancelHref,
 }: GuestBookMessageEditProps) {
     // Using useMemo to randomly select a name once
@@ -36,8 +41,13 @@ export default function GuestBookMessageEdit({
         []
     );
 
-    //Initialize new values for author and message
-    const initialValues: NewGuestBookMessage = getInitialMessage();
+
+    const initializeValues = (): NewGuestBookMessage | IGuestBookMessage => {
+        if (isUndefined(message)){
+            return getInitialMessage()
+        }
+        return message!
+    }
 
     const validationSchema = Yup.object({
         author: Yup.string()
@@ -53,11 +63,17 @@ export default function GuestBookMessageEdit({
 
     return (
         <Formik
-            initialValues={initialValues}
+            initialValues={initializeValues()}
             validationSchema={validationSchema}
             onSubmit={(message, { setSubmitting }) => {
                 try {
-                    onSubmit(message);
+                    if (onEdit && 'messageId' in message){
+                        console.log('edit new message')
+                        onEdit(message as IGuestBookMessage)
+                    } else if (onCreate) {
+                        console.log('create a message')
+                        onCreate(message as NewGuestBookMessage)
+                    }
                 } catch (error) {
                     console.log('Failed to create message', error);
                 } finally {
