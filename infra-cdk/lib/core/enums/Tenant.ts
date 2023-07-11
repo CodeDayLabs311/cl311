@@ -1,7 +1,7 @@
 export enum Tenant {
     DEFAULT = 'default',
     ANDREY = 'andrey',
-    MICHAEL = 'michael',
+    ZHANPING = 'zhanping',
     MIN = 'min',
     SOPHIE = 'sophie',
 }
