@@ -27,7 +27,7 @@ export class ApplicationStage extends cdk.Stage {
         );
 
         // DynamoDB table storing reports
-         const reportsTableStack = new ReportsTableStack(
+        const reportsTableStack = new ReportsTableStack(
             this,
             `ReportsTableStack-${props.stage}-${props.tenant}`,
             {
