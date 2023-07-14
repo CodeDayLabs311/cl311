@@ -24,18 +24,6 @@ export class ReportsTableStack extends cdk.Stack {
                 tableName: this.getTableName(),
                 partitionKey: { name: 'ReportID', type: dynamodb.AttributeType.STRING },
                 removalPolicy: cdk.RemovalPolicy.RETAIN,
-                attributes: {
-                    'Name': { type: dynamodb.AttributeType.STRING },
-                    'EmailAddress': { type: dynamodb.AttributeType.STRING },
-                    'PhoneNumber': { type: dynamodb.AttributeType.STRING },
-                    'Category': { type: dynamodb.AttributeType.STRING },
-                    'Location': { type: dynamodb.AttributeType.STRING },
-                    'Description': { type: dynamodb.AttributeType.STRING },
-                    'Attachments': { type: dynamodb.AttributeType.STRING, list: true },
-                    'StatusUpdates': { type: dynamodb.AttributeType.BOOL, list: true },
-                    'Status': { type: dynamodb.AttributeType.STRING },
-                    'SubmissionDateTime': { type: dynamodb.AttributeType.STRING },
-                },
             }
         );
 
