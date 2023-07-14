@@ -24,20 +24,21 @@ export class ReportsTableStack extends cdk.Stack {
                 tableName: this.getTableName(),
                 partitionKey: { name: 'ReportID', type: dynamodb.AttributeType.STRING },
                 removalPolicy: cdk.RemovalPolicy.RETAIN,
+                attributes: {
+                    'ReportID': { type: dynamodb.AttributeType.STRING, primaryKey: true },
+                    'Name': { type: dynamodb.AttributeType.STRING },
+                    'EmailAddress': { type: dynamodb.AttributeType.STRING },
+                    'PhoneNumber': { type: dynamodb.AttributeType.STRING },
+                    'Category': { type: dynamodb.AttributeType.STRING },
+                    'Location': { type: dynamodb.AttributeType.STRING },
+                    'Description': { type: dynamodb.AttributeType.STRING },
+                    'Attachments': { type: dynamodb.AttributeType.STRING, list: true },
+                    'StatusUpdates': { type: dynamodb.AttributeType.BOOL, list: true },
+                    'Status': { type: dynamodb.AttributeType.STRING },
+                    'SubmissionDateTime': { type: dynamodb.AttributeType.STRING },
+                },
             }
         );
-
-        // // Add additional attributes to the table
-        // reportsTable.addAttribute('Name', dynamodb.AttributeType.STRING);
-        // reportsTable.addAttribute('EmailAddress', dynamodb.AttributeType.STRING);
-        // reportsTable.addAttribute('PhoneNumber', dynamodb.AttributeType.STRING);
-        // reportsTable.addAttribute('Category', dynamodb.AttributeType.STRING);
-        // reportsTable.addAttribute('Location', dynamodb.AttributeType.STRING);
-        // reportsTable.addAttribute('Description', dynamodb.AttributeType.STRING);
-        // reportsTable.addAttribute('Attachments', dynamodb.AttributeType.LIST);
-        // reportsTable.addAttribute('StatusUpdates', dynamodb.AttributeType.BOOLEAN);
-        // reportsTable.addAttribute('Status', dynamodb.AttributeType.STRING);
-        // reportsTable.addAttribute('SubmissionDateTime', dynamodb.AttributeType.STRING);
 
         reportsTable.addGlobalSecondaryIndex({
             indexName: 'CategoryIndex',
