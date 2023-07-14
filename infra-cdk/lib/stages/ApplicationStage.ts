@@ -3,8 +3,7 @@ import { Construct } from 'constructs';
 import { ENVIRONMENT } from '../core/constants';
 import { Stage, Tenant } from '../core/enums';
 import { BaseStackProps } from '../core/types';
-import { DevIAMStack, IAMStack, MessagesTableStack, NextJsStack } from '../stacks';
-import { ReportsTableStack } from '../stacks/ReportsTableStack';
+import { DevIAMStack, IAMStack, MessagesTableStack, NextJsStack, ReportsTableStack } from '../stacks';
 
 export type ApplicationStageProps = BaseStackProps;
 
