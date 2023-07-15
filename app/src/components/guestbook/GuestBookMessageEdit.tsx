@@ -4,7 +4,6 @@ import { Spinner, Stack, Button, Form } from 'react-bootstrap';
 import ButtonLink from '../ButtonLink';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { init } from 'next/dist/compiled/@vercel/og/satori';
 import { isUndefined } from '@/utils';
 
 // Names to randomly select from for name placeholder
