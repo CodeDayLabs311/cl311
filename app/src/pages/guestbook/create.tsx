@@ -2,10 +2,8 @@ import GuestBookMessageEdit from '@/components/guestbook/GuestBookMessageEdit';
 import PageHeader from '@/components/PageHeader';
 import { useGuestBookClient } from '@/hooks';
 import { IGuestBookMessage } from '@/models';
-import { isUndefined } from '@/utils';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 
@@ -22,10 +20,9 @@ export default function GuestBookCreate() {
     };
 
     const handleSubmit = async (message: NewGuestBookMessage) => {
-        console.log(message)
         const createdMessage = await createMessage(message!);
         router.push(`/guestbook/${createdMessage.messageId}`);
-    }
+    };
 
     return (
         <>

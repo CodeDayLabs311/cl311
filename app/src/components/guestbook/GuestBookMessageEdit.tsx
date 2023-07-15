@@ -1,5 +1,5 @@
 import { IGuestBookMessage } from '@/models';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Spinner, Stack, Button, Form } from 'react-bootstrap';
 import ButtonLink from '../ButtonLink';
 import { Formik } from 'formik';
@@ -8,6 +8,19 @@ import { isUndefined } from '@/utils';
 
 // Names to randomly select from for name placeholder
 const PLACEHOLDER_NAMES = ['Zhanping', 'Min', 'Sophie', 'Andrey'];
+
+// Form validation for any form with name === author or message
+const VALIDATION_SCHEMA = Yup.object({
+    author: Yup.string()
+        .matches(
+            /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
+            'Name can only contain Latin letters.'
+        )
+        .min(2, 'Too short!')
+        .max(50, 'Too long!')
+        .required('Required!'),
+    message: Yup.string().min(2, 'Too short!').max(1000, 'Too long!').required('Required!'),
+});
 
 //Initial values for name and message
 type NewGuestBookMessage = Omit<IGuestBookMessage, 'messageId'>;
@@ -40,38 +53,23 @@ export default function GuestBookMessageEdit({
         []
     );
 
-
     const initializeValues = (): NewGuestBookMessage | IGuestBookMessage => {
-        if (isUndefined(message)){
-            return getInitialMessage()
+        if (isUndefined(message)) {
+            return getInitialMessage();
         }
-        return message!
-    }
-
-    const validationSchema = Yup.object({
-        author: Yup.string()
-            .matches(
-                /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
-                'Name can only contain Latin letters.'
-            )
-            .min(2, 'Too short!')
-            .max(50, 'Too long!')
-            .required('Required!'),
-        message: Yup.string().min(2, 'Too short!').max(1000, 'Too long!').required('Required!'),
-    });
+        return message!;
+    };
 
     return (
         <Formik
             initialValues={initializeValues()}
-            validationSchema={validationSchema}
+            validationSchema={VALIDATION_SCHEMA}
             onSubmit={(message, { setSubmitting }) => {
                 try {
-                    if (onEdit && 'messageId' in message){
-                        console.log('edit new message')
-                        onEdit(message as IGuestBookMessage)
+                    if (onEdit && 'messageId' in message) {
+                        onEdit(message as IGuestBookMessage);
                     } else if (onCreate) {
-                        console.log('create a message')
-                        onCreate(message as NewGuestBookMessage)
+                        onCreate(message as NewGuestBookMessage);
                     }
                 } catch (error) {
                     console.log('Failed to create message', error);
