@@ -3,7 +3,7 @@ import { Construct } from 'constructs';
 import { ENVIRONMENT } from '../core/constants';
 import { Stage, Tenant } from '../core/enums';
 import { BaseStackProps } from '../core/types';
-import { DevIAMStack, IAMStack, MessagesTableStack, NextJsStack } from '../stacks';
+import { DevIAMStack, IAMStack, MessagesTableStack, NextJsStack, ReportsTableStack } from '../stacks';
 
 export type ApplicationStageProps = BaseStackProps;
 
@@ -26,9 +26,19 @@ export class ApplicationStage extends cdk.Stage {
             }
         );
 
+        // DynamoDB table storing reports
+        const reportsTableStack = new ReportsTableStack(
+            this,
+            `ReportsTableStack-${props.stage}-${props.tenant}`,
+            {
+                ...baseStackProps,
+            }
+        );
+
         // IAM policy stack to grant permissions to DynamoDB table and other AWS services
         const iamStack = new IAMStack(this, `IAMStack-${props.stage}-${props.tenant}`, {
             tableName: messagesTableStack.getTableName(),
+            reportsTableName: reportsTableStack.getTableName(),
             ...baseStackProps,
         });
 

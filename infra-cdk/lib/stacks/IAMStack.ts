@@ -7,6 +7,7 @@ import { BaseStackProps } from '../core/types';
 export type IAMStackProps = {
     /** DynamoDB table name to provide permissions to */
     tableName: string;
+    reportsTableName: string;
 } & BaseStackProps;
 
 /** IAM policy stack to grant permissions to DynamoDB table and other AWS services */
@@ -24,6 +25,7 @@ export class IAMStack extends cdk.Stack {
                     actions: ['dynamodb:Scan', 'dynamodb:GetItem', 'dynamodb:PutItem'],
                     resources: [
                         `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.tableName}`,
+                        `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.reportsTableName}`,
                     ],
                 }),
             ],
