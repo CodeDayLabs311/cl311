@@ -41,12 +41,12 @@ export default function GuestBookCreate() {
     return (
         <>
             <Head>
-                <title>New Guest Book Message</title>
+                <title>Create a New Report</title>
             </Head>
             <main>
                 <Container>
                     <Stack gap={3}>
-                        <PageHeader>New Guest Book Message</PageHeader>
+                        <PageHeader>Create a New Report</PageHeader>
                         <GuestBookMessageEdit
                             message={draftMessage!}
                             setMessage={setDraftMessage}
