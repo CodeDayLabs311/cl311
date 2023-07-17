@@ -18,12 +18,8 @@ export default function Home() {
                         <p>Welcome to CodeDay Labs 311!</p>
                         <DeleteIcon/><DeleteIcon color="primary" /><DeleteIcon color="secondary" /><DeleteIcon color="success" /><DeleteIcon color="action" /><DeleteIcon color="disabled" />
                         <p>
-                            While we get set up, take a look at our{' '}
-                            <Link href="/guestbook">guestbook</Link>.
-                        </p>
-                        <p>
-                            Report list under construction {' '}
-                            <Link href="/report">report</Link>.
+                            While we get set up, please take a look at our{' '}
+                            <Link href="/report">Report List</Link>.
                         </p>
                     </Stack>
                 </Container>

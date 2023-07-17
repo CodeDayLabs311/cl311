@@ -2,22 +2,16 @@
 export interface IReport {
     /** Unique report ID */
     reportId: string;
-    contactInformation: {
-        name: string;
-        emailAddress?: string;
-        phoneNumber?: string;
-    };
-    reportCategory: string[];
-    issueLocation: {
-        address?: string;
-        gpsCoordinates?: string;
-    };
+    name: string;
+    emailAddress: string;
+    phoneNumber: string;
+    reportCategory: string;
+    address: string;
+    gpsCoordinates: string;
     issueDescription: string;
-    attachments: string[];
-    statusUpdates: {
-        email: boolean;
-        sms: boolean;
-    };
+    attachments: string;
+    email: string;
+    sms: string;
     statusOfReport: string;
     dateTimeOfSubmission: string;
 }
@@ -26,22 +20,16 @@ export interface IReport {
 export interface IDBReport {
     /** Unique report ID */
     ReportID: { S: string };
-    ContactInformation: {
-        Name: { S: string };
-        EmailAddress?: { S: string };
-        PhoneNumber?: { S: string };
-    };
-    ReportCategory: { SS: string[] };
-    IssueLocation: {
-        Address?: { S: string };
-        GpsCoordinates?: { S: string };
-    };
+    Name: { S: string };
+    EmailAddress: { S: string };
+    PhoneNumber: { S: string };
+    ReportCategory: { S: string };
+    Address: { S: string };
+    GpsCoordinates: { S: string };
     IssueDescription: { S: string };
-    Attachments: { SS: string[] };
-    StatusUpdates: {
-        Email: { BOOL: boolean };
-        Sms: { BOOL: boolean };
-    };
+    Attachments: { S: string };
+    Email: { S: string };
+    Sms: { S: string };
     StatusOfReport: { S: string };
     DateTimeOfSubmission: { S: string };
 }
