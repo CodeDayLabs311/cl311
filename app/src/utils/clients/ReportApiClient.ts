@@ -3,6 +3,7 @@ import { IGetReportResponse } from '@/pages/api/report/[id]';
 
 const CREATE_REPORT_ENDPOINT = '/api/report/create';
 const GET_REPORT_BASE_ENDPOINT = '/api/report';
+const LIST_REPORTS_ENDPOINT = '/api/report/list'
 
 /** Client to interact with report API */
 // TODO implement error handling
@@ -31,3 +32,5 @@ export class ReportApiClient implements IReportClient {
     }
 
 }
+
+
