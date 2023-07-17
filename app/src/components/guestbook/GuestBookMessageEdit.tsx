@@ -2,9 +2,18 @@ import { IGuestBookMessage } from '@/models';
 import { useMemo } from 'react';
 import { Spinner, Stack, Button, Form } from 'react-bootstrap';
 import ButtonLink from '../ButtonLink';
-import { Formik } from 'formik';
+import { useFormik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { isUndefined } from '@/utils';
+
+//Initial values for name and message
+type NewGuestBookMessage = Omit<IGuestBookMessage, 'messageId'>;
+type InitialValuesType = NewGuestBookMessage | IGuestBookMessage;
+
+const getInitialMessage = (): NewGuestBookMessage => ({
+    author: '',
+    message: '',
+});
 
 // Names to randomly select from for name placeholder
 const PLACEHOLDER_NAMES = ['Zhanping', 'Min', 'Sophie', 'Andrey'];
@@ -20,14 +29,6 @@ const VALIDATION_SCHEMA = Yup.object({
         .max(50, 'Too long!')
         .required('Required!'),
     message: Yup.string().min(2, 'Too short!').max(1000, 'Too long!').required('Required!'),
-});
-
-//Initial values for name and message
-type NewGuestBookMessage = Omit<IGuestBookMessage, 'messageId'>;
-
-const getInitialMessage = (): NewGuestBookMessage => ({
-    author: '',
-    message: '',
 });
 
 export type GuestBookMessageEditProps = {
@@ -53,78 +54,78 @@ export default function GuestBookMessageEdit({
         []
     );
 
-    const initializeValues = (): NewGuestBookMessage | IGuestBookMessage => {
+    const initializeValues = (): InitialValuesType => {
         if (isUndefined(message)) {
             return getInitialMessage();
         }
         return message!;
     };
 
+    const handleSubmit = (
+        message: InitialValuesType,
+        formikHelpers: FormikHelpers<InitialValuesType>
+    ) => {
+        const { setSubmitting } = formikHelpers;
+        try {
+            if (onEdit && 'messageId' in message) {
+                onEdit(message as IGuestBookMessage);
+            } else if (onCreate) {
+                onCreate(message as NewGuestBookMessage);
+            }
+        } catch (error) {
+            console.log('Failed to create message', error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const formik = useFormik<InitialValuesType>({
+        initialValues: initializeValues(),
+        validationSchema: VALIDATION_SCHEMA,
+        onSubmit: handleSubmit,
+    });
+
     return (
-        <Formik
-            initialValues={initializeValues()}
-            validationSchema={VALIDATION_SCHEMA}
-            onSubmit={(message, { setSubmitting }) => {
-                try {
-                    if (onEdit && 'messageId' in message) {
-                        onEdit(message as IGuestBookMessage);
-                    } else if (onCreate) {
-                        onCreate(message as NewGuestBookMessage);
-                    }
-                } catch (error) {
-                    console.log('Failed to create message', error);
-                } finally {
-                    setSubmitting(false);
-                }
-            }}
-        >
-            {(props) => (
-                <Form onSubmit={props.handleSubmit}>
-                    <Form.Group className="mb-3" controlId="EditMessage.Author">
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control
-                            name="author"
-                            type="text"
-                            placeholder={placeholderName}
-                            value={props.values.author}
-                            onBlur={props.handleBlur}
-                            onChange={props.handleChange}
-                        />
-                    </Form.Group>
-                    {props.touched.author && props.errors.author && (
-                        <p className="text-danger">{props.errors.author}</p>
-                    )}
-
-                    <Form.Group className="mb-3" controlId="EditMessage.Message">
-                        <Form.Label>Message</Form.Label>
-                        <Form.Control
-                            name="message"
-                            rows={3}
-                            as="textarea"
-                            value={props.values.message}
-                            onBlur={props.handleBlur}
-                            onChange={props.handleChange}
-                        />
-                    </Form.Group>
-                    {props.touched.message && props.errors.message && (
-                        <p className="text-danger">{props.errors.message}</p>
-                    )}
-
-                    <Stack direction="horizontal" gap={3} className="justify-content-end">
-                        <div className="my-auto"></div>
-                        <ButtonLink variant="secondary" href={cancelHref}>
-                            Cancel
-                        </ButtonLink>
-                        <Button variant="primary" type="submit" disabled={props.isSubmitting}>
-                            {props.isSubmitting ? (
-                                <Spinner animation="border" size="sm" />
-                            ) : (
-                                submitLabel
-                            )}
-                        </Button>
-                    </Stack>
-                </Form>
+        <Form onSubmit={formik.handleSubmit}>
+            <Form.Group className="mb-3" controlId="EditMessage.Author">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                    name="author"
+                    type="text"
+                    placeholder={placeholderName}
+                    value={formik.values.author}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                />
+            </Form.Group>
+            {formik.touched.author && formik.errors.author && (
+                <p className="text-danger">{formik.errors.author}</p>
             )}
-        </Formik>
+
+            <Form.Group className="mb-3" controlId="EditMessage.Message">
+                <Form.Label>Message</Form.Label>
+                <Form.Control
+                    name="message"
+                    rows={3}
+                    as="textarea"
+                    value={formik.values.message}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                />
+            </Form.Group>
+            {formik.touched.message && formik.errors.message && (
+                <p className="text-danger">{formik.errors.message}</p>
+            )}
+
+            <Stack direction="horizontal" gap={3} className="justify-content-end">
+                <div className="my-auto"></div>
+                <ButtonLink variant="secondary" href={cancelHref}>
+                    Cancel
+                </ButtonLink>
+                <Button variant="primary" type="submit" disabled={formik.isSubmitting}>
+                    {formik.isSubmitting ? <Spinner animation="border" size="sm" /> : submitLabel}
+                </Button>
+            </Stack>
+        </Form>
     );
 }
