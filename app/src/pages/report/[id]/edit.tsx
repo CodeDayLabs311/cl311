@@ -13,7 +13,7 @@ import Stack from 'react-bootstrap/Stack';
 const BASE_PAGE_TITLE = 'Edit Report';
 
 /** Edit an existing report */
-export default function ReportEdit() {
+export default function ReportReportEdit() {
     const router = useRouter();
     const {
         report,
