@@ -21,6 +21,10 @@ export default function Home() {
                             While we get set up, take a look at our{' '}
                             <Link href="/guestbook">guestbook</Link>.
                         </p>
+                        <p>
+                            Report list under construction {' '}
+                            <Link href="/report">report</Link>.
+                        </p>
                     </Stack>
                 </Container>
             </main>
