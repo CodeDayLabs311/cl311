@@ -1,5 +1,20 @@
 import { HttpMethod, IReportClient, IReport } from "@/models";
-//import IListReportResponse from api/report
+import { IListReportResponse } from "@/pages/api/report/list";
+// TODO: import IGetReportResponse, ICreateReportResponse, etc.
+
 const LIST_REPORTS_ENDPOINT = '/api/report/list'
 
+/** Implementation of IReportClient interface */
+export class ReportApiClient implements IReportClient {
 
+    /** List all reports */
+    async listReports(paginationToken?: string) {
+        const response = await fetch(
+            `${LIST_REPORTS_ENDPOINT}?paginationToken=${paginationToken}`
+        );
+        const json: IListReportResponse = await response.json();
+
+        return json;
+    }  
+
+}
