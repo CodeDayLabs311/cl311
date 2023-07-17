@@ -57,6 +57,9 @@ export default function Table() {
             renderCell: (cellValues: GridRenderCellParams<any>) => {
                 return (
                     <IconButton
+                        aria-label={
+                            cellValues.value === clickedIndex ? 'Collapse row' : 'Expand row'
+                        }
                         onClick={() => {
                             clickedIndex === cellValues.value
                                 ? setClickedIndex(-1)
@@ -82,7 +85,10 @@ export default function Table() {
                         <div>
                             {/* First row item */}
                             {cellValues.value}
-                            <Collapse in={cellValues.id === clickedIndex}>
+                            <Collapse
+                                in={cellValues.id === clickedIndex}
+                                aria-expanded={cellValues.value === clickedIndex}
+                            >
                                 <Box sx={expandedRowStyle}>
                                     {/* Expanded row item */}
                                     {cellValues.row.phone}
@@ -107,7 +113,10 @@ export default function Table() {
                         <div>
                             {/* First row item */}
                             {cellValues.value}
-                            <Collapse in={cellValues.id === clickedIndex}>
+                            <Collapse
+                                in={cellValues.id === clickedIndex}
+                                aria-expanded={cellValues.value === clickedIndex}
+                            >
                                 <Box sx={expandedRowStyle}>
                                     {/* Expanded row item */}
                                     {cellValues.row.description}
