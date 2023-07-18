@@ -5,7 +5,7 @@ import {
     INTERNAL_SERVER_ERROR,
     METHOD_NOT_ALLOWED,
 } from '@/models';
-import { GuestBookDbClient } from '@/utils';
+import { ReportDbClient } from '@/utils/clients/ReportDbClient';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 /** Return a list of report and pagination token upon a LIST request */
@@ -37,11 +37,11 @@ export default async function handler(
     }
 
     try {
-        const guestBookClient = new GuestBookDbClient();
+        const reportClient = new ReportDbClient();
 
-        const { messages, paginationToken } = await guestBookClient.listMessages();
+        const { reports, paginationToken } = await reportClient.listReports();
 
-        return res.status(200).json({ messages, paginationToken });
+        return res.status(200).json({ reports, paginationToken });
     } catch (err) {
         console.error(err);
 
