@@ -16,6 +16,45 @@ export interface IListReportResponse {
     paginationToken: string | undefined;
 }
 
+const mockListReportsFromDb = (): { reports: IReport[]; paginationToken: string | undefined } => {
+    return {
+        reports: [
+            {
+                reportId: 'report1',
+                name: 'John Doe',
+                emailAddress: 'john.doe@example.com',
+                phoneNumber: '123-456-7890',
+                reportCategory: ['category1'],
+                address: '123 Main St',
+                gpsCoordinates: '12.34,56.78',
+                issueDescription: 'Description of the issue',
+                attachments: 'link to attachments',
+                email: true,
+                sms: false,
+                statusOfReport: 'Submited',
+                dateTimeOfSubmission: '07/01/2023',
+            },
+
+            {
+                reportId: 'report2',
+                name: 'Jane Doe',
+                emailAddress: 'Jane.doe@example.com',
+                phoneNumber: '206-xxx-xxx',
+                reportCategory: ['category2'],
+                address: '456 Main St',
+                gpsCoordinates: '21.34,56.60',
+                issueDescription: 'Help pls',
+                attachments: 'image',
+                email: true,
+                sms: false,
+                statusOfReport: 'Pending',
+                dateTimeOfSubmission: '06/20/2023',
+            },
+        ],
+        paginationToken: undefined,
+    };
+};
+
 // TODO: need to import ReportDbClient from Sophie
 /**
  * List Reports
@@ -37,10 +76,11 @@ export default async function handler(
     }
 
     try {
-        const reportClient = new ReportDbClient();
+        // const reportClient = new ReportDbClient();
 
-        const { reports, paginationToken } = await reportClient.listReports();
+        // const { reports, paginationToken } = await reportClient.listReports();
 
+        const { reports, paginationToken } = mockListReportsFromDb();
         return res.status(200).json({ reports, paginationToken });
     } catch (err) {
         console.error(err);
