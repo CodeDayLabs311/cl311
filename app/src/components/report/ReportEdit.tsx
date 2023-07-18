@@ -70,12 +70,33 @@ export default function ReportEdit({
 
             <Form.Group className="mb-3" controlId="EditReport.ReportCategory">
                 <Form.Label>Report Category</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Please enter your report category"
-                    defaultValue={report?.reportCategory}
-                    onChange={(event) => updateReport({ reportCategory: event.target.value })}
-                />
+                {[
+                    'Illegal Dumping',
+                    'Clogged Storm Drain',
+                    'Potholes',
+                    'Graffiti',
+                    'Street Light Outage',
+                    'Sidewalk Damage',
+                    'Traffic Signal Malfunction',
+                    'Abandoned Vehicles',
+                    'Noise Complaint',
+                    'Other',
+                ].map((category) => (
+                    <Form.Check
+                        type="checkbox"
+                        label={category}
+                        checked={report?.reportCategory.includes(category)}
+                        onChange={(event) => {
+                            const newCategories = [...report!.reportCategory];
+                            if (event.target.checked) {
+                                newCategories.push(category);
+                            } else {
+                                newCategories.splice(newCategories.indexOf(category), 1);
+                            }
+                            updateReport({ reportCategory: newCategories });
+                        }}
+                    />
+                ))}
             </Form.Group>
 
             <Form.Label>Issue Location</Form.Label>
@@ -124,22 +145,28 @@ export default function ReportEdit({
             <Form.Label>Status Updates</Form.Label>
 
             <Form.Group className="mb-3" controlId="EditReport.Email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Please yes or no"
-                    defaultValue={report?.email}
-                    onChange={(event) => updateReport({ email: event.target.value })}
+                <Form.Check
+                    type="checkbox"
+                    label="Email"
+                    checked={report?.email}
+                    onChange={(event) => {
+                        updateReport({
+                            email: event.target.checked,
+                        });
+                    }}
                 />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="EditReport.Sms">
-                <Form.Label>SMS</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Please yes or no"
-                    defaultValue={report?.sms}
-                    onChange={(event) => updateReport({ sms: event.target.value })}
+                <Form.Check
+                    type="checkbox"
+                    label="SMS"
+                    checked={report?.sms}
+                    onChange={(event) => {
+                        updateReport({
+                            sms: event.target.checked,
+                        });
+                    }}
                 />
             </Form.Group>
 
@@ -147,7 +174,6 @@ export default function ReportEdit({
                 <Form.Label>Status Of Report</Form.Label>
                 <Form.Control
                     type="text"
-                    placeholder="Submitted, In Progress, Completed, Cancelled"
                     defaultValue={report?.statusOfReport}
                     onChange={(event) => updateReport({ statusOfReport: event.target.value })}
                 />
@@ -157,7 +183,6 @@ export default function ReportEdit({
                 <Form.Label>Date Time Of Submission</Form.Label>
                 <Form.Control
                     type="text"
-                    placeholder="Please enter your date time of submission"
                     defaultValue={report?.dateTimeOfSubmission}
                     onChange={(event) => updateReport({ dateTimeOfSubmission: event.target.value })}
                 />

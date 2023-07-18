@@ -15,15 +15,15 @@ const getInitialReport = (): NewReport => ({
     name: '',
     emailAddress: '',
     phoneNumber: '',
-    reportCategory: '',
+    reportCategory: [],
     address: '',
     gpsCoordinates: '',
     issueDescription: '',
     attachments: '',
-    email: '',
-    sms: '',
-    statusOfReport: '',
-    dateTimeOfSubmission: '',
+    email: false,
+    sms: false,
+    statusOfReport: 'Submitted',
+    dateTimeOfSubmission: new Date().toISOString(),
 });
 
 /** Create a new report */

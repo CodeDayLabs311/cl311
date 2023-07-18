@@ -127,7 +127,7 @@ function marshalReport(report: IReport): Record<string, AttributeValue> {
             S: report!.phoneNumber,
         },
         ReportCategory: {
-            S: report!.reportCategory,
+            SS: report!.reportCategory,
         },
         Address: {
             S: report!.address,
@@ -142,10 +142,10 @@ function marshalReport(report: IReport): Record<string, AttributeValue> {
             S: report!.attachments,
         },
         Email: {
-            S: report!.email,
+            BOOL: report!.email,
         },
         Sms: {
-            S: report!.sms,
+            BOOL: report!.sms,
         },
         StatusOfReport: {
             S: report!.statusOfReport,
@@ -174,13 +174,13 @@ function unmarshalReport(report?: IDBReport): IReport | undefined {
         name: report?.Name?.S!,
         emailAddress: report?.EmailAddress?.S!,
         phoneNumber: report?.PhoneNumber?.S!,
-        reportCategory: report?.ReportCategory?.S!,
+        reportCategory: report?.ReportCategory?.SS!,
         address: report?.Address?.S!,
         gpsCoordinates: report?.GpsCoordinates?.S!,
         issueDescription: report?.IssueDescription?.S!,
         attachments: report?.Attachments?.S!,
-        email: report?.Email?.S!,
-        sms: report?.Sms?.S!,
+        email: report?.Email?.BOOL!,
+        sms: report?.Sms?.BOOL!,
         statusOfReport: report?.StatusOfReport?.S!,
         dateTimeOfSubmission: report?.DateTimeOfSubmission?.S!,
     };
