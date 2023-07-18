@@ -8,16 +8,17 @@ import {
 import { GuestBookDbClient } from '@/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+/** Return a list of report and pagination token upon a LIST request */
 export interface IListReportResponse {
-    /** Guest book messages */
-    messages: IReport[];
+    /** Reports */
+    reports: IReport[];
     /** Pagination token */
     paginationToken: string | undefined;
 }
 
 // TODO: need to import ReportDbClient from Sophie
 /**
- * List guest book messages
+ * List Reports
  *
  * Allowed methods: GET
  *
