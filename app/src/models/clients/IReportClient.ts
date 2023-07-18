@@ -9,7 +9,7 @@ export interface IReportClient {
 
     /* List all reports */
     listReports(paginationToken?: string): Promise<{
-        messages: IReport[];
+        reports: IReport[];
         paginationToken: string | undefined;
     }>;
 
