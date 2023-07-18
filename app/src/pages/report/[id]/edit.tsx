@@ -37,7 +37,7 @@ export default function ReportReportEdit() {
 
     const pageTitle = isLoading
         ? BASE_PAGE_TITLE
-        : `${BASE_PAGE_TITLE} - Report for ${report?.reportCategory!}`;
+        : `${BASE_PAGE_TITLE} - Report From ${report?.name!}`;
 
     const handleSubmit = async () => {
         if (!isUndefined(draftReport)) {

@@ -12,7 +12,7 @@ export default function ReportCard({ report }: ReportCardProps) {
     return (
         <Card>
             <Card.Body>
-                <Card.Title>Report for {report.reportCategory}</Card.Title>
+                <Card.Title>Report From {report.name}</Card.Title>
                 <Card.Text>{report.issueDescription}</Card.Text>
             </Card.Body>
             <Card.Footer>

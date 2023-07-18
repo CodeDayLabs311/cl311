@@ -16,7 +16,7 @@ export default function ReportDetail() {
 
     const pageTitle = isLoading
         ? BASE_PAGE_TITLE
-        : `${BASE_PAGE_TITLE} - Report for ${report?.reportCategory!}`;
+        : `${BASE_PAGE_TITLE} - Report From ${report?.name!}`;
 
     return (
         <>
