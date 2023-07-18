@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 
-const BASE_PAGE_TITLE = 'Report';
+const BASE_PAGE_TITLE = 'Viewing Report';
 
 /** View an existing report */
 export default function ReportDetail() {
