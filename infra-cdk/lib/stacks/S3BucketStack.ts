@@ -17,13 +17,14 @@ export class S3BucketStack extends cdk.Stack{
         this.stage = props.stage;
         this.tenant = props.tenant;
 
-        this.bucket = new s3.Bucket(this, "s3-image-demo",{
-            versioned: false,
+        this.bucket = new s3.Bucket(this,  `MessagesTable-${props.stage}-${props.tenant}`,{
             bucketName: this.getBucketName(),
             publicReadAccess: false,
             removalPolicy: cdk.RemovalPolicy.RETAIN
         });
     }
+
+    /** Get S3 Bucket name */
     getBucketName(): string {
         return `${BASE_TABLE_NAME}-${this.stage}-${this.tenant}`;
     }
