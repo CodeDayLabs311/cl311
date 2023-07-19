@@ -169,7 +169,7 @@ function getChipProps(params: GridRenderCellParams): ChipProps {
     }
 }
 
-export default function Table() {
+export default function Table({ rows }: TableProps) {
     const [clickedIndex, setClickedIndex] = useState(-1);
 
     const columns: GridColDef[] = [
@@ -216,6 +216,7 @@ export default function Table() {
                             >
                                 <Box sx={expandedRowStyle}>
                                     {/* Expanded row item */}
+                                    {cellValues.row.phoneNumber}
                                     {cellValues.row.phoneNumber}
                                     <br />
                                     {cellValues.row.emailAddress}
