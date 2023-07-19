@@ -22,13 +22,7 @@ export default function ReportList() {
                     <PageHeader>Report List</PageHeader>
                     <Loading isLoading={isLoading}>Loading reports....</Loading>
                     {isEmpty && <p>No reports yet.</p>}
-                    {!isLoading &&
-                        reports!.map((report) => (
-                            <>
-                                <p>{report.name}</p>
-                                <p>{report.issueDescription}</p>
-                            </>
-                        ))}
+                    {!isLoading && <Table rows={reports!} />}
                 </Container>
             </main>
         </>
