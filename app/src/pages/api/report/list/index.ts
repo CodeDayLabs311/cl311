@@ -16,6 +16,9 @@ export interface IListReportResponse {
     paginationToken: string | undefined;
 }
 
+/** NOTE: function to mock DB lisitng because I don't have access to create report page or permission to create new item in AWS
+    TODO: will need to switch to real DB function eventually
+*/
 const mockListReportsFromDb = (): { reports: IReport[]; paginationToken: string | undefined } => {
     return {
         reports: [
@@ -24,10 +27,10 @@ const mockListReportsFromDb = (): { reports: IReport[]; paginationToken: string 
                 name: 'John Doe',
                 emailAddress: 'john.doe@example.com',
                 phoneNumber: '123-456-7890',
-                reportCategory: ['category1'],
+                reportCategory: ['Illegal Dumping'],
                 address: '123 Main St',
                 gpsCoordinates: '12.34,56.78',
-                issueDescription: 'Description of the issue',
+                issueDescription: 'Pls send help, it stinks',
                 attachments: 'link to attachments',
                 email: true,
                 sms: false,
@@ -38,12 +41,12 @@ const mockListReportsFromDb = (): { reports: IReport[]; paginationToken: string 
             {
                 reportId: 'report2',
                 name: 'Jane Doe',
-                emailAddress: 'Jane.doe@example.com',
+                emailAddress: 'jane.doe@example.com',
                 phoneNumber: '206-xxx-xxx',
-                reportCategory: ['category2'],
+                reportCategory: ['Clogged Drain'],
                 address: '456 Main St',
                 gpsCoordinates: '21.34,56.60',
-                issueDescription: 'Help pls',
+                issueDescription: 'Help pls, the street is flooded...',
                 attachments: 'image',
                 email: true,
                 sms: false,
@@ -76,6 +79,7 @@ export default async function handler(
     }
 
     try {
+        /** Uncomment these lines to switch to the real DB */
         // const reportClient = new ReportDbClient();
 
         // const { reports, paginationToken } = await reportClient.listReports();

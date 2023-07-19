@@ -8,6 +8,7 @@ import AutorenewIcon from '@mui/icons-material/Autorenew';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { IReport } from '@/models';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Collapse, IconButton, Chip, ChipProps } from '@mui/material';
@@ -169,7 +170,11 @@ function getChipProps(params: GridRenderCellParams): ChipProps {
     }
 }
 
-export default function Table() {
+type TableProps = {
+    rows: IReport[];
+};
+
+export default function Table({ rows }: TableProps) {
     const [clickedIndex, setClickedIndex] = useState(-1);
 
     const columns: GridColDef[] = [
