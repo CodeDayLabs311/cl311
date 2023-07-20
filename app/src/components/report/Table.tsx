@@ -239,7 +239,9 @@ export default function Table({ rows }: TableProps) {
                     <Box>
                         <div>
                             {/* First row item */}
-                            {cellValues.value}
+                            {cellValues.value.map((issue: any) => (
+                                <p style={{margin:0}}>{issue}</p>
+                            ))}
                             <Collapse
                                 in={cellValues.id === clickedIndex}
                                 aria-expanded={cellValues.value === clickedIndex}
