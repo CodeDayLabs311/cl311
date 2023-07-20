@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { Collapse, IconButton } from '@mui/material';
 import { IReport } from '@/models';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ButtonLink from '../ButtonLink';
 import Box from '@mui/material/Box';
 import {
     DataGrid,
@@ -61,8 +63,8 @@ export default function Table({ rows }: TableProps) {
                 return (
                     <Box>
                         <div>
-                            {/* First row item */}
-                            {cellValues.value}
+                            {/* First row item, ex: the name will be displayed here */}
+                            {cellValues.value ? cellValues.value : 'Anonymous'}
                             <Collapse
                                 in={cellValues.id === clickedIndex}
                                 aria-expanded={cellValues.value === clickedIndex}
@@ -81,7 +83,8 @@ export default function Table({ rows }: TableProps) {
         },
         {
             field: 'reportCategory',
-            headerName: 'Type',
+            headerName: 'Issues',
+            //TODO: change this to something else, because this is an array of issues
             type: 'singleSelect',
             valueOptions: ['Illegal dump', 'Clogged drains', 'Other'],
             width: 237,
@@ -90,7 +93,9 @@ export default function Table({ rows }: TableProps) {
                     <Box>
                         <div>
                             {/* First row item */}
-                            {cellValues.value}
+                            {cellValues.value.map((issue: any) => (
+                                <p style={{margin:0}}>{issue}</p>
+                            ))}
                             <Collapse
                                 in={cellValues.id === clickedIndex}
                                 aria-expanded={cellValues.value === clickedIndex}
@@ -118,13 +123,6 @@ export default function Table({ rows }: TableProps) {
             width: 180,
         },
         {
-            field: 'lastUpdated',
-            headerName: 'Last Updated',
-            type: 'date',
-            valueGetter: ({ value }) => value && new Date(value),
-            width: 180,
-        },
-        {
             field: 'statusOfReport',
             headerName: 'Status',
             //this type is for filtering and editing
@@ -134,17 +132,22 @@ export default function Table({ rows }: TableProps) {
         },
         {
             field: 'actions',
-            width: 80,
-            //action matched with getActions
-            type: 'actions',
-            //'param' contains info about cell's context
-            getActions: (params: GridRowParams) => [
-                <GridActionsCellItem
-                    icon={<EditIcon />}
-                    label="Delete"
-                    onClick={() => console.log(params.id)}
-                />,
-            ],
+            headerName: '',
+            width: 150,
+            renderCell: (cellValues: GridRenderCellParams<any>) => (
+                <>
+                    <ButtonLink
+                        style={{ marginRight: '10px' }}
+                        variant="secondary"
+                        href={`/report/${cellValues.row.reportId}/edit`}
+                    >
+                        <EditIcon />
+                    </ButtonLink>
+                    <ButtonLink variant="primary" href={`/report/${cellValues.row.reportId}`}>
+                        <NavigateNextIcon />
+                    </ButtonLink>
+                </>
+            ),
         },
     ];
 
