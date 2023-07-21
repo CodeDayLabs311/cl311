@@ -77,54 +77,6 @@ const columnWidth = {
     actions: 170,
 };
 
-const rows: GridRowsProp = [
-    {
-        reportId: 'report1',
-        name: 'John Doe',
-        emailAddress: 'john.doe@example.com',
-        phoneNumber: '123-456-7890',
-        reportCategory: ReportTypes.ILLEGAL_DUMPING,
-        address: '123 Main St',
-        gpsCoordinates: '12.34,56.78',
-        issueDescription: 'Pls send help, it stinks',
-        attachments: 'link to attachments',
-        email: true,
-        sms: false,
-        statusOfReport: 'Submitted',
-        dateTimeOfSubmission: '07/01/2023',
-    },
-    {
-        reportId: 'report2',
-        name: 'Jane Doe',
-        emailAddress: 'jane.doe@example.com',
-        phoneNumber: '206-xxx-xxx',
-        reportCategory: ReportTypes.CLOGGED_STORM_DRAIN,
-        address: '456 Main St',
-        gpsCoordinates: '21.34,56.60',
-        issueDescription: 'Help pls, the street is flooded...',
-        attachments: 'image',
-        email: true,
-        sms: false,
-        statusOfReport: 'On Hold',
-        dateTimeOfSubmission: '06/20/2023',
-    },
-    {
-        reportId: 'report3',
-        name: '',
-        emailAddress: '',
-        phoneNumber: '',
-        reportCategory: ReportTypes.OTHER,
-        address: '789 Main St',
-        gpsCoordinates: '21.34,56.60',
-        issueDescription: 'I trashed and flooded the street >:)',
-        attachments: 'image',
-        email: true,
-        sms: false,
-        statusOfReport: 'Rejected',
-        dateTimeOfSubmission: '06/30/2023',
-    },
-];
-
 function getChipProps(params: GridRenderCellParams): ChipProps {
     const status = params.value;
     switch (status) {
