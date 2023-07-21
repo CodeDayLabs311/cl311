@@ -8,5 +8,6 @@ export interface IReportClient {
     ): Promise<IReport | undefined>;
     /** Get report */
     getReport(reportId: string): Promise<IReport | undefined>;
-    
+    /** Put report */
+    putReport(report: IReport): Promise<IReport | undefined>;
 }
