@@ -9,7 +9,6 @@ import { IReport } from '@/models';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Collapse, IconButton, Chip, ChipProps } from '@mui/material';
-import { IReport } from '@/models';
 import ButtonLink from '../ButtonLink';
 import Box from '@mui/material/Box';
 import {
