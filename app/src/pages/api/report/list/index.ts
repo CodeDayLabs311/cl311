@@ -101,11 +101,11 @@ export default async function handler(
 
     try {
         /** Uncomment these lines to switch to the real DB */
-        // const reportClient = new ReportDbClient();
+        const reportClient = new ReportDbClient();
 
-        // const { reports, paginationToken } = await reportClient.listReports();
+        const { reports, paginationToken } = await reportClient.listReports();
 
-        const { reports, paginationToken } = mockListReportsFromDb();
+        // const { reports, paginationToken } = mockListReportsFromDb();
         return res.status(200).json({ reports, paginationToken });
     } catch (err) {
         console.error(err);
