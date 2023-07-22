@@ -172,17 +172,22 @@ export default function ReportEdit({
 
             <Form.Group className="mb-3" controlId="EditReport.StatusOfReport">
                 <Form.Label>Status Of Report</Form.Label>
-                <Form.Control
-                    type="text"
-                    defaultValue={report?.statusOfReport}
-                    onChange={(event) => updateReport({ statusOfReport: event.target.value })}
-                />
+                {['Submitted', 'In Progress', 'Completed', 'On Hold', 'Rejected'].map((status) => (
+                    <Form.Check
+                        type="radio"
+                        label={status}
+                        name="status"
+                        checked={report?.statusOfReport === status}
+                        onChange={() => updateReport({ statusOfReport: status })}
+                    />
+                ))}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="EditReport.DateTimeOfSubmission">
                 <Form.Label>Date Time Of Submission</Form.Label>
                 <Form.Control
                     type="text"
+                    readOnly
                     defaultValue={report?.dateTimeOfSubmission}
                     onChange={(event) => updateReport({ dateTimeOfSubmission: event.target.value })}
                 />
