@@ -187,7 +187,7 @@ export default function ReportEdit({
                 <Form.Label>Date Time Of Submission</Form.Label>
                 <Form.Control
                     type="text"
-                    readOnly
+                    readOnly={true}
                     defaultValue={report?.dateTimeOfSubmission}
                     onChange={(event) => updateReport({ dateTimeOfSubmission: event.target.value })}
                 />
