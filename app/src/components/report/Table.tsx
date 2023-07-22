@@ -39,7 +39,8 @@ const columnWidth = {
 function getChipProps(params: GridRenderCellParams): ChipProps {
     const status = params.value;
     switch (status) {
-        case 'Reported':
+        //Or reported?
+        case 'Submited':
             return {
                 icon: <WarningIcon color="error" />,
                 label: status,
