@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import InfoIcon from '@mui/icons-material/Info';
 import WarningIcon from '@mui/icons-material/Warning';
 import CheckIcon from '@mui/icons-material/Check';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
+import PauseCircleIcon from '@mui/icons-material/PauseCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -49,7 +52,7 @@ const rows: GridRowsProp = [
         attachments: 'link to attachments',
         email: true,
         sms: false,
-        statusOfReport: 'Reported',
+        statusOfReport: 'Submitted',
         dateTimeOfSubmission: '07/01/2023',
     },
     {
@@ -64,7 +67,7 @@ const rows: GridRowsProp = [
         attachments: 'image',
         email: true,
         sms: false,
-        statusOfReport: 'Done',
+        statusOfReport: 'On Hold',
         dateTimeOfSubmission: '06/20/2023',
     },
     {
@@ -79,7 +82,7 @@ const rows: GridRowsProp = [
         attachments: 'image',
         email: true,
         sms: false,
-        statusOfReport: 'In Progress',
+        statusOfReport: 'Rejected',
         dateTimeOfSubmission: '06/30/2023',
     },
 ];
@@ -87,11 +90,11 @@ const rows: GridRowsProp = [
 function getChipProps(params: GridRenderCellParams): ChipProps {
     const status = params.value;
     switch (status) {
-        case 'Reported':
+        case 'Submitted':
             return {
-                icon: <WarningIcon color="error" />,
+                icon: <InfoIcon color="primary" />,
                 label: status,
-                color: 'error',
+                color: 'primary',
             };
         case 'In Progress':
             return {
@@ -104,6 +107,18 @@ function getChipProps(params: GridRenderCellParams): ChipProps {
                 icon: <CheckIcon color="success" />,
                 label: status,
                 color: 'success',
+            };
+        case 'On Hold':
+            return {
+                icon: <PauseCircleIcon color="secondary" />,
+                label: status,
+                color: 'secondary',
+            };
+        case 'Rejected':
+            return {
+                icon: <WarningIcon color="error" />,
+                label: status,
+                color: 'error',
             };
         default:
             return {
@@ -255,7 +270,7 @@ export default function Table() {
     ];
 
     return (
-        <div style={{ height: '100%', width: '100%', minWidth: '800px'}}>
+        <div style={{ height: '100%', width: '100%', minWidth: '800px' }}>
             <DataGrid
                 getRowHeight={() => 'auto'}
                 rows={rows}
