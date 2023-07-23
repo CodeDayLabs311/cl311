@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import Stack from 'react-bootstrap/Stack';
 import ButtonLink from '../ButtonLink';
+import styles from '../../styles/Report.module.css';
 
 export type ReportEditProps = {
     report: Omit<IReport, 'reportId'> | undefined;
@@ -35,175 +36,202 @@ export default function ReportEdit({
     );
 
     return (
-        <Form>
-            <Form.Label>Contact Information</Form.Label>
+        <Form className={styles.reportForm}>
+            <div className={styles.formColumn}>
+                <Form.Label className={styles.sectionLabel}>Contact Information</Form.Label>
 
-            <Form.Group className="mb-3" controlId="EditReport.Name">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Please enter your name"
-                    defaultValue={report?.name}
-                    onChange={(event) => updateReport({ name: event.target.value })}
-                />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="EditReport.EmailAddress">
-                <Form.Label>Email Address</Form.Label>
-                <Form.Control
-                    type="email"
-                    placeholder="Please enter your email address"
-                    defaultValue={report?.emailAddress}
-                    onChange={(event) => updateReport({ emailAddress: event.target.value })}
-                />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="EditReport.PhoneNumber">
-                <Form.Label>Phone Number</Form.Label>
-                <Form.Control
-                    type="tel"
-                    placeholder="Please enter your phone number"
-                    defaultValue={report?.phoneNumber}
-                    onChange={(event) => updateReport({ phoneNumber: event.target.value })}
-                />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="EditReport.ReportCategory">
-                <Form.Label>Report Category</Form.Label>
-                {[
-                    'Illegal Dumping',
-                    'Clogged Storm Drain',
-                    'Potholes',
-                    'Graffiti',
-                    'Street Light Outage',
-                    'Sidewalk Damage',
-                    'Traffic Signal Malfunction',
-                    'Abandoned Vehicles',
-                    'Noise Complaint',
-                    'Other',
-                ].map((category) => (
-                    <Form.Check
-                        type="checkbox"
-                        label={category}
-                        checked={report?.reportCategory.includes(category)}
-                        onChange={(event) => {
-                            const newCategories = [...report!.reportCategory];
-                            if (event.target.checked) {
-                                newCategories.push(category);
-                            } else {
-                                newCategories.splice(newCategories.indexOf(category), 1);
-                            }
-                            updateReport({ reportCategory: newCategories });
-                        }}
+                <Form.Group className={styles.formGroup} controlId="EditReport.Name">
+                    <Form.Label className={styles.label}>Name</Form.Label>
+                    <Form.Control
+                        className={styles.input}
+                        type="text"
+                        placeholder="Please enter your name"
+                        defaultValue={report?.name}
+                        onChange={(event) => updateReport({ name: event.target.value })}
                     />
-                ))}
-            </Form.Group>
+                </Form.Group>
 
-            <Form.Label>Issue Location</Form.Label>
+                <Form.Group className={styles.formGroup} controlId="EditReport.EmailAddress">
+                    <Form.Label className={styles.label}>Email Address</Form.Label>
+                    <Form.Control
+                        className={styles.input}
+                        type="email"
+                        placeholder="Please enter your email address"
+                        defaultValue={report?.emailAddress}
+                        onChange={(event) => updateReport({ emailAddress: event.target.value })}
+                    />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="EditReport.Address">
-                <Form.Label>Address</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Please enter your address"
-                    defaultValue={report?.address}
-                    onChange={(event) => updateReport({ address: event.target.value })}
-                />
-            </Form.Group>
+                <Form.Group className={styles.formGroup} controlId="EditReport.PhoneNumber">
+                    <Form.Label className={styles.label}>Phone Number</Form.Label>
+                    <Form.Control
+                        className={styles.input}
+                        type="tel"
+                        placeholder="Please enter your phone number"
+                        defaultValue={report?.phoneNumber}
+                        onChange={(event) => updateReport({ phoneNumber: event.target.value })}
+                    />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="EditReport.GpsCoordinates">
-                <Form.Label>GPS Coordinates</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Please enter your GPS Coordinates"
-                    defaultValue={report?.gpsCoordinates}
-                    onChange={(event) => updateReport({ gpsCoordinates: event.target.value })}
-                />
-            </Form.Group>
+                <Form.Label className={styles.sectionLabel}>Issue Location</Form.Label>
 
-            <Form.Group className="mb-3" controlId="EditReport.IssueDescription">
-                <Form.Label>Issue Description</Form.Label>
-                <Form.Control
-                    as="textarea"
-                    rows={3}
-                    placeholder="Please enter your issue description"
-                    defaultValue={report?.issueDescription}
-                    onChange={(event) => updateReport({ issueDescription: event.target.value })}
-                />
-            </Form.Group>
+                <Form.Group className={styles.formGroup} controlId="EditReport.Address">
+                    <Form.Label className={styles.label}>Address</Form.Label>
+                    <Form.Control
+                        className={styles.input}
+                        type="text"
+                        placeholder="Please enter your address"
+                        defaultValue={report?.address}
+                        onChange={(event) => updateReport({ address: event.target.value })}
+                    />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="EditReport.Attachments">
-                <Form.Label>Attachments</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Please enter your attachments"
-                    defaultValue={report?.attachments}
-                    onChange={(event) => updateReport({ attachments: event.target.value })}
-                />
-            </Form.Group>
+                <Form.Group className={styles.formGroup} controlId="EditReport.GpsCoordinates">
+                    <Form.Label className={styles.label}>GPS Coordinates</Form.Label>
+                    <Form.Control
+                        className={styles.input}
+                        type="text"
+                        placeholder="Please enter your GPS Coordinates"
+                        defaultValue={report?.gpsCoordinates}
+                        onChange={(event) => updateReport({ gpsCoordinates: event.target.value })}
+                    />
+                </Form.Group>
 
-            <Form.Label>Status Updates</Form.Label>
+                <Form.Group
+                    className={styles.formGroup}
+                    controlId="EditReport.DateTimeOfSubmission"
+                >
+                    <Form.Label className={styles.label}>Date Time Of Submission</Form.Label>
+                    <Form.Control
+                        className={styles.input}
+                        type="text"
+                        readOnly={true}
+                        defaultValue={report?.dateTimeOfSubmission}
+                        onChange={(event) =>
+                            updateReport({ dateTimeOfSubmission: event.target.value })
+                        }
+                    />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="EditReport.Email">
-                <Form.Check
-                    type="checkbox"
-                    label="Email"
-                    checked={report?.email}
-                    onChange={(event) => {
-                        updateReport({
-                            email: event.target.checked,
-                        });
-                    }}
-                />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="EditReport.Sms">
-                <Form.Check
-                    type="checkbox"
-                    label="SMS"
-                    checked={report?.sms}
-                    onChange={(event) => {
-                        updateReport({
-                            sms: event.target.checked,
-                        });
-                    }}
-                />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="EditReport.StatusOfReport">
-                <Form.Label>Status Of Report</Form.Label>
-                {['Submitted', 'In Progress', 'Completed', 'On Hold', 'Rejected'].map(
-                    (status) => (
-                        <Form.Check
-                            type="radio"
-                            label={status}
-                            name="status"
-                            checked={report?.statusOfReport === status}
-                            onChange={() => updateReport({ statusOfReport: status })}
-                        />
-                    )
-                )}
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="EditReport.DateTimeOfSubmission">
-                <Form.Label>Date Time Of Submission</Form.Label>
-                <Form.Control
-                    type="text"
-                    readOnly={true}
-                    defaultValue={report?.dateTimeOfSubmission}
-                    onChange={(event) => updateReport({ dateTimeOfSubmission: event.target.value })}
-                />
-            </Form.Group>
-
-            <Stack direction="horizontal" gap={3} className="justify-content-end">
-                <div className="my-auto"></div>
-                <ButtonLink variant="secondary" href={cancelHref}>
+                <ButtonLink className={styles.btnCancel} variant="secondary" href={cancelHref}>
                     Cancel
                 </ButtonLink>
-                <Button variant="primary" onClick={onSubmit} disabled={isSubmitLoading}>
+                <Button
+                    className={styles.btnCreate}
+                    variant="primary"
+                    onClick={onSubmit}
+                    disabled={isSubmitLoading}
+                >
                     {isSubmitLoading ? <Spinner animation="border" size="sm" /> : submitLabel}
                 </Button>
-            </Stack>
+            </div>
+
+            <div className={styles.formColumn}>
+                <Form.Label className={styles.sectionLabel}>Report Category</Form.Label>
+
+                <Form.Group className={styles.formGroup} controlId="EditReport.ReportCategory">
+                    {[
+                        'Illegal Dumping',
+                        'Clogged Storm Drain',
+                        'Potholes',
+                        'Graffiti',
+                        'Street Light Outage',
+                        'Sidewalk Damage',
+                        'Traffic Signal Malfunction',
+                        'Abandoned Vehicles',
+                        'Noise Complaint',
+                        'Other',
+                    ].map((category, index) => (
+                        <Form.Check
+                            key={index}
+                            type="checkbox"
+                            label={category}
+                            className={styles.checkControl}
+                            checked={report?.reportCategory.includes(category)}
+                            onChange={(event) => {
+                                const newCategories = [...report!.reportCategory];
+                                if (event.target.checked) {
+                                    newCategories.push(category);
+                                } else {
+                                    newCategories.splice(newCategories.indexOf(category), 1);
+                                }
+                                updateReport({ reportCategory: newCategories });
+                            }}
+                        />
+                    ))}
+                </Form.Group>
+
+                <Form.Label className={styles.sectionLabel}>Issue Description</Form.Label>
+
+                <Form.Group className={styles.formGroup} controlId="EditReport.IssueDescription">
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                        className={styles.textarea}
+                        placeholder="Please enter your issue description"
+                        defaultValue={report?.issueDescription}
+                        onChange={(event) => updateReport({ issueDescription: event.target.value })}
+                    />
+                </Form.Group>
+
+                <Form.Group className={styles.formGroup} controlId="EditReport.Attachments">
+                    <Form.Label className={styles.label}>Attachments</Form.Label>
+                    <Form.Control
+                        className={styles.input}
+                        type="text"
+                        placeholder="Please enter your attachments"
+                        defaultValue={report?.attachments}
+                        onChange={(event) => updateReport({ attachments: event.target.value })}
+                    />
+                </Form.Group>
+
+                <Form.Label className={styles.sectionLabel}>Status Updates</Form.Label>
+
+                <Form.Group className={styles.formGroup} controlId="EditReport.StatusUpdates">
+                    <Form.Label className={styles.label}>Communication Preferences</Form.Label>
+                    <div className={styles.statusUpdates}>
+                        <Form.Check
+                            type="checkbox"
+                            label="Email"
+                            className={styles.checkControl}
+                            checked={report?.email}
+                            onChange={(event) => {
+                                updateReport({
+                                    email: event.target.checked,
+                                });
+                            }}
+                        />
+                        <Form.Check
+                            type="checkbox"
+                            label="SMS"
+                            className={styles.checkControl}
+                            checked={report?.sms}
+                            onChange={(event) => {
+                                updateReport({
+                                    sms: event.target.checked,
+                                });
+                            }}
+                        />
+                    </div>
+                </Form.Group>
+
+                <Form.Group className={styles.formGroup} controlId="EditReport.StatusOfReport">
+                    <Form.Label className={styles.label}>Status Of Report</Form.Label>
+                    {['Submitted', 'In Progress', 'Completed', 'On Hold', 'Rejected'].map(
+                        (status, index) => (
+                            <Form.Check
+                                key={index}
+                                type="radio"
+                                label={status}
+                                name="status"
+                                className={styles.checkControl}
+                                checked={report?.statusOfReport === status}
+                                onChange={() => updateReport({ statusOfReport: status })}
+                            />
+                        )
+                    )}
+                </Form.Group>
+            </div>
         </Form>
     );
 }
