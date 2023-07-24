@@ -36,26 +36,12 @@ export default async function handler(
         return res.status(405).send({ report: METHOD_NOT_ALLOWED });
     }
 
-    const { id } = req.query;
-
     try {
         const reportClient = new ReportDbClient();
 
         const params = req.body as IReport;
         const isValidRequest =
-            isUndefined(params?.reportId) &&
-            !isUndefined(params?.name) &&
-            !isUndefined(params?.emailAddress) &&
-            !isUndefined(params?.phoneNumber) &&
-            !isUndefined(params?.reportCategory) &&
-            !isUndefined(params?.address) &&
-            !isUndefined(params?.gpsCoordinates) &&
-            !isUndefined(params?.issueDescription) &&
-            !isUndefined(params?.attachments) &&
-            !isUndefined(params?.email) &&
-            !isUndefined(params?.sms) &&
-            !isUndefined(params?.statusOfReport) &&
-            !isUndefined(params?.dateTimeOfSubmission);
+            isUndefined(params?.reportId); 
 
         if (!isValidRequest) {
             // Don't store bad data in the database!

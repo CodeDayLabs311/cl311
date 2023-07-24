@@ -15,7 +15,7 @@ const getInitialReport = (): NewReport => ({
     name: '',
     emailAddress: '',
     phoneNumber: '',
-    reportCategory: [],
+    reportCategory: '',
     address: '',
     gpsCoordinates: '',
     issueDescription: '',
@@ -61,7 +61,7 @@ export default function ReportCreate() {
                             report={draftReport!}
                             setReport={setDraftReport}
                             submitLabel="Create"
-                            isSubmitLoading={false}
+                            isSubmitLoading={false} // TODO: We need to support a good loading state here
                             onSubmit={handleSubmit}
                             cancelHref={'/report'}
                         />

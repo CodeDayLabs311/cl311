@@ -5,7 +5,7 @@ export interface IReport {
     name: string;
     emailAddress: string;
     phoneNumber: string;
-    reportCategory: string[];
+    reportCategory: string;
     address: string;
     gpsCoordinates: string;
     issueDescription: string;
@@ -23,7 +23,7 @@ export interface IDBReport {
     Name: { S: string };
     EmailAddress: { S: string };
     PhoneNumber: { S: string };
-    ReportCategory: { SS: string[] };
+    ReportCategory: { S: string };
     Address: { S: string };
     GpsCoordinates: { S: string };
     IssueDescription: { S: string };
