@@ -18,7 +18,7 @@ export type UseReportsResult = {
 export const useReports = (): UseReportsResult => {
     const reportClient = useReportClient();
 
-    const [reports, setReports] = useState<IReport[] | undefined>([]);
+    const [reports, setReports] = useState<IReport[] | undefined>(undefined);
     const isLoading = isUndefined(reports);
 
     // TODO: add sort and filter category here
