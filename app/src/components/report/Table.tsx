@@ -23,6 +23,44 @@ import {
     GridRenderCellParams,
 } from '@mui/x-data-grid';
 
+enum Status {
+    SUBMITTED = 'Submitted',
+    IN_PROGRESS = 'In Progress',
+    DONE = 'Done',
+    ON_HOLD = 'On Hold',
+    REJECTED = 'Rejected',
+    INVALID = 'Invalid',
+}
+
+enum IReportFields {
+    REPORT_ID = 'reportId',
+    NAME = 'name',
+    EMAIL_ADDRESS = 'emailAddress',
+    PHONE_NUMBER = 'phoneNumber',
+    REPORT_CATEGORY = 'reportCategory',
+    ADDRESS = 'address',
+    GPS_COORDINATES = 'gpsCoordinates',
+    ISSUE_DESCRIPTION = 'issueDescription',
+    ATTACHMENTS = 'attachments',
+    EMAIL = 'email',
+    SMS = 'sms',
+    STATUS_OF_REPORT = 'statusOfReport',
+    DATE_TIME_OF_SUBMISSION = 'dateTimeOfSubmission',
+}
+
+enum ReportTypes {
+    ILLEGAL_DUMPING = 'Illegal Dumping',
+    CLOGGED_STORM_DRAIN = 'Clogged Storm Drain',
+    POTHOLES = 'Potholes',
+    GRAFFITI = 'Graffiti',
+    STREET_LIGHT_OUTAGE = 'Street Light Outage',
+    SIDEWALK_DAMAGE = 'Sidewalk Damage',
+    TRAFFIC_SIGNAL_MALFUNCTION = 'Traffic Signal Malfunction',
+    ABANDONED_VEHICLES = 'Abandoned Vehicles',
+    NOISE_COMPLAINT = 'Noise Complaint',
+    OTHER = 'Other',
+}
+
 const expandedRowStyle = {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
@@ -45,7 +83,7 @@ const rows: GridRowsProp = [
         name: 'John Doe',
         emailAddress: 'john.doe@example.com',
         phoneNumber: '123-456-7890',
-        reportCategory: ['Illegal Dumping'],
+        reportCategory: ReportTypes.ILLEGAL_DUMPING,
         address: '123 Main St',
         gpsCoordinates: '12.34,56.78',
         issueDescription: 'Pls send help, it stinks',
@@ -60,7 +98,7 @@ const rows: GridRowsProp = [
         name: 'Jane Doe',
         emailAddress: 'jane.doe@example.com',
         phoneNumber: '206-xxx-xxx',
-        reportCategory: ['Clogged Drain'],
+        reportCategory: ReportTypes.CLOGGED_STORM_DRAIN,
         address: '456 Main St',
         gpsCoordinates: '21.34,56.60',
         issueDescription: 'Help pls, the street is flooded...',
@@ -75,7 +113,7 @@ const rows: GridRowsProp = [
         name: '',
         emailAddress: '',
         phoneNumber: '',
-        reportCategory: ['Illegal Dumping', 'Clogged Drain', 'Arson', 'Auto Theft', 'Other'],
+        reportCategory: ReportTypes.OTHER,
         address: '789 Main St',
         gpsCoordinates: '21.34,56.60',
         issueDescription: 'I trashed and flooded the street >:)',
@@ -90,31 +128,31 @@ const rows: GridRowsProp = [
 function getChipProps(params: GridRenderCellParams): ChipProps {
     const status = params.value;
     switch (status) {
-        case 'Submitted':
+        case Status.SUBMITTED:
             return {
                 icon: <InfoIcon color="primary" />,
                 label: status,
                 color: 'primary',
             };
-        case 'In Progress':
+        case Status.IN_PROGRESS:
             return {
                 icon: <AutorenewIcon color="warning" />,
                 label: status,
                 color: 'warning',
             };
-        case 'Done':
+        case Status.DONE:
             return {
                 icon: <CheckIcon color="success" />,
                 label: status,
                 color: 'success',
             };
-        case 'On Hold':
+        case Status.ON_HOLD:
             return {
                 icon: <PauseCircleIcon color="secondary" />,
                 label: status,
                 color: 'secondary',
             };
-        case 'Rejected':
+        case Status.REJECTED:
             return {
                 icon: <WarningIcon color="error" />,
                 label: status,
@@ -123,7 +161,7 @@ function getChipProps(params: GridRenderCellParams): ChipProps {
         default:
             return {
                 icon: <QuestionMarkIcon style={{ fill: 'orange' }} />,
-                label: 'Invalid',
+                label: Status.INVALID,
                 style: {
                     borderColor: 'orange',
                 },
@@ -136,7 +174,7 @@ export default function Table() {
 
     const columns: GridColDef[] = [
         {
-            field: 'reportId',
+            field: IReportFields.REPORT_ID,
             headerName: '',
             filterable: false,
             sortable: false,
@@ -163,7 +201,7 @@ export default function Table() {
             },
         },
         {
-            field: 'name',
+            field: IReportFields.NAME,
             headerName: 'Name',
             width: columnWidth.name,
             renderCell: (cellValues: GridRenderCellParams<any>) => {
@@ -189,27 +227,27 @@ export default function Table() {
             },
         },
         {
-            field: 'reportCategory',
+            field: IReportFields.REPORT_CATEGORY,
             headerName: 'Issues',
-            //TODO: change this to something else, because this is an array of issues
             type: 'singleSelect',
-            valueOptions: ['Illegal dump', 'Clogged drains', 'Other'],
+            //TODO: update the valueOptions to match the options in creationPage
+            valueOptions: Object.values(ReportTypes),
             width: columnWidth.reportCategory,
             renderCell: (cellValues: GridRenderCellParams<any>) => {
                 return (
                     <Box>
                         <div>
                             {/* First row item */}
-                            {cellValues.value.map((issue: any) => (
-                                <p style={{ margin: 0 }}>{issue}</p>
-                            ))}
+                            {cellValues.value}
                             <Collapse
                                 in={cellValues.id === clickedIndex}
                                 aria-expanded={cellValues.value === clickedIndex}
                             >
                                 <Box sx={expandedRowStyle}>
                                     {/* Expanded row item */}
-                                    {cellValues.row.issueDescription}
+                                    {cellValues.row.issueDescription.length > 50
+                                        ? cellValues.row.issueDescription.substring(0, 50)
+                                        : cellValues.row.issueDescription}
                                 </Box>
                             </Collapse>
                         </div>
@@ -218,23 +256,23 @@ export default function Table() {
             },
         },
         {
-            field: 'address',
+            field: IReportFields.ADDRESS,
             headerName: 'Location',
             width: columnWidth.address,
         },
         {
-            field: 'dateTimeOfSubmission',
+            field: IReportFields.DATE_TIME_OF_SUBMISSION,
             headerName: 'Date Reported',
             type: 'date',
             valueGetter: ({ value }) => value && new Date(value),
             width: columnWidth.dateTimeOfSubmission,
         },
         {
-            field: 'statusOfReport',
+            field: IReportFields.STATUS_OF_REPORT,
             headerName: 'Status',
             //this type is for filtering and editing
             type: 'singleSelect',
-            valueOptions: ['Reported', 'In Progress', 'Done'],
+            valueOptions: Object.values(Status),
             width: columnWidth.statusOfReport,
             renderCell: (params: GridRenderCellParams<any>) => {
                 return <Chip variant="outlined" size="small" {...getChipProps(params)} />;
