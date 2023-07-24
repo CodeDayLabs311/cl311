@@ -3,6 +3,7 @@ import { AttributeValue, DynamoDB } from '@aws-sdk/client-dynamodb';
 import { getDynamoDbClient } from '../api';
 import { getUuid, isUndefined } from '../common';
 import { getStage, getTenant } from '../environment';
+import { NOT_FOUND } from '@/models';
 
 const BASE_TABLE_NAME = 'ReportsTable';
 const CATEGORY_INDEX_NAME = 'CategoryIndex';
@@ -33,32 +34,23 @@ export class ReportDbClient implements IReportClient {
 
     /** Get report */
     async getReport(reportId: string) {
-        const key: Omit<
-            IDBReport,
-            | 'Name'
-            | 'EmailAddress'
-            | 'PhoneNumber'
-            | 'ReportCategory'
-            | 'Address'
-            | 'GpsCoordinates'
-            | 'IssueDescription'
-            | 'Attachments'
-            | 'Email'
-            | 'Sms'
-            | 'StatusOfReport'
-            | 'DateTimeOfSubmission'
-        > = {
+        const key: Pick<IDBReport, 'ReportID'> = {
             ReportID: {
                 S: reportId,
             },
         };
 
-        const getData = await this.ddbClient.getItem({
-            TableName: getTableName(),
-            Key: key,
-        });
+        try {
+            const getData = await this.ddbClient.getItem({
+                TableName: getTableName(),
+                Key: key,
+            });
 
-        return unmarshalReport(getData.Item as unknown as IDBReport);
+            return unmarshalReport(getData.Item as unknown as IDBReport);
+        } catch (error) {
+            // Handle error where report doesn't exist
+            // return res.status(404).send({ report: NOT_FOUND });
+        }
     }
 
     /** List reports */
@@ -157,7 +149,7 @@ function marshalReport(report: IReport): Record<string, AttributeValue> {
             S: report!.phoneNumber,
         },
         ReportCategory: {
-            SS: report!.reportCategory,
+            S: report!.reportCategory,
         },
         Address: {
             S: report!.address,
@@ -204,7 +196,7 @@ function unmarshalReport(report?: IDBReport): IReport | undefined {
         name: report?.Name?.S!,
         emailAddress: report?.EmailAddress?.S!,
         phoneNumber: report?.PhoneNumber?.S!,
-        reportCategory: report?.ReportCategory?.SS!,
+        reportCategory: report?.ReportCategory?.S!,
         address: report?.Address?.S!,
         gpsCoordinates: report?.GpsCoordinates?.S!,
         issueDescription: report?.IssueDescription?.S!,
