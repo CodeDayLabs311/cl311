@@ -1,7 +1,6 @@
 import { IReport } from '@/models';
 import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
-import ButtonLink from '../ButtonLink';
 import { Typography, Grid } from '@mui/material';
 import {
     StyledReportDetails,
@@ -9,6 +8,7 @@ import {
     Heading,
     FooterDetails,
     IDText,
+    Box2,
 } from '@/styles/StyleCardView';
 
 export type ReportCardProps = {
@@ -79,7 +79,7 @@ export default function ReportCard({ report }: ReportCardProps) {
                                 alt="Attachment image"
                                 style={{
                                     height: '500px',
-                                    width: '600px',
+                                    width: '580px',
                                     overflow: 'hidden',
                                     objectFit: 'cover',
                                 }}
@@ -104,9 +104,9 @@ export default function ReportCard({ report }: ReportCardProps) {
                             <IDText>ID: </IDText> {report.reportId}
                         </p>
                         <div className="vr"></div>
-                        <ButtonLink variant="secondary" href={`/report/${report.reportId}/edit`}>
+                        <Box2 variant="secondary" href={`/report/${report.reportId}/edit`}>
                             Edit
-                        </ButtonLink>
+                        </Box2>
                     </Stack>
                 </Box1>
             </FooterDetails>
