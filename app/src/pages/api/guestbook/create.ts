@@ -33,7 +33,7 @@ export default async function handler(
     res: NextApiResponse<ICreateGuestBookMessageResponse | IApiErrorResponse>
 ) {
     if (req.method !== HttpMethod.POST) {
-        return res.status(405).send({ report: METHOD_NOT_ALLOWED });
+        return res.status(405).send({ message: METHOD_NOT_ALLOWED });
     }
 
     const { id } = req.query;
@@ -48,20 +48,20 @@ export default async function handler(
 
         if (!isValidRequest) {
             // Don't store bad data in the database!
-            return res.status(400).send({ report: BAD_REQUEST });
+            return res.status(400).send({ message: BAD_REQUEST });
         }
 
         const message = await guestBookClient.createMessage(params);
 
         if (isUndefined(message)) {
             // Message was successfully created but could not be found
-            return res.status(500).send({ report: INTERNAL_SERVER_ERROR });
+            return res.status(500).send({ message: INTERNAL_SERVER_ERROR });
         }
 
         return res.status(200).json({ message: message! });
     } catch (err) {
         console.error(err);
 
-        return res.status(500).send({ report: INTERNAL_SERVER_ERROR });
+        return res.status(500).send({ message: INTERNAL_SERVER_ERROR });
     }
 }
