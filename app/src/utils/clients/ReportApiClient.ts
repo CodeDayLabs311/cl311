@@ -39,4 +39,12 @@ export class ReportApiClient implements IReportClient {
 
         return json;
     }
+
+    async listReportsByStatus(status: string, ascending?: boolean, paginationToken?: string) {
+        const response = await fetch(
+            `${LIST_REPORTS_ENDPOINT}?paginationToken=${paginationToken}&status=${status}&ascending=${ascending}`
+        );
+        const json: IListReportResponse = await response.json();
+        return json;
+    }
 }

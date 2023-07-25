@@ -6,6 +6,7 @@ import { getStage, getTenant } from '../environment';
 
 const BASE_TABLE_NAME = 'ReportsTable';
 const CATEGORY_INDEX_NAME = 'CategoryIndex';
+const STATUS_INDEX_NAME = 'StatusIndex';
 
 /** Client to interact with report DynamoDB */
 export class ReportDbClient implements IReportClient {
@@ -87,6 +88,32 @@ export class ReportDbClient implements IReportClient {
                     S: category,
                 },
             },
+        });
+
+        return {
+            reports: unmarshalReports(queryData.Items as unknown as IDBReport[]),
+            paginationToken: undefined,
+        };
+    }
+
+    /** List reports by status
+     *
+     * ascending - true: oldest to newest
+     * descending- false: newest to oldest
+     */
+    async listReportsByStatus(status: string, ascending?: boolean, paginationToken?: string) {
+        // TODO handle pagination
+
+        const queryData = await this.ddbClient.query({
+            TableName: getTableName(),
+            IndexName: STATUS_INDEX_NAME,
+            KeyConditionExpression: 'Status = :status',
+            ExpressionAttributeValues: {
+                ':status': {
+                    S: status,
+                },
+            },
+            ScanIndexForward: ascending,
         });
 
         return {
