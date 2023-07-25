@@ -9,7 +9,13 @@ export interface IReportClient {
         paginationToken: string | undefined;
     }>;
 
-    /** Sort reports alphabetically or by date */
-
     /** Filter by status, etc.*/
+    listReportsByStatus(
+        status: string,
+        ascending?: boolean,
+        paginationToken?: string
+    ): Promise<{
+        reports: IReport[];
+        paginationToken: string | undefined;
+    }>;
 }
