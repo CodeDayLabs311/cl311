@@ -47,8 +47,10 @@ export class ReportDbClient implements IReportClient {
 
             return unmarshalReport(getData.Item as unknown as IDBReport);
         } catch (error) {
-            // Handle error where report doesn't exist
-            // return res.status(404).send({ report: NOT_FOUND });
+            return Promise.reject({
+                status: 404,
+                message: NOT_FOUND,
+            });
         }
     }
 
