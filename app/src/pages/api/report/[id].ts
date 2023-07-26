@@ -49,19 +49,7 @@ export default async function handler(
             const params = req.body as IReport;
             const isValidRequest =
                 id === params.reportId &&
-                !isUndefined(params?.reportId) &&
-                !isUndefined(params?.name) &&
-                !isUndefined(params?.emailAddress) &&
-                !isUndefined(params?.phoneNumber) &&
-                !isUndefined(params?.reportCategory) &&
-                !isUndefined(params?.address) &&
-                !isUndefined(params?.gpsCoordinates) &&
-                !isUndefined(params?.issueDescription) &&
-                !isUndefined(params?.attachments) &&
-                !isUndefined(params?.email) &&
-                !isUndefined(params?.sms) &&
-                !isUndefined(params?.statusOfReport) &&
-                !isUndefined(params?.dateTimeOfSubmission);
+                !isUndefined(params?.reportId); 
 
             if (!isValidRequest) {
                 // Don't store bad data in the database!

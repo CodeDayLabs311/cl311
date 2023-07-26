@@ -15,7 +15,7 @@ const getInitialReport = (): NewReport => ({
     name: '',
     emailAddress: '',
     phoneNumber: '',
-    reportCategory: [],
+    reportCategory: '',
     address: '',
     gpsCoordinates: '',
     issueDescription: '',
@@ -23,7 +23,7 @@ const getInitialReport = (): NewReport => ({
     email: false,
     sms: false,
     statusOfReport: 'Submitted',
-    dateTimeOfSubmission: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
+    dateTimeOfSubmission: new Date().toLocaleString('en-US'),
 });
 
 /** Create a new report */
@@ -61,7 +61,7 @@ export default function ReportCreate() {
                             report={draftReport!}
                             setReport={setDraftReport}
                             submitLabel="Create"
-                            isSubmitLoading={false}
+                            isSubmitLoading={false} // TODO: We need to support a good loading state here
                             onSubmit={handleSubmit}
                             cancelHref={'/report'}
                         />
