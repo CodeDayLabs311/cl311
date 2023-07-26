@@ -23,7 +23,7 @@ const getInitialReport = (): NewReport => ({
     email: false,
     sms: false,
     statusOfReport: 'Submitted',
-    dateTimeOfSubmission: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
+    dateTimeOfSubmission: new Date().toLocaleString('en-US'),
 });
 
 /** Create a new report */
