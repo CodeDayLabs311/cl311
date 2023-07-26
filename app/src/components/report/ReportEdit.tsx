@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import Stack from 'react-bootstrap/Stack';
 import ButtonLink from '../ButtonLink';
+import { ReportCategories, StatusOfReport } from '@/models';
 
 export type ReportEditProps = {
     report: Omit<IReport, 'reportId'> | undefined;
@@ -71,53 +72,36 @@ export default function ReportEdit({
             <Form.Group className="mb-3" controlId="EditReport.ReportCategory">
                 <Form.Label>Report Category</Form.Label>
                 {[
-                    'Illegal Dumping',
-                    'Clogged Storm Drain',
-                    'Potholes',
-                    'Graffiti',
-                    'Street Light Outage',
-                    'Sidewalk Damage',
-                    'Traffic Signal Malfunction',
-                    'Abandoned Vehicles',
-                    'Noise Complaint',
-                    'Other',
+                    ReportCategories.Illegal_Dumping,
+                    ReportCategories.Clogged_Storm_Drain,
+                    ReportCategories.Potholes,
+                    ReportCategories.Graffiti,
+                    ReportCategories.Street_Light_Outage,
+                    ReportCategories.Sidewalk_Damage,
+                    ReportCategories.Traffic_Signal_Malfunction,
+                    ReportCategories.Abandoned_Vehicles,
+                    ReportCategories.Noise_Complaint,
+                    ReportCategories.Other,
                 ].map((category) => (
                     <Form.Check
-                        type="checkbox"
+                        type="radio"
                         label={category}
-                        checked={report?.reportCategory.includes(category)}
-                        onChange={(event) => {
-                            const newCategories = [...report!.reportCategory];
-                            if (event.target.checked) {
-                                newCategories.push(category);
-                            } else {
-                                newCategories.splice(newCategories.indexOf(category), 1);
-                            }
-                            updateReport({ reportCategory: newCategories });
+                        name="category"
+                        defaultValue={report?.reportCategory}
+                        onChange={() => {
+                            updateReport({ reportCategory: category });
                         }}
                     />
                 ))}
             </Form.Group>
 
-            <Form.Label>Issue Location</Form.Label>
-
             <Form.Group className="mb-3" controlId="EditReport.Address">
                 <Form.Label>Address</Form.Label>
                 <Form.Control
                     type="text"
-                    placeholder="Please enter your address"
+                    placeholder="Please enter your issue location"
                     defaultValue={report?.address}
                     onChange={(event) => updateReport({ address: event.target.value })}
-                />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="EditReport.GpsCoordinates">
-                <Form.Label>GPS Coordinates</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Please enter your GPS Coordinates"
-                    defaultValue={report?.gpsCoordinates}
-                    onChange={(event) => updateReport({ gpsCoordinates: event.target.value })}
                 />
             </Form.Group>
 
@@ -172,7 +156,13 @@ export default function ReportEdit({
 
             <Form.Group className="mb-3" controlId="EditReport.StatusOfReport">
                 <Form.Label>Status Of Report</Form.Label>
-                {['Submitted', 'In Progress', 'Completed', 'On Hold', 'Rejected'].map((status) => (
+                {[
+                    StatusOfReport.Submitted,
+                    StatusOfReport.In_Progress,
+                    StatusOfReport.Completed,
+                    StatusOfReport.On_Hold,
+                    StatusOfReport.Rejected,
+                ].map((status) => (
                     <Form.Check
                         type="radio"
                         label={status}
@@ -181,16 +171,6 @@ export default function ReportEdit({
                         onChange={() => updateReport({ statusOfReport: status })}
                     />
                 ))}
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="EditReport.DateTimeOfSubmission">
-                <Form.Label>Date Time Of Submission</Form.Label>
-                <Form.Control
-                    type="text"
-                    readOnly={true}
-                    defaultValue={report?.dateTimeOfSubmission}
-                    onChange={(event) => updateReport({ dateTimeOfSubmission: event.target.value })}
-                />
             </Form.Group>
 
             <Stack direction="horizontal" gap={3} className="justify-content-end">
