@@ -113,20 +113,6 @@ export default function ReportEdit({
                     />
                 </Form.Group>
 
-                <ButtonLink className={styles.btnCancel} variant="secondary" href={cancelHref}>
-                    Cancel
-                </ButtonLink>
-                <Button
-                    className={styles.btnCreate}
-                    variant="primary"
-                    onClick={onSubmit}
-                    disabled={isSubmitLoading}
-                >
-                    {isSubmitLoading ? <Spinner animation="border" size="sm" /> : submitLabel}
-                </Button>
-            </div>
-
-            <div className={styles.formColumn}>
                 <Form.Label className={styles.sectionLabel}>Report Category</Form.Label>
 
                 <Form.Group className={styles.formGroup} controlId="EditReport.ReportCategory">
@@ -161,6 +147,12 @@ export default function ReportEdit({
                     ))}
                 </Form.Group>
 
+                <ButtonLink className={styles.btnCancel} variant="secondary" href={cancelHref}>
+                    Cancel
+                </ButtonLink>
+            </div>
+
+            <div className={styles.formColumn}>
                 <Form.Label className={styles.sectionLabel}>Issue Description</Form.Label>
 
                 <Form.Group className={styles.formGroup} controlId="EditReport.IssueDescription">
@@ -231,6 +223,15 @@ export default function ReportEdit({
                         )
                     )}
                 </Form.Group>
+
+                <Button
+                    className={styles.btnCreate}
+                    variant="primary"
+                    onClick={onSubmit}
+                    disabled={isSubmitLoading}
+                >
+                    {isSubmitLoading ? <Spinner animation="border" size="sm" /> : submitLabel}
+                </Button>
             </div>
         </Form>
     );
