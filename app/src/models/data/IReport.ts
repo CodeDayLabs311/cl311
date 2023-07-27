@@ -10,10 +10,8 @@ export interface IReport {
     gpsCoordinates: string;
     issueDescription: string;
     attachments: string[];
-    statusUpdates: {
-        email: boolean;
-        sms: boolean;
-    };
+    email: boolean;
+    sms: boolean;
     statusOfReport: string;
     dateTimeOfSubmission: string;
 }
@@ -30,10 +28,8 @@ export interface IDBReport {
     GpsCoordinates: { S: string };
     IssueDescription: { S: string };
     Attachments: { SS: string[] };
-    StatusUpdates: {
-        Email: { BOOL: boolean };
-        Sms: { BOOL: boolean };
-    };
+    Email: { BOOL: boolean };
+    Sms: { BOOL: boolean };
     StatusOfReport: { S: string };
     DateTimeOfSubmission: { S: string };
 }
