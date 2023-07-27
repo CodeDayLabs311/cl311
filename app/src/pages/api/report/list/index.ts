@@ -31,7 +31,7 @@ const mockListReportsFromDb = (): { reports: IReport[]; paginationToken: string 
                 address: '123 Main St',
                 gpsCoordinates: '12.34,56.78',
                 issueDescription: 'Pls send help, it stinks',
-                attachments: 'link to attachments',
+                attachments: ['link to attachments'],
                 email: true,
                 sms: false,
                 statusOfReport: 'Submitted',
@@ -47,7 +47,7 @@ const mockListReportsFromDb = (): { reports: IReport[]; paginationToken: string 
                 address: '456 Main St',
                 gpsCoordinates: '21.34,56.60',
                 issueDescription: 'Help pls, the street is flooded...',
-                attachments: 'image',
+                attachments: ['image'],
                 email: true,
                 sms: false,
                 statusOfReport: 'In Progress',
@@ -62,10 +62,10 @@ const mockListReportsFromDb = (): { reports: IReport[]; paginationToken: string 
                 address: '789 Main St',
                 gpsCoordinates: '21.34,56.60',
                 issueDescription: 'I trashed and flooded the street >:)',
-                attachments: 'image',
+                attachments: ['image'],
                 email: true,
                 sms: false,
-                statusOfReport: 'Dispatched',
+                statusOfReport: 'Done',
                 dateTimeOfSubmission: '06/30/2023',
             },
         ],
@@ -90,20 +90,20 @@ export default async function handler(
     res: NextApiResponse<IListReportResponse | IApiErrorResponse>
 ) {
     if (req.method !== HttpMethod.GET) {
-        return res.status(405).send({ message: METHOD_NOT_ALLOWED });
+        return res.status(405).send({ report: METHOD_NOT_ALLOWED });
     }
 
     try {
         /** Uncomment these lines to switch to the real DB */
-        // const reportClient = new ReportDbClient();
+        const reportClient = new ReportDbClient();
 
-        // const { reports, paginationToken } = await reportClient.listReports();
+        const { reports, paginationToken } = await reportClient.listReports();
 
-        const { reports, paginationToken } = mockListReportsFromDb();
+        // const { reports, paginationToken } = mockListReportsFromDb();
         return res.status(200).json({ reports, paginationToken });
     } catch (err) {
         console.error(err);
 
-        return res.status(500).send({ message: INTERNAL_SERVER_ERROR });
+        return res.status(500).send({ report: INTERNAL_SERVER_ERROR });
     }
 }
