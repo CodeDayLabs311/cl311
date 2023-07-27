@@ -3,6 +3,7 @@ import { IGetReportResponse } from '@/pages/api/report/[id]';
 
 const CREATE_REPORT_ENDPOINT = '/api/report/create';
 const GET_REPORT_BASE_ENDPOINT = '/api/report';
+const PUT_REPORT_BASE_ENDPOINT = '/api/report';
 
 /** Client to interact with report API */
 // TODO implement error handling
