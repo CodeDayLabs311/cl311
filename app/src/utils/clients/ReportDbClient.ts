@@ -107,7 +107,10 @@ export class ReportDbClient implements IReportClient {
         const queryData = await this.ddbClient.query({
             TableName: getTableName(),
             IndexName: STATUS_INDEX_NAME,
-            KeyConditionExpression: 'Status = :status',
+            KeyConditionExpression: '#status = :status',
+            ExpressionAttributeNames: {
+                '#status': 'Status'
+            },
             ExpressionAttributeValues: {
                 ':status': {
                     S: status,
