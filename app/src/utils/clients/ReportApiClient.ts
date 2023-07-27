@@ -30,4 +30,18 @@ export class ReportApiClient implements IReportClient {
         return json.report;
     }
 
+    /** Put report */
+    async putReport(report: IReport) {
+        const response = await fetch(`${PUT_REPORT_BASE_ENDPOINT}/${report.reportId}`, {
+            method: HttpMethod.PUT,
+            body: JSON.stringify(report),
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        });
+        const json: IGetReportResponse = await response.json();
+
+        return json.report;
+    }
 }

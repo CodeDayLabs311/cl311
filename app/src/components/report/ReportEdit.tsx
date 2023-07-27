@@ -87,7 +87,7 @@ export default function ReportEdit({
                         type="radio"
                         label={category}
                         name="category"
-                        defaultValue={report?.reportCategory}
+                        checked={report?.reportCategory === category}
                         onChange={() => {
                             updateReport({ reportCategory: category });
                         }}
