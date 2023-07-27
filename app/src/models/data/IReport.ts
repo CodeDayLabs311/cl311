@@ -9,9 +9,11 @@ export interface IReport {
     address: string;
     gpsCoordinates: string;
     issueDescription: string;
-    attachments: string;
-    email: boolean;
-    sms: boolean;
+    attachments: string[];
+    statusUpdates: {
+        email: boolean;
+        sms: boolean;
+    };
     statusOfReport: string;
     dateTimeOfSubmission: string;
 }
@@ -27,9 +29,11 @@ export interface IDBReport {
     Address: { S: string };
     GpsCoordinates: { S: string };
     IssueDescription: { S: string };
-    Attachments: { S: string };
-    Email: { BOOL: boolean };
-    Sms: { BOOL: boolean };
+    Attachments: { SS: string[] };
+    StatusUpdates: {
+        Email: { BOOL: boolean };
+        Sms: { BOOL: boolean };
+    };
     StatusOfReport: { S: string };
     DateTimeOfSubmission: { S: string };
 }
