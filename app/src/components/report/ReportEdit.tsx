@@ -87,6 +87,7 @@ export default function ReportEdit({
                         type="radio"
                         label={category}
                         name="category"
+                        key={category}
                         defaultValue={report?.reportCategory}
                         onChange={() => {
                             updateReport({ reportCategory: category });
@@ -167,6 +168,7 @@ export default function ReportEdit({
                         type="radio"
                         label={status}
                         name="status"
+                        key={status}
                         checked={report?.statusOfReport === status}
                         onChange={() => updateReport({ statusOfReport: status })}
                     />
