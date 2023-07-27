@@ -22,7 +22,7 @@ export class IAMStack extends cdk.Stack {
             statements: [
                 // Allow access to DynamoDB table
                 new iam.PolicyStatement({
-                    actions: ['dynamodb:Scan', 'dynamodb:GetItem', 'dynamodb:PutItem'],
+                    actions: ['dynamodb:Scan', 'dynamodb:GetItem', 'dynamodb:PutItem', 'dynamodb:Query'],
                     resources: [
                         `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.tableName}`,
                         `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.reportsTableName}`,
