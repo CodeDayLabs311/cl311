@@ -14,7 +14,7 @@ import { Collapse, IconButton, Chip, ChipProps } from '@mui/material';
 import { IReport } from '@/models';
 import ButtonLink from '../ButtonLink';
 import Box from '@mui/material/Box';
-import { StatusOfReport, ReportCategories, IReportFields } from '@/models';
+import { StatusOfReport, ReportCategories, ReportFields } from '@/models';
 import {
     DataGrid,
     GridRowsProp,
@@ -24,7 +24,7 @@ import {
     GridRenderCellParams,
 } from '@mui/x-data-grid';
 
-const expandedRowStyle = {
+const EXPANDED_ROW_STYLE = {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
     paddingBottom: '10px',
@@ -93,7 +93,7 @@ export default function Table({ rows }: TableProps) {
 
     const columns: GridColDef[] = [
         {
-            field: IReportFields.Report_Id,
+            field: ReportFields.Report_Id,
             headerName: '',
             filterable: false,
             sortable: false,
@@ -120,7 +120,7 @@ export default function Table({ rows }: TableProps) {
             },
         },
         {
-            field: IReportFields.Name,
+            field: ReportFields.Name,
             headerName: 'Name',
             width: columnWidth.name,
             renderCell: (cellValues: GridRenderCellParams<any>) => {
@@ -133,7 +133,7 @@ export default function Table({ rows }: TableProps) {
                                 in={cellValues.id === clickedIndex}
                                 aria-expanded={cellValues.value === clickedIndex}
                             >
-                                <Box sx={expandedRowStyle}>
+                                <Box sx={EXPANDED_ROW_STYLE}>
                                     {/* Expanded row item */}
                                     {cellValues.row.phoneNumber}
                                     <br />
@@ -146,7 +146,7 @@ export default function Table({ rows }: TableProps) {
             },
         },
         {
-            field: IReportFields.Report_Category,
+            field: ReportFields.Report_Category,
             headerName: 'Issues',
             type: 'singleSelect',
             //TODO: update the valueOptions to match the options in creationPage
@@ -162,7 +162,7 @@ export default function Table({ rows }: TableProps) {
                                 in={cellValues.id === clickedIndex}
                                 aria-expanded={cellValues.value === clickedIndex}
                             >
-                                <Box sx={expandedRowStyle}>
+                                <Box sx={EXPANDED_ROW_STYLE}>
                                     {/* Expanded row item */}
                                     {cellValues.row.issueDescription.length > 50
                                         ? cellValues.row.issueDescription.substring(0, 50)
@@ -175,19 +175,19 @@ export default function Table({ rows }: TableProps) {
             },
         },
         {
-            field: IReportFields.Address,
+            field: ReportFields.Address,
             headerName: 'Location',
             width: columnWidth.address,
         },
         {
-            field: IReportFields.Date_Time_Of_Submission,
+            field: ReportFields.Date_Time_Of_Submission,
             headerName: 'Date Reported',
             type: 'date',
             valueGetter: ({ value }) => value && new Date(value),
             width: columnWidth.dateTimeOfSubmission,
         },
         {
-            field: IReportFields.Status_Of_Report,
+            field: ReportFields.Status_Of_Report,
             headerName: 'Status',
             //this type is for filtering and editing
             type: 'singleSelect',

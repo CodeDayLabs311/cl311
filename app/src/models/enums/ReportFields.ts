@@ -1,4 +1,4 @@
-export enum IReportFields {
+export enum ReportFields {
     Report_Id = 'reportId',
     Name = 'name',
     Email_Address = 'emailAddress',
