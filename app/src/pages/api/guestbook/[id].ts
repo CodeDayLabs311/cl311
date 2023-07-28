@@ -36,7 +36,7 @@ export default async function handler(
     res: NextApiResponse<IGetGuestBookMessageResponse | IApiErrorResponse>
 ) {
     if (req.method !== HttpMethod.GET && req.method !== HttpMethod.PUT) {
-        return res.status(405).send({ message: METHOD_NOT_ALLOWED });
+        return res.status(405).send({ report: METHOD_NOT_ALLOWED });
     }
 
     const { id } = req.query;
@@ -54,13 +54,13 @@ export default async function handler(
 
             if (!isValidRequest) {
                 // Don't store bad data in the database!
-                return res.status(400).send({ message: BAD_REQUEST });
+                return res.status(400).send({ report: BAD_REQUEST });
             }
 
             const message = await guestBookClient.putMessage(params);
 
             if (isUndefined(message)) {
-                return res.status(404).send({ message: NOT_FOUND });
+                return res.status(404).send({ report: NOT_FOUND });
             }
 
             return res.status(200).json({ message: message! });
@@ -68,7 +68,7 @@ export default async function handler(
             const message = await guestBookClient.getMessage(id as string);
 
             if (isUndefined(message)) {
-                return res.status(404).send({ message: NOT_FOUND });
+                return res.status(404).send({ report: NOT_FOUND });
             }
 
             return res.status(200).json({ message: message! });
@@ -76,6 +76,6 @@ export default async function handler(
     } catch (err) {
         console.error(err);
 
-        return res.status(500).send({ message: INTERNAL_SERVER_ERROR });
+        return res.status(500).send({ report: INTERNAL_SERVER_ERROR });
     }
 }
