@@ -1,4 +1,4 @@
 /** API error response */
 export interface IApiErrorResponse {
-    report: string;
+    message: string;
 }
