@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import InfoIcon from '@mui/icons-material/Info';
@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Collapse, IconButton, Chip, ChipProps } from '@mui/material';
 import { IReport } from '@/models';
+import { useReports } from '@/hooks/report/useReports';
 import ButtonLink from '../ButtonLink';
 import Box from '@mui/material/Box';
 import { StatusOfReport, ReportCategories, ReportFields } from '@/models';
@@ -22,16 +23,15 @@ import {
     GridActionsCellItem,
     GridRowParams,
     GridRenderCellParams,
+    GridFilterItem,
+    GridFilterModel,
+    getGridSingleSelectOperators,
 } from '@mui/x-data-grid';
 
 const EXPANDED_ROW_STYLE = {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
     paddingBottom: '10px',
-};
-
-type TableProps = {
-    rows: IReport[];
 };
 
 const columnWidth = {
@@ -88,8 +88,21 @@ function getChipProps(params: GridRenderCellParams): ChipProps {
     }
 }
 
-export default function Table({ rows }: TableProps) {
+export default function Table() {
     const [clickedIndex, setClickedIndex] = useState(-1);
+    const [queryOptions, setQueryOptions] = useState<GridFilterItem[]>([]);
+
+    //Fetch the updated filter settings, then pass the settings to the backend
+    const onFilterChange = useCallback((filterModel: GridFilterModel) => {
+        setQueryOptions([...filterModel.items]);
+        // console.log(filterModel);
+    }, []);
+
+    const { reports, isLoading, loadReports, refreshReports } = useReports(queryOptions);
+    const isEmpty = useMemo<boolean>(
+        () => !isLoading && reports?.length === 0,
+        [isLoading, reports]
+    );
 
     const columns: GridColDef[] = [
         {
@@ -193,6 +206,9 @@ export default function Table({ rows }: TableProps) {
             type: 'singleSelect',
             valueOptions: Object.values(StatusOfReport),
             width: columnWidth.statusOfReport,
+            filterOperators: getGridSingleSelectOperators().filter(
+                (operator) => operator.value === 'is'
+            ),
             renderCell: (params: GridRenderCellParams<any>) => {
                 return <Chip variant="outlined" size="small" {...getChipProps(params)} />;
             },
@@ -230,10 +246,13 @@ export default function Table({ rows }: TableProps) {
         <div style={{ height: '100%', width: '100%', minWidth: '800px' }}>
             <DataGrid
                 getRowHeight={() => 'auto'}
-                rows={rows}
+                rows={reports!}
                 showCellVerticalBorder={true}
                 getRowId={(row) => row.reportId}
                 columns={columns}
+                filterMode="server"
+                onFilterModelChange={onFilterChange}
+                loading={isLoading}
             />
         </div>
     );
