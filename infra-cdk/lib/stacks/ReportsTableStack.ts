@@ -29,7 +29,11 @@ export class ReportsTableStack extends cdk.Stack {
 
         /** Filter by status, then within the filtered result, sort by submission date */
         reportsTable.addGlobalSecondaryIndex({
+<<<<<<< HEAD
             indexName: 'ReportStatusIndex',
+=======
+            indexName: 'StatusIndex',
+>>>>>>> 64a275d (Dump all files from min-sortAndFilter)
             partitionKey: { name: 'StatusOfReport', type: dynamodb.AttributeType.STRING },
             sortKey: { name: 'DateTimeOfSubmission', type: dynamodb.AttributeType.STRING },
             projectionType: dynamodb.ProjectionType.ALL,
