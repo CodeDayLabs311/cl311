@@ -33,7 +33,7 @@ export default async function handler(
     res: NextApiResponse<IListReportResponse | IApiErrorResponse>
 ) {
     if (req.method !== HttpMethod.GET) {
-        return res.status(405).send({ message: METHOD_NOT_ALLOWED });
+        return res.status(405).send({ report: METHOD_NOT_ALLOWED });
     }
 
     const status = typeof req.query.status === 'string' ? req.query.status : undefined;
@@ -59,6 +59,6 @@ export default async function handler(
     } catch (err) {
         console.error(err);
 
-        return res.status(500).send({ message: INTERNAL_SERVER_ERROR });
+        return res.status(500).send({ report: INTERNAL_SERVER_ERROR });
     }
 }
