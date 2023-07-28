@@ -173,9 +173,10 @@ export default function Table({ rows }: TableProps) {
                                 <Box sx={expandedRowStyle}>
                                     {/* Expanded row item */}
                                     {cellValues.row.phoneNumber}
-                                    {cellValues.row.phoneNumber}
                                     <br />
                                     {cellValues.row.emailAddress}
+                                    <br />
+                                    {cellValues.row.reportId}
                                 </Box>
                             </Collapse>
                         </div>
