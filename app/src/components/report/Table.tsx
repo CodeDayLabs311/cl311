@@ -175,8 +175,6 @@ export default function Table({ rows }: TableProps) {
                                     {cellValues.row.phoneNumber}
                                     <br />
                                     {cellValues.row.emailAddress}
-                                    <br />
-                                    {cellValues.row.reportId}
                                 </Box>
                             </Collapse>
                         </div>
