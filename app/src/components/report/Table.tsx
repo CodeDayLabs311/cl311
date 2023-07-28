@@ -95,7 +95,7 @@ export default function Table() {
     //Fetch the updated filter settings, then pass the settings to the backend
     const onFilterChange = useCallback((filterModel: GridFilterModel) => {
         setQueryOptions([...filterModel.items]);
-        console.log(filterModel);
+        // console.log(filterModel);
     }, []);
 
     const { reports, isLoading, loadReports, refreshReports } = useReports(queryOptions);
