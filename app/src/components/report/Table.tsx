@@ -14,6 +14,7 @@ import { Collapse, IconButton, Chip, ChipProps } from '@mui/material';
 import { IReport } from '@/models';
 import ButtonLink from '../ButtonLink';
 import Box from '@mui/material/Box';
+import { StatusOfReport, ReportCategories, IReportFields } from '@/models';
 import {
     DataGrid,
     GridRowsProp,
@@ -22,44 +23,6 @@ import {
     GridRowParams,
     GridRenderCellParams,
 } from '@mui/x-data-grid';
-
-enum Status {
-    SUBMITTED = 'Submitted',
-    IN_PROGRESS = 'In Progress',
-    DONE = 'Done',
-    ON_HOLD = 'On Hold',
-    REJECTED = 'Rejected',
-    INVALID = 'Invalid',
-}
-
-enum IReportFields {
-    REPORT_ID = 'reportId',
-    NAME = 'name',
-    EMAIL_ADDRESS = 'emailAddress',
-    PHONE_NUMBER = 'phoneNumber',
-    REPORT_CATEGORY = 'reportCategory',
-    ADDRESS = 'address',
-    GPS_COORDINATES = 'gpsCoordinates',
-    ISSUE_DESCRIPTION = 'issueDescription',
-    ATTACHMENTS = 'attachments',
-    EMAIL = 'email',
-    SMS = 'sms',
-    STATUS_OF_REPORT = 'statusOfReport',
-    DATE_TIME_OF_SUBMISSION = 'dateTimeOfSubmission',
-}
-
-enum ReportTypes {
-    ILLEGAL_DUMPING = 'Illegal Dumping',
-    CLOGGED_STORM_DRAIN = 'Clogged Storm Drain',
-    POTHOLES = 'Potholes',
-    GRAFFITI = 'Graffiti',
-    STREET_LIGHT_OUTAGE = 'Street Light Outage',
-    SIDEWALK_DAMAGE = 'Sidewalk Damage',
-    TRAFFIC_SIGNAL_MALFUNCTION = 'Traffic Signal Malfunction',
-    ABANDONED_VEHICLES = 'Abandoned Vehicles',
-    NOISE_COMPLAINT = 'Noise Complaint',
-    OTHER = 'Other',
-}
 
 const expandedRowStyle = {
     whiteSpace: 'pre-wrap',
@@ -84,31 +47,31 @@ const columnWidth = {
 function getChipProps(params: GridRenderCellParams): ChipProps {
     const status = params.value;
     switch (status) {
-        case Status.SUBMITTED:
+        case StatusOfReport.Submitted:
             return {
                 icon: <InfoIcon color="primary" />,
                 label: status,
                 color: 'primary',
             };
-        case Status.IN_PROGRESS:
+        case StatusOfReport.In_Progress:
             return {
                 icon: <AutorenewIcon color="warning" />,
                 label: status,
                 color: 'warning',
             };
-        case Status.DONE:
+        case StatusOfReport.Completed:
             return {
                 icon: <CheckIcon color="success" />,
                 label: status,
                 color: 'success',
             };
-        case Status.ON_HOLD:
+        case StatusOfReport.On_Hold:
             return {
                 icon: <PauseCircleIcon color="secondary" />,
                 label: status,
                 color: 'secondary',
             };
-        case Status.REJECTED:
+        case StatusOfReport.Rejected:
             return {
                 icon: <WarningIcon color="error" />,
                 label: status,
@@ -117,7 +80,7 @@ function getChipProps(params: GridRenderCellParams): ChipProps {
         default:
             return {
                 icon: <QuestionMarkIcon style={{ fill: 'orange' }} />,
-                label: Status.INVALID,
+                label: 'Invalid',
                 style: {
                     borderColor: 'orange',
                 },
@@ -130,7 +93,7 @@ export default function Table({ rows }: TableProps) {
 
     const columns: GridColDef[] = [
         {
-            field: IReportFields.REPORT_ID,
+            field: IReportFields.Report_Id,
             headerName: '',
             filterable: false,
             sortable: false,
@@ -157,7 +120,7 @@ export default function Table({ rows }: TableProps) {
             },
         },
         {
-            field: IReportFields.NAME,
+            field: IReportFields.Name,
             headerName: 'Name',
             width: columnWidth.name,
             renderCell: (cellValues: GridRenderCellParams<any>) => {
@@ -183,11 +146,11 @@ export default function Table({ rows }: TableProps) {
             },
         },
         {
-            field: IReportFields.REPORT_CATEGORY,
+            field: IReportFields.Report_Category,
             headerName: 'Issues',
             type: 'singleSelect',
             //TODO: update the valueOptions to match the options in creationPage
-            valueOptions: Object.values(ReportTypes),
+            valueOptions: Object.values(ReportCategories),
             width: columnWidth.reportCategory,
             renderCell: (cellValues: GridRenderCellParams<any>) => {
                 return (
@@ -212,23 +175,23 @@ export default function Table({ rows }: TableProps) {
             },
         },
         {
-            field: IReportFields.ADDRESS,
+            field: IReportFields.Address,
             headerName: 'Location',
             width: columnWidth.address,
         },
         {
-            field: IReportFields.DATE_TIME_OF_SUBMISSION,
+            field: IReportFields.Date_Time_Of_Submission,
             headerName: 'Date Reported',
             type: 'date',
             valueGetter: ({ value }) => value && new Date(value),
             width: columnWidth.dateTimeOfSubmission,
         },
         {
-            field: IReportFields.STATUS_OF_REPORT,
+            field: IReportFields.Status_Of_Report,
             headerName: 'Status',
             //this type is for filtering and editing
             type: 'singleSelect',
-            valueOptions: Object.values(Status),
+            valueOptions: Object.values(StatusOfReport),
             width: columnWidth.statusOfReport,
             renderCell: (params: GridRenderCellParams<any>) => {
                 return <Chip variant="outlined" size="small" {...getChipProps(params)} />;
