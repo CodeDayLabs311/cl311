@@ -19,7 +19,6 @@ export type UseReportsResult = {
 };
 
 // TODO: add sort and filter category in the parameter of useReports()
-
 export const useReports = (queryOptions: GridFilterItem[]): UseReportsResult => {
     const reportClient = useReportClient();
 
