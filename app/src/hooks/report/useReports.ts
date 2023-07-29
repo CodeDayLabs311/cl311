@@ -3,10 +3,13 @@ import { isUndefined, useEffectAsync } from '@/utils';
 import { useCallback, useState } from 'react';
 import { useReportClient } from './useReportClient';
 import { GridFilterItem } from '@mui/x-data-grid';
+import { ReportFields } from '@/models';
 
 export type UseReportsResult = {
     /** List of reports */
-    reports: IReport[] | undefined;
+    /** NOTE: reports should NOT be undefined.
+     * I'm feeding the reports to MUI Datagrid directly and it does not take undefined values, empty array is good*/
+    reports: IReport[];
     /** Whether list is loading */
     isLoading: boolean;
     /** Load messages with filtering or sorting based on any catergory */
@@ -16,11 +19,11 @@ export type UseReportsResult = {
 };
 
 // TODO: add sort and filter category in the parameter of useReports()
-export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult => {
+export const useReports = (queryOptions: GridFilterItem[]): UseReportsResult => {
     const reportClient = useReportClient();
 
-    const [reports, setReports] = useState<IReport[] | undefined>([]);
-    const isLoading = isUndefined(reports);
+    const [reports, setReports] = useState<IReport[]>([]);
+    const isLoading = reports.length === 0;
 
     // TODO: add sort and filter category here
     const loadReports = useCallback(async () => {
@@ -28,19 +31,19 @@ export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult =>
             // field: the report field that was applied a filter; value: the filter value
             const { field, value } = queryOptions![0];
             console.log(field, value);
-            //TODO: use enum here for reportField
-            if (field === 'statusOfReport' && value) {
+
+            if (field === ReportFields.Status_Of_Report && value) {
                 const result = await reportClient.listReportsByStatus(value);
-                setReports(result?.reports!);
+                setReports(result?.reports || []);
             }
         } else {
             const result = await reportClient.listReports();
-            setReports(result?.reports!);
+            setReports(result?.reports || []);
         }
     }, [reportClient, setReports, queryOptions]);
 
     const refreshReports = useCallback(async () => {
-        setReports(undefined);
+        setReports([]);
         await loadReports();
     }, [loadReports, setReports]);
 
