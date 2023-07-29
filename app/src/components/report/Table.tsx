@@ -89,13 +89,13 @@ function getChipProps(params: GridRenderCellParams): ChipProps {
 }
 
 export default function Table() {
-    const [clickedIndex, setClickedIndex] = useState(-1);
+    const [clickedIndex, setClickedIndex] = useState<string | null>(null);
     const [queryOptions, setQueryOptions] = useState<GridFilterItem[]>([]);
 
     //Fetch the updated filter settings, then pass the settings to the backend
     const onFilterChange = useCallback((filterModel: GridFilterModel) => {
         setQueryOptions([...filterModel.items]);
-        // console.log(filterModel);
+        console.log(filterModel);
     }, []);
 
     const { reports, isLoading, loadReports, refreshReports } = useReports(queryOptions);
@@ -115,15 +115,15 @@ export default function Table() {
                 return (
                     <IconButton
                         aria-label={
-                            cellValues.value === clickedIndex ? 'Collapse row' : 'Expand row'
+                            cellValues.row.reportId === clickedIndex ? 'Collapse row' : 'Expand row'
                         }
                         onClick={() => {
-                            clickedIndex === cellValues.value
-                                ? setClickedIndex(-1)
-                                : setClickedIndex(cellValues.value);
+                            clickedIndex === cellValues.row.reportId
+                                ? setClickedIndex(null)
+                                : setClickedIndex(cellValues.row.reportId);
                         }}
                     >
-                        {cellValues.value === clickedIndex ? (
+                        {cellValues.row.reportId === clickedIndex ? (
                             <ExpandLessIcon />
                         ) : (
                             <ExpandMoreIcon />
@@ -143,8 +143,8 @@ export default function Table() {
                             {/* First row item, ex: the name will be displayed here */}
                             {cellValues.value ? cellValues.value : 'Anonymous'}
                             <Collapse
-                                in={cellValues.id === clickedIndex}
-                                aria-expanded={cellValues.value === clickedIndex}
+                                in={cellValues.row.reportId === clickedIndex}
+                                aria-expanded={cellValues.row.reportId === clickedIndex}
                             >
                                 <Box sx={EXPANDED_ROW_STYLE}>
                                     {/* Expanded row item */}
@@ -172,8 +172,8 @@ export default function Table() {
                             {/* First row item */}
                             {cellValues.value}
                             <Collapse
-                                in={cellValues.id === clickedIndex}
-                                aria-expanded={cellValues.value === clickedIndex}
+                                in={cellValues.row.reportId === clickedIndex}
+                                aria-expanded={cellValues.row.reportId === clickedIndex}
                             >
                                 <Box sx={EXPANDED_ROW_STYLE}>
                                     {/* Expanded row item */}
