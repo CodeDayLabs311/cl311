@@ -89,7 +89,7 @@ function getChipProps(params: GridRenderCellParams): ChipProps {
 }
 
 export default function Table() {
-    const [clickedIndex, setClickedIndex] = useState<string | null>(null);
+    const [clickedIndex, setClickedIndex] = useState(-1);
     const [queryOptions, setQueryOptions] = useState<GridFilterItem[]>([]);
 
     //Fetch the updated filter settings, then pass the settings to the backend
@@ -115,15 +115,15 @@ export default function Table() {
                 return (
                     <IconButton
                         aria-label={
-                            cellValues.row.reportId === clickedIndex ? 'Collapse row' : 'Expand row'
+                            cellValues.value === clickedIndex ? 'Collapse row' : 'Expand row'
                         }
                         onClick={() => {
-                            clickedIndex === cellValues.row.reportId
-                                ? setClickedIndex(null)
-                                : setClickedIndex(cellValues.row.reportId);
+                            clickedIndex === cellValues.value
+                                ? setClickedIndex(-1)
+                                : setClickedIndex(cellValues.value);
                         }}
                     >
-                        {cellValues.row.reportId === clickedIndex ? (
+                        {cellValues.value === clickedIndex ? (
                             <ExpandLessIcon />
                         ) : (
                             <ExpandMoreIcon />
@@ -143,8 +143,8 @@ export default function Table() {
                             {/* First row item, ex: the name will be displayed here */}
                             {cellValues.value ? cellValues.value : 'Anonymous'}
                             <Collapse
-                                in={cellValues.row.reportId === clickedIndex}
-                                aria-expanded={cellValues.row.reportId === clickedIndex}
+                                in={cellValues.id === clickedIndex}
+                                aria-expanded={cellValues.value === clickedIndex}
                             >
                                 <Box sx={EXPANDED_ROW_STYLE}>
                                     {/* Expanded row item */}
@@ -172,8 +172,8 @@ export default function Table() {
                             {/* First row item */}
                             {cellValues.value}
                             <Collapse
-                                in={cellValues.row.reportId === clickedIndex}
-                                aria-expanded={cellValues.row.reportId === clickedIndex}
+                                in={cellValues.id === clickedIndex}
+                                aria-expanded={cellValues.value === clickedIndex}
                             >
                                 <Box sx={EXPANDED_ROW_STYLE}>
                                     {/* Expanded row item */}
