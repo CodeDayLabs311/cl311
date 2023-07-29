@@ -243,10 +243,10 @@ export default function Table() {
     ];
 
     return (
-        <div style={{ height: '100%', width: '100%', minWidth: '800px' }}>
+        <div style={{ height: 800, width: '100%', minWidth: '800px' }}>
             <DataGrid
                 getRowHeight={() => 'auto'}
-                rows={reports!}
+                rows={reports}
                 showCellVerticalBorder={true}
                 getRowId={(row) => row.reportId}
                 columns={columns}
