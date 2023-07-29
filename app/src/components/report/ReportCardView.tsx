@@ -10,6 +10,7 @@ import {
     IDText,
     Box2,
 } from '@/styles/StyleCardView';
+import { ReportCategories } from '@/models';
 
 export type ReportCardProps = {
     report: IReport;
@@ -36,7 +37,10 @@ export default function ReportCard({ report }: ReportCardProps) {
                         </Box1>
                         <Box1>
                             <Typography>
-                                <strong>Report Category:</strong> {report.reportCategory}
+                                <strong>Report Category:</strong>{' '}
+                                {report.reportCategory === ReportCategories.Other
+                                    ? report.otherCategory // Show the custom category value if "Other" is selected
+                                    : report.reportCategory}
                             </Typography>
                         </Box1>
                         <Box1>
