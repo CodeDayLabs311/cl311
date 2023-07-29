@@ -32,7 +32,7 @@ export const useReports = (queryOptions: GridFilterItem[]): UseReportsResult => 
 export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult => {
     const reportClient = useReportClient();
 
-    const [reports, setReports] = useState<IReport[] | undefined>(undefined);
+    const [reports, setReports] = useState<IReport[] | undefined>([]);
     const isLoading = isUndefined(reports);
 >>>>>>> 64a275d (Dump all files from min-sortAndFilter)
 
@@ -56,7 +56,6 @@ export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult =>
             if (field === 'statusOfReport' && value) {
                 const result = await reportClient.listReportsByStatus(value);
                 setReports(result?.reports!);
-                // console.log(result)
             }
         } else {
             const result = await reportClient.listReports();
