@@ -19,7 +19,7 @@ export type UseReportsResult = {
 export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult => {
     const reportClient = useReportClient();
 
-    const [reports, setReports] = useState<IReport[] | undefined>([]);
+    const [reports, setReports] = useState<IReport[] | undefined>(undefined);
     const isLoading = isUndefined(reports);
 
     // TODO: add sort and filter category here
@@ -32,6 +32,7 @@ export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult =>
             if (field === 'statusOfReport' && value) {
                 const result = await reportClient.listReportsByStatus(value);
                 setReports(result?.reports!);
+                // console.log(result)
             }
         } else {
             const result = await reportClient.listReports();
