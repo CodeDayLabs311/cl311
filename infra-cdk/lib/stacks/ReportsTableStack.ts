@@ -34,14 +34,6 @@ export class ReportsTableStack extends cdk.Stack {
             sortKey: { name: 'DateTimeOfSubmission', type: dynamodb.AttributeType.STRING },
             projectionType: dynamodb.ProjectionType.ALL,
         });
-
-        reportsTable.addGlobalSecondaryIndex({
-            indexName: 'CategoryIndex',
-            partitionKey: { name: 'ReportCategory', type: dynamodb.AttributeType.STRING },
-            /** TODO: sort key can be something else as well  */
-            sortKey: { name: 'DateTimeOfSubmission', type: dynamodb.AttributeType.STRING },
-            projectionType: dynamodb.ProjectionType.ALL,
-        });
     }
 
     /** Get DynamoDB table name */
