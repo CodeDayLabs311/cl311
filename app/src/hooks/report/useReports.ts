@@ -32,9 +32,8 @@ export const useReports = (queryOptions: GridFilterItem[]): UseReportsResult => 
 export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult => {
     const reportClient = useReportClient();
 
-    const [reports, setReports] = useState<IReport[] | undefined>([]);
-    const isLoading = isUndefined(reports);
->>>>>>> 64a275d (Dump all files from min-sortAndFilter)
+    const [reports, setReports] = useState<IReport[]>([]);
+    const isLoading = reports.length === 0;
 
     // TODO: add sort and filter category here
     const loadReports = useCallback(async () => {
@@ -55,12 +54,11 @@ export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult =>
             //TODO: use enum here for reportField
             if (field === 'statusOfReport' && value) {
                 const result = await reportClient.listReportsByStatus(value);
-                setReports(result?.reports!);
+                setReports(result?.reports || []);
             }
         } else {
             const result = await reportClient.listReports();
-            setReports(result?.reports!);
->>>>>>> 64a275d (Dump all files from min-sortAndFilter)
+            setReports(result?.reports || []);
         }
     }, [reportClient, setReports, queryOptions]);
 
