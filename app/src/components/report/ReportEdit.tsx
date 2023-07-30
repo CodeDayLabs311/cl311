@@ -86,32 +86,6 @@ export default function ReportEdit({
                     />
                 </Form.Group>
 
-                <Form.Group className={styles.formGroup} controlId="EditReport.GpsCoordinates">
-                    <Form.Label className={styles.label}>GPS Coordinates</Form.Label>
-                    <Form.Control
-                        className={styles.input}
-                        type="text"
-                        placeholder="Please enter your GPS Coordinates"
-                        defaultValue={report?.gpsCoordinates}
-                        onChange={(event) => updateReport({ gpsCoordinates: event.target.value })}
-                    />
-                </Form.Group>
-
-                <Form.Group
-                    className={styles.formGroup}
-                    controlId="EditReport.DateTimeOfSubmission"
-                >
-                    <Form.Label className={styles.label}>Date Time Of Submission</Form.Label>
-                    <Form.Control
-                        className={styles.input}
-                        type="text"
-                        readOnly={true}
-                        defaultValue={report?.dateTimeOfSubmission}
-                        onChange={(event) =>
-                            updateReport({ dateTimeOfSubmission: event.target.value })
-                        }
-                    />
-                </Form.Group>
 
                 <Form.Label className={styles.sectionLabel}>Report Category</Form.Label>
 
@@ -147,9 +121,7 @@ export default function ReportEdit({
                     ))}
                 </Form.Group>
 
-                <ButtonLink className={styles.btnCancel} variant="secondary" href={cancelHref}>
-                    Cancel
-                </ButtonLink>
+
             </div>
 
             <div className={styles.formColumn}>
@@ -207,23 +179,11 @@ export default function ReportEdit({
                     </div>
                 </Form.Group>
 
-                <Form.Group className={styles.formGroup} controlId="EditReport.StatusOfReport">
-                    <Form.Label className={styles.label}>Status Of Report</Form.Label>
-                    {['Submitted', 'In Progress', 'Completed', 'On Hold', 'Rejected'].map(
-                        (status, index) => (
-                            <Form.Check
-                                key={index}
-                                type="radio"
-                                label={status}
-                                name="status"
-                                className={styles.checkControl}
-                                checked={report?.statusOfReport === status}
-                                onChange={() => updateReport({ statusOfReport: status })}
-                            />
-                        )
-                    )}
-                </Form.Group>
-
+                
+                <div className={styles.buttonContainer}>
+                <ButtonLink className={styles.btnCancel} variant="secondary" href={cancelHref}>
+                    Cancel
+                </ButtonLink>
                 <Button
                     className={styles.btnCreate}
                     variant="primary"
@@ -233,6 +193,10 @@ export default function ReportEdit({
                     {isSubmitLoading ? <Spinner animation="border" size="sm" /> : submitLabel}
                 </Button>
             </div>
+
+            </div>
+
+
         </Form>
     );
 }

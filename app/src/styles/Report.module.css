@@ -66,6 +66,12 @@
     bottom: 20px;
     right: 20px;
 }
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto;
+}
 .btnCancel {
     background: linear-gradient(45deg, #9b2c2c, #ecf2f8);
     border: 2px solid #9b2c2c;
@@ -74,9 +80,10 @@
     padding: 10px 20px;
     transition-duration: 0.4s;
     cursor: pointer;
-    margin-top: 90px;
+    margin-top: 0px;
     margin-bottom: 20px;
     font-weight: bold;
+    flex-grow: 1;
 }
 
 .btnCancel:hover {
@@ -93,7 +100,9 @@
     transition-duration: 0.4s;
     cursor: pointer;
     font-weight: bold;
-    margin-top: 583.75px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    flex-grow: 1;
 }
 .btnCreate:hover {
     background: linear-gradient(45deg, #ecf2f8, #1e4e79);

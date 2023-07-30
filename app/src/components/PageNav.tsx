@@ -37,11 +37,19 @@ export default function PageNav() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
+                        <NavLink label="GuestBook" href="/guestbook" />
                         <NavLink label="Report" href="/report" />
                     </Nav>
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
                     <Nav>
+                        <ButtonLink
+                            variant="success"
+                            href="/guestbook/create"
+                            style={{ marginRight: '1rem' }}
+                        >
+                            Add GuestBook
+                        </ButtonLink>
                         <ButtonLink variant="success" href="/report/create">
                             Add Report
                         </ButtonLink>
