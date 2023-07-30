@@ -88,7 +88,7 @@ export default function ReportEdit({
                         label={category}
                         name="category"
                         key={category}
-                        defaultValue={report?.reportCategory}
+                        checked={report?.reportCategory === category}
                         onChange={() => {
                             updateReport({ reportCategory: category });
                         }}
@@ -153,26 +153,6 @@ export default function ReportEdit({
                         });
                     }}
                 />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="EditReport.StatusOfReport">
-                <Form.Label>Status Of Report</Form.Label>
-                {[
-                    StatusOfReport.Submitted,
-                    StatusOfReport.In_Progress,
-                    StatusOfReport.Completed,
-                    StatusOfReport.On_Hold,
-                    StatusOfReport.Rejected,
-                ].map((status) => (
-                    <Form.Check
-                        type="radio"
-                        label={status}
-                        name="status"
-                        key={status}
-                        checked={report?.statusOfReport === status}
-                        onChange={() => updateReport({ statusOfReport: status })}
-                    />
-                ))}
             </Form.Group>
 
             <Stack direction="horizontal" gap={3} className="justify-content-end">

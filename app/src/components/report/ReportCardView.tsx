@@ -90,6 +90,10 @@ export default function ReportCard({ report }: ReportCardProps) {
                                 <strong>Date and Time of Submission:</strong>{' '}
                                 {report.dateTimeOfSubmission}
                             </Typography>
+                            <Typography>
+                                <strong>Date and Time Last Edited:</strong>{' '}
+                                {report.dateTimeLastEdited || 'Never Edited'}
+                            </Typography>
                         </Box1>
                     </Grid>
                 </Grid>

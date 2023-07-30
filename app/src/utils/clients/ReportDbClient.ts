@@ -147,6 +147,9 @@ function marshalReport(report: IReport): Record<string, AttributeValue> {
         DateTimeOfSubmission: {
             S: report!.dateTimeOfSubmission,
         },
+        DateTimeLastEdited: {
+            S: report!.dateTimeLastEdited,
+        },
     };
 
     return marshalledReport as unknown as Record<string, AttributeValue>;
@@ -177,5 +180,6 @@ function unmarshalReport(report?: IDBReport): IReport | undefined {
         sms: report?.Sms?.BOOL!,
         statusOfReport: report?.StatusOfReport?.S!,
         dateTimeOfSubmission: report?.DateTimeOfSubmission?.S!,
+        dateTimeLastEdited: report?.DateTimeLastEdited?.S!,
     };
 }

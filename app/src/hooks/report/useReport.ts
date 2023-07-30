@@ -39,7 +39,10 @@ export const useReport = (reportId: string): UseReportResult => {
     const refresh = useCallback(() => setReport(undefined), [setReport]);
 
     const updateReport = async (newReport: IReport): Promise<void> => {
-       
+        setIsSubmitting(true);
+        await reportClient.putReport(newReport);
+        setIsSubmitting(false);
+        refresh();
     };
 
     return {
