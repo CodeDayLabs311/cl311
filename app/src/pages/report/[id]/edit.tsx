@@ -11,7 +11,7 @@ import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 import { PageTitle } from '@/styles/StyleCardView';
 
-const BASE_PAGE_TITLE = 'Edit Report';
+const BASE_PAGE_TITLE = 'Report Edit';
 
 /** Edit an existing report */ 
 export default function ReportReportEdit() {
