@@ -19,18 +19,9 @@ export type UseReportsResult = {
 };
 
 // TODO: add sort and filter category in the parameter of useReports()
-<<<<<<< HEAD
 export const useReports = (queryOptions: GridFilterItem[]): UseReportsResult => {
     const reportClient = useReportClient();
 
-    const [reports, setReports] = useState<IReport[]>([]);
-    const isLoading = reports.length === 0;
-=======
-export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult => {
-    const reportClient = useReportClient();
-
-    const [reports, setReports] = useState<IReport[]>([]);
-    const isLoading = reports.length === 0;
     const [reports, setReports] = useState<IReport[]>([]);
     const isLoading = reports.length === 0;
 
@@ -42,14 +33,6 @@ export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult =>
             console.log(field, value);
 
             if (field === ReportFields.Status_Of_Report && value) {
-                const result = await reportClient.listReportsByStatus(value);
-                setReports(result?.reports || []);
-            }
-        } else {
-            const result = await reportClient.listReports();
-            setReports(result?.reports || []);
-            //TODO: use enum here for reportField
-            if (field === 'statusOfReport' && value) {
                 const result = await reportClient.listReportsByStatus(value);
                 setReports(result?.reports || []);
             }
