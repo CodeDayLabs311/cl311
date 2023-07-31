@@ -1,0 +1,117 @@
+.reportForm {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #fdf8f5;
+    color: #4f4846;
+    width: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+.formColumn {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 48%;
+}
+.formGroup {
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    background: linear-gradient(55deg, #fdf8f5, #ecf2f8);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    border: 2px solid #ccc;
+}
+.formGroup:hover {
+    background: linear-gradient(55deg, #ecf2f8, #fdf8f5);
+}
+.label,
+.sectionLabel {
+    color: #4f4846;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 5px;
+}
+.input,
+.textarea {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background: linear-gradient(55deg, #ecf2f8, #fdf8f5);
+    color: #4f4846;
+    font-weight: 450;
+}
+.input:hover,
+.textarea:hover {
+    background: linear-gradient(55deg, #fdf8f5, #ecf2f8);
+}
+.sectionLabel {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    color: #477096;
+}
+.checkControl {
+    color: #4f4846;
+    font-weight: 500;
+}
+.stack {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto;
+}
+.btnCancel {
+    background: linear-gradient(45deg, #9b2c2c, #ecf2f8);
+    border: 2px solid #9b2c2c;
+    color: #4f4846;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+.btnCancel:hover {
+    background: linear-gradient(45deg, #ecf2f8, #9b2c2c);
+    border: 2px solid #7b1a1a;
+    color: #7b1a1a;
+}
+.btnCreate {
+    background: linear-gradient(45deg, #1e4e79, #ecf2f8);
+    border: 2px solid #1e4e79;
+    color: #4f4846;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+.btnCreate:hover {
+    background: linear-gradient(45deg, #ecf2f8, #1e4e79);
+    border: 2px solid #163255;
+    color: #163255;
+}
+.stack {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: auto;
+}
