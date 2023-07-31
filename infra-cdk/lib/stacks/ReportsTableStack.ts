@@ -34,7 +34,6 @@ export class ReportsTableStack extends cdk.Stack {
             sortKey: { name: 'DateTimeOfSubmission', type: dynamodb.AttributeType.STRING },
             projectionType: dynamodb.ProjectionType.ALL,
         });
-<<<<<<< HEAD
         // reportsTable.addGlobalSecondaryIndex({
         //     indexName: 'ReportCategoryIndex',
         //     partitionKey: { name: 'ReportCategory', type: dynamodb.AttributeType.STRING },
@@ -42,8 +41,6 @@ export class ReportsTableStack extends cdk.Stack {
         //     sortKey: { name: 'DateTimeOfSubmission', type: dynamodb.AttributeType.STRING },
         //     projectionType: dynamodb.ProjectionType.ALL,
         // });
-=======
->>>>>>> 39c2f0e (Revert "Update GSIs")
     }
 
     /** Get DynamoDB table name */
