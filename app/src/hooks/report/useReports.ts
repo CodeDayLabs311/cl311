@@ -3,10 +3,7 @@ import { isUndefined, useEffectAsync } from '@/utils';
 import { useCallback, useState } from 'react';
 import { useReportClient } from './useReportClient';
 import { GridFilterItem } from '@mui/x-data-grid';
-<<<<<<< HEAD
 import { ReportFields } from '@/models';
-=======
->>>>>>> 64a275d (Dump all files from min-sortAndFilter)
 
 export type UseReportsResult = {
     /** List of reports */
@@ -34,6 +31,8 @@ export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult =>
 
     const [reports, setReports] = useState<IReport[]>([]);
     const isLoading = reports.length === 0;
+    const [reports, setReports] = useState<IReport[]>([]);
+    const isLoading = reports.length === 0;
 
     // TODO: add sort and filter category here
     const loadReports = useCallback(async () => {
@@ -41,7 +40,6 @@ export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult =>
             // field: the report field that was applied a filter; value: the filter value
             const { field, value } = queryOptions![0];
             console.log(field, value);
-<<<<<<< HEAD
 
             if (field === ReportFields.Status_Of_Report && value) {
                 const result = await reportClient.listReportsByStatus(value);
@@ -50,7 +48,6 @@ export const useReports = (queryOptions?: GridFilterItem[]): UseReportsResult =>
         } else {
             const result = await reportClient.listReports();
             setReports(result?.reports || []);
-=======
             //TODO: use enum here for reportField
             if (field === 'statusOfReport' && value) {
                 const result = await reportClient.listReportsByStatus(value);
