@@ -3,7 +3,7 @@ import { AttributeValue, DynamoDB } from '@aws-sdk/client-dynamodb';
 import { getDynamoDbClient } from '../api';
 import { getUuid, isUndefined } from '../common';
 import { getStage, getTenant } from '../environment';
-import { NOT_FOUND } from '@/models';
+import { NOT_FOUND, MISSING_ID, INVALID_PAGINATION_TOKEN, INVALID_REPORT_DATA } from '@/models';
 
 const BASE_TABLE_NAME = 'ReportsTable';
 const CATEGORY_INDEX_NAME = 'CategoryIndex';
@@ -18,6 +18,13 @@ export class ReportDbClient implements IReportClient {
 
     /** Create report */
     async createReport(report: Omit<IReport, 'reportId'>) {
+
+        const { name, reportCategory, address } = report;
+
+        if (!name || !reportCategory || !address) {
+            throw { status: 400, message: INVALID_REPORT_DATA };
+        }
+
         const reportId = getUuid();
 
         await this.ddbClient.putItem({
@@ -33,6 +40,11 @@ export class ReportDbClient implements IReportClient {
 
     /** Get report */
     async getReport(reportId: string) {
+
+        if (!reportId || typeof reportId !== 'string') {
+            throw { status: 400, message: MISSING_ID };
+        }
+
         const key: Pick<IDBReport, 'ReportID'> = {
             ReportID: {
                 S: reportId,
@@ -47,16 +59,17 @@ export class ReportDbClient implements IReportClient {
 
             return unmarshalReport(getData.Item as unknown as IDBReport);
         } catch (error) {
-            return Promise.reject({
-                status: 404,
-                message: NOT_FOUND,
-            });
+            throw { status: 404, message: NOT_FOUND };
         }
     }
 
     /** List reports */
     async listReports(paginationToken?: string) {
-        // TODO handle pagination
+        
+        // Handle pagination
+        if (paginationToken && typeof paginationToken !== 'string') {
+            throw { status: 400, message: INVALID_PAGINATION_TOKEN };
+        }
 
         const scanData = await this.ddbClient.scan({
             TableName: getTableName(),
@@ -70,7 +83,11 @@ export class ReportDbClient implements IReportClient {
 
     /** List reports by category */
     async listReportsByCategory(category: string, paginationToken?: string) {
-        // TODO handle pagination
+        
+        // Handle pagination
+        if (paginationToken && typeof paginationToken !== 'string') {
+            throw { status: 400, message: INVALID_PAGINATION_TOKEN };
+        }
 
         const queryData = await this.ddbClient.query({
             TableName: getTableName(),
@@ -91,6 +108,12 @@ export class ReportDbClient implements IReportClient {
 
     /** Put report */
     async putReport(report: IReport) {
+        const { reportId } = report;
+
+        if (!reportId || typeof reportId !== 'string') {
+            throw { status: 400, message: MISSING_ID };
+        }
+
         await this.ddbClient.putItem({
             TableName: getTableName(),
             Item: marshalReport(report),
