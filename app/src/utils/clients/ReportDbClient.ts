@@ -70,18 +70,19 @@ export class ReportDbClient implements IReportClient {
     }
 
     /** List reports by category */
-    async listReportsByCategory(category: string, paginationToken?: string) {
+    async listReportsByCategory(category: string,  ascending?: boolean, paginationToken?: string) {
         // TODO handle pagination
 
         const queryData = await this.ddbClient.query({
             TableName: getTableName(),
             IndexName: CATEGORY_INDEX_NAME,
-            KeyConditionExpression: 'Category = :category',
+            KeyConditionExpression: 'ReportCategory = :category',
             ExpressionAttributeValues: {
                 ':category': {
                     S: category,
                 },
             },
+            ScanIndexForward: ascending ?? true,
         });
 
         return {
@@ -109,7 +110,7 @@ export class ReportDbClient implements IReportClient {
                     S: status,
                 },
             },
-            ScanIndexForward: ascending,
+            ScanIndexForward: ascending ?? true,
         });
 
         return {

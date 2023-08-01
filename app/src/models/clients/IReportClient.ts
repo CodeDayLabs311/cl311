@@ -12,6 +12,12 @@ export interface IReportClient {
         paginationToken: string | undefined;
     }>;
 
+    listReportsByCategory(
+        category: string,
+        ascending?: boolean,
+        paginationToken?: string
+    ): Promise<{ reports: IReport[]; paginationToken: string | undefined }>;
+
     /** Filter by status, etc.*/
     listReportsByStatus(
         status: string,
