@@ -6,8 +6,8 @@ import { getStage, getTenant } from '../environment';
 import { NOT_FOUND } from '@/models';
 
 const BASE_TABLE_NAME = 'ReportsTable';
-const CATEGORY_INDEX_NAME = 'CategoryIndex';
-const STATUS_INDEX_NAME = 'StatusIndex';
+const CATEGORY_INDEX_NAME = 'ReportCategoryIndex';
+const STATUS_INDEX_NAME = 'ReportStatusIndex';
 
 /** Client to interact with report DynamoDB */
 export class ReportDbClient implements IReportClient {
@@ -102,7 +102,7 @@ export class ReportDbClient implements IReportClient {
             IndexName: STATUS_INDEX_NAME,
             KeyConditionExpression: '#status = :status',
             ExpressionAttributeNames: {
-                '#status': 'Status',
+                '#status': 'StatusOfReport',
             },
             ExpressionAttributeValues: {
                 ':status': {
