@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 import ButtonLink from '@/components/ButtonLink';
-import {LIGHT_BLUE, MILD_BLUE, DARK_BLUE, BLACK, WHITE } from '@/styles/ColorScheme';
+import { LIGHT_BLUE, MILD_BLUE, DARK_BLUE, BLACK, WHITE } from '@/styles/ColorScheme';
 
 // Define custom styles
 const StyledReportDetails = styled(Box)({
