@@ -20,7 +20,7 @@ export class IAMStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: IAMStackProps) {
         super(scope, id, props);
 
-        /** Setted up the option to choose between S3 vs DynamoDB or both */
+        /* Setted up both S3 and DynamoDB */
         const statements = [];
 
         if (props.tableName) {
