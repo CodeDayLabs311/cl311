@@ -6,11 +6,12 @@ import WarningIcon from '@mui/icons-material/Warning';
 import CheckIcon from '@mui/icons-material/Check';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Collapse, IconButton, Chip, ChipProps } from '@mui/material';
+import LinearProgress from '@mui/material/LinearProgress';
+import NoResultsOverlay from './NoResultsOverlay';
 import { IReport } from '@/models';
 import { useReports } from '@/hooks/report/useReports';
 import ButtonLink from '../ButtonLink';
@@ -252,6 +253,10 @@ export default function Table() {
                 filterMode="server"
                 onFilterModelChange={onFilterChange}
                 loading={isLoading}
+                slots={{
+                    loadingOverlay: LinearProgress,
+                    noRowsOverlay: NoResultsOverlay
+                }}
             />
         </div>
     );

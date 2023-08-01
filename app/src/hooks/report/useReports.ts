@@ -23,35 +23,48 @@ export const useReports = (queryOptions: GridFilterItem[]): UseReportsResult => 
     const reportClient = useReportClient();
 
     const [reports, setReports] = useState<IReport[]>([]);
-    const isLoading = reports.length === 0;
+    const [isLoading, setIsLoading] = useState(false)
 
     // TODO: add sort and filter category here
     const loadReports = useCallback(async () => {
-        if (queryOptions?.length !== 0) {
-            /** 
-             * field: the report field that was applied a filter, ex: Status, Issues
-             * value: the filter value, ex: Status filter was set to 'Submitted'
-             * */ 
-            const { field, value } = queryOptions![0];
-            
-            if (field === ReportFields.Status_Of_Report && value) {
-                const result = await reportClient.listReportsByStatus(value, false);
+        setIsLoading(true)
+        try {
+            if (queryOptions?.length !== 0) {
+                /**
+                 * field: the report field that was applied a filter, ex: Status, Issues
+                 * value: the filter value, ex: Status filter was set to 'Submitted'
+                 * */
+                const { field, value } = queryOptions![0];
+    
+                if (field === ReportFields.Status_Of_Report && value) {
+                    const result = await reportClient.listReportsByStatus(value, false);
+                    console.log(field, value);
+                    setReports(result?.reports || []);
+                }
+            } else {
+                const result = await reportClient.listReports();
                 setReports(result?.reports || []);
             }
-        } else {
-            const result = await reportClient.listReports();
-            setReports(result?.reports || []);
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setIsLoading(false)
         }
+        
     }, [reportClient, setReports, queryOptions]);
 
     const refreshReports = useCallback(async () => {
+        setIsLoading(true)
         setReports([]);
         await loadReports();
+        setIsLoading(false)
     }, [loadReports, setReports]);
 
     // Load automatically on entering page
     useEffectAsync(async () => {
+        setIsLoading(true)
         await loadReports();
+        setIsLoading(false)
     }, [loadReports]);
 
     return {
