@@ -4,7 +4,7 @@ import { Construct } from 'constructs';
 import { Stage, Tenant } from '../core/enums';
 import { BaseStackProps } from '../core/types';
 
-const BASE_BUCKET_NAME = 'S3Bucket';
+const BASE_BUCKET_NAME = 'ReportsBucket';
 
 export class ReportsBucketStack extends cdk.Stack {
     public readonly bucket: s3.Bucket;
