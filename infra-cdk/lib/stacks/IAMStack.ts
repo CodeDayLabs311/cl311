@@ -3,7 +3,6 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { ENVIRONMENT } from '../core/constants';
 import { BaseStackProps } from '../core/types';
-import { ReportsBucketStack } from '../stacks/ReportsBucketStack';
 
 export type IAMStackProps = {
     /** DynamoDB table name to provide permissions to */
@@ -23,7 +22,7 @@ export class IAMStack extends cdk.Stack {
         this.iamPolicy = new iam.Policy(this, `CL311Policy-${props.stage}-${props.tenant}`, {
             policyName: `CL311Policy-${props.stage}-${props.tenant}`,
             statements: [
-                // Allow access to DynamoDB table
+                // Allow access to DynamoDB table and S3 Buckets
                 new iam.PolicyStatement({
                     actions: [
                         'dynamodb:Scan',
@@ -39,8 +38,8 @@ export class IAMStack extends cdk.Stack {
                         `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.tableName}/index/*`,
                         `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.reportsTableName}`,
                         `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.reportsTableName}/index/*`,
-                        props.bucketStack.bucket.bucketArn,
-                        `${props.bucketStack.bucket.bucketArn}/*`,
+                        `arn:aws:s3:::${props.bucketStack.bucket.bucketName}`,
+                        `arn:aws:s3:::${props.bucketStack.bucket.bucketName}/*`,
                     ],
                 }),
             ],
