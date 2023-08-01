@@ -29,4 +29,4 @@ export class ReportsBucketStack extends cdk.Stack {
     getBucketName(): string {
         return `${BASE_BUCKET_NAME}-${this.stage}-${this.tenant}`;
     }
-}w
+}
