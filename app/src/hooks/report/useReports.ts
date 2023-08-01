@@ -35,7 +35,7 @@ export const useReports = (queryOptions: GridFilterItem[]): UseReportsResult => 
             const { field, value } = queryOptions![0];
             
             if (field === ReportFields.Status_Of_Report && value) {
-                const result = await reportClient.listReportsByStatus(value, true);
+                const result = await reportClient.listReportsByStatus(value, false);
                 setReports(result?.reports || []);
             }
         } else {
