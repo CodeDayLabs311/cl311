@@ -20,8 +20,6 @@ export class IAMStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: IAMStackProps) {
         super(scope, id, props);
 
-        /* Setted up both S3 and DynamoDB */
-
         this.iamPolicy = new iam.Policy(this, `CL311Policy-${props.stage}-${props.tenant}`, {
             policyName: `CL311Policy-${props.stage}-${props.tenant}`,
             statements: [
