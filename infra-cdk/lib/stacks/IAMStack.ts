@@ -21,37 +21,31 @@ export class IAMStack extends cdk.Stack {
         super(scope, id, props);
 
         /* Setted up both S3 and DynamoDB */
-        const statements = [];
-
-        if (props.tableName) {
-            // Allow access to DynamoDB table
-            statements.push(
-                new iam.PolicyStatement({
-                    actions: ['dynamodb:Scan', 'dynamodb:GetItem', 'dynamodb:PutItem'],
-                    resources: [
-                        `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.tableName}`,
-                        `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.reportsTableName}`,
-                    ],
-                })
-            );
-        }
-
-        if (props.bucketStack) {
-            // Allow access to S3 bucket
-            statements.push(
-                new iam.PolicyStatement({
-                    actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject'],
-                    resources: [
-                        props.bucketStack.bucket.bucketArn,
-                        `${props.bucketStack.bucket.bucketArn}/*`,
-                    ],
-                })
-            );
-        }
 
         this.iamPolicy = new iam.Policy(this, `CL311Policy-${props.stage}-${props.tenant}`, {
             policyName: `CL311Policy-${props.stage}-${props.tenant}`,
-            statements: statements,
+            statements: [
+                // Allow access to DynamoDB table
+                new iam.PolicyStatement({
+                    actions: [
+                        'dynamodb:Scan',
+                        'dynamodb:GetItem',
+                        'dynamodb:PutItem',
+                        'dynamodb:Query',
+                        's3:GetObject',
+                        's3:PutObject',
+                        's3:DeleteObject',
+                    ],
+                    resources: [
+                        `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.tableName}`,
+                        `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.tableName}/index/*`,
+                        `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.reportsTableName}`,
+                        `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.reportsTableName}/index/*`,
+                        props.bucketStack.bucket.bucketArn,
+                        `${props.bucketStack.bucket.bucketArn}/*`,
+                    ],
+                }),
+            ],
         });
     }
 
