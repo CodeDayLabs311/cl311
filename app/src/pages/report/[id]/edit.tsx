@@ -1,4 +1,4 @@
-import ReportEdit from '@/components/report/ReportEdit';
+import ReportCardEdit from '@/components/report/ReportCardEdit';
 import Loading from '@/components/Loading';
 import PageHeader from '@/components/PageHeader';
 import { useReport } from '@/hooks';
@@ -14,7 +14,7 @@ import { PageTitle } from '@/styles/StyleCardView';
 const BASE_PAGE_TITLE = 'Report Edit';
 
 /** Edit an existing report */ 
-export default function ReportReportEdit() {
+export default function ReportEdit() {
     const router = useRouter();
     const {
         report,
@@ -62,7 +62,7 @@ export default function ReportReportEdit() {
                         <PageHeader>{pageTitle}</PageHeader>
                         <Loading isLoading={isLoading}>Loading report...</Loading>
                         {!isLoading && (
-                            <ReportEdit
+                            <ReportCardEdit
                                 report={draftReport!}
                                 setReport={setDraftReport}
                                 submitLabel="Save"

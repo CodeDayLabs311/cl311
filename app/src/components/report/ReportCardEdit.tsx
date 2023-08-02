@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import Stack from 'react-bootstrap/Stack';
 import ButtonLink from '../ButtonLink';
-import { ReportCategories, StatusOfReport } from '@/models';
+import { ReportCategories } from '@/models';
 
 export type ReportEditProps = {
     report: Omit<IReport, 'reportId'> | undefined;
@@ -17,7 +17,7 @@ export type ReportEditProps = {
 };
 
 /** Report editor, used for create and edit flows */
-export default function ReportEdit({
+export default function ReportCardEdit({
     report,
     setReport,
     submitLabel,

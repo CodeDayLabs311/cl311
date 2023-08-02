@@ -1,4 +1,4 @@
-import ReportEdit from '@/components/report/ReportEdit';
+import ReportCardEdit from '@/components/report/ReportCardEdit';
 import PageHeader from '@/components/PageHeader';
 import { useReportClient } from '@/hooks';
 import { IReport } from '@/models';
@@ -62,7 +62,7 @@ export default function ReportCreate() {
                 <Container>
                     <Stack gap={3}>
                         <PageHeader>New Report</PageHeader>
-                        <ReportEdit
+                        <ReportCardEdit
                             report={draftReport!}
                             setReport={setDraftReport}
                             submitLabel="Create"
