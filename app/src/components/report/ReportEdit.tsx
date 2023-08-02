@@ -49,19 +49,20 @@ export default function ReportEdit({
         return report!;
     };
 
-    const handleSubmit = (
+    const handleSubmit = async (
         report: InitialValuesType,
         formikHelpers: FormikHelpers<InitialValuesType>
     ) => {
         const { setSubmitting } = formikHelpers;
+        setSubmitting(true);
         try {
             if (onEdit && 'reportId' in report) {
-                onEdit(report as IReport);
+                await onEdit(report as IReport);
             } else if (onCreate) {
-                onCreate(report as NewReport);
+                await onCreate(report as NewReport);
             }
         } catch (error) {
-            console.log('Failed to create report', error);
+            console.log('Failed to Create Report', error);
         } finally {
             setSubmitting(false);
         }
