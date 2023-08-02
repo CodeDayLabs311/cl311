@@ -4,7 +4,6 @@ import {
     IReport,
     INTERNAL_SERVER_ERROR,
     METHOD_NOT_ALLOWED,
-    INVALID_PAGINATION_TOKEN
 } from '@/models';
 import { ReportDbClient } from '@/utils/clients/ReportDbClient';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -17,6 +16,63 @@ export interface IListReportResponse {
     paginationToken: string | undefined;
 }
 
+/** NOTE: function to mock DB lisitng because I don't have access to create report page or permission to create new item in AWS
+    TODO: will need to switch to real DB function eventually
+*/
+const mockListReportsFromDb = (): { reports: IReport[]; paginationToken: string | undefined } => {
+    return {
+        reports: [
+            {
+                reportId: 'report1',
+                name: 'John Doe',
+                emailAddress: 'john.doe@example.com',
+                phoneNumber: '123-456-7890',
+                reportCategory: 'Illegal Dumping',
+                address: '123 Main St',
+                gpsCoordinates: '12.34,56.78',
+                issueDescription: 'Pls send help, it stinks',
+                attachments: 'link to attachments',
+                email: true,
+                sms: false,
+                statusOfReport: 'Submitted',
+                dateTimeOfSubmission: '07/01/2023',
+            },
+
+            {
+                reportId: 'report2',
+                name: 'Jane Doe',
+                emailAddress: 'jane.doe@example.com',
+                phoneNumber: '206-xxx-xxx',
+                reportCategory: 'Clogged Drain',
+                address: '456 Main St',
+                gpsCoordinates: '21.34,56.60',
+                issueDescription: 'Help pls, the street is flooded...',
+                attachments: 'image',
+                email: true,
+                sms: false,
+                statusOfReport: 'In Progress',
+                dateTimeOfSubmission: '06/20/2023',
+            },
+            {
+                reportId: 'report3',
+                name: '',
+                emailAddress: '',
+                phoneNumber: '',
+                reportCategory: 'Other',
+                address: '789 Main St',
+                gpsCoordinates: '21.34,56.60',
+                issueDescription: 'I trashed and flooded the street >:)',
+                attachments: 'image',
+                email: true,
+                sms: false,
+                statusOfReport: 'Done',
+                dateTimeOfSubmission: '06/30/2023',
+            },
+        ],
+        paginationToken: undefined,
+    };
+};
+
 /**
  * List Reports
  *
@@ -25,35 +81,28 @@ export interface IListReportResponse {
  * Response: IListReportResponse
  *
  * Potential errors:
- *  - 200: when report is successfully listed
- *  - 400: invalid pagination token (if provided)
  *  - 405: when non-allowed method is used
  *  - 500: internal server error
  */
-
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<IListReportResponse | IApiErrorResponse>
 ) {
+    if (req.method !== HttpMethod.GET) {
+        return res.status(405).send({ message: METHOD_NOT_ALLOWED });
+    }
+
     try {
-        switch (req.method) {
-            case HttpMethod.GET:
-                const reportClient = new ReportDbClient();
-                const { reports, paginationToken } = await reportClient.listReports();
+        /** Uncomment these lines to switch to the real DB */
+        const reportClient = new ReportDbClient();
 
-                // Validate pagination token (if provided)
-                const { paginationToken: providedToken } = req.query;
-                if (providedToken && typeof providedToken !== 'string') {
-                    return res.status(400).json({ message: INVALID_PAGINATION_TOKEN });
-                }
+        const { reports, paginationToken } = await reportClient.listReports();
 
-                return res.status(200).json({ reports, paginationToken });
-
-            default:
-                return res.status(405).json({ message: METHOD_NOT_ALLOWED });
-        }
+        // const { reports, paginationToken } = mockListReportsFromDb();
+        return res.status(200).json({ reports, paginationToken });
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: INTERNAL_SERVER_ERROR });
+
+        return res.status(500).send({ message: INTERNAL_SERVER_ERROR });
     }
 }
