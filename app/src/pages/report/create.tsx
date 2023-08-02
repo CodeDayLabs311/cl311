@@ -23,7 +23,7 @@ const getInitialReport = (): NewReport => ({
     email: false,
     sms: false,
     statusOfReport: 'Submitted',
-    dateTimeOfSubmission: new Date().toLocaleString('en-US'),
+    dateTimeOfSubmission: new Date().toISOString(),
 });
 
 /** Create a new report */

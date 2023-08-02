@@ -45,10 +45,7 @@ export default async function handler(
     try {
         const reportClient = new ReportDbClient();
 
-        if (status) {
-            const { reports, paginationToken } = await reportClient.listReportsByStatus(status);
-            return res.status(200).json({ reports, paginationToken });
-        } else if (status) {
+       if (status) {
             const { reports, paginationToken } = await reportClient.listReportsByStatus(
                 status,
                 ascending
