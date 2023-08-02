@@ -82,7 +82,7 @@ export class ReportDbClient implements IReportClient {
                     S: category,
                 },
             },
-            ScanIndexForward: ascending ?? true,
+            ScanIndexForward: ascending ?? false,
         });
 
         return {
@@ -110,7 +110,7 @@ export class ReportDbClient implements IReportClient {
                     S: status,
                 },
             },
-            ScanIndexForward: ascending ?? true,
+            ScanIndexForward: ascending ?? false,
         });
 
         return {

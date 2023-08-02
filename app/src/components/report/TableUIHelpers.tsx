@@ -1,6 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import { GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -25,6 +30,36 @@ const StyledGridOverlay = styled('div')(({ theme }) => ({
         fill: theme.palette.mode === 'light' ? '#f5f5f5' : '#fff',
     },
 }));
+
+type CustomToolbarProps = {
+    onSortChange: (event: SelectChangeEvent) => void;
+    hasFilter: boolean;
+    sortOptions: string | undefined;
+};
+
+function CustomToolbar({ sortOptions, onSortChange, hasFilter }: CustomToolbarProps) {
+    return (
+        <GridToolbarContainer>
+            <GridToolbarFilterButton />
+            {hasFilter && (
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                    <InputLabel id="sort-options-label">Sort By</InputLabel>
+                    <Select
+                        labelId="sort-options-label"
+                        id="sort-options"
+                        value={sortOptions}
+                        onChange={onSortChange}
+                        label="Sort By"
+                    >
+                        <MenuItem value={'false'}>Most Recent</MenuItem>
+                        <MenuItem value={'true'}>Least Recent</MenuItem>
+                        <MenuItem value={undefined}>Unsorted</MenuItem>
+                    </Select>
+                </FormControl>
+            )}
+        </GridToolbarContainer>
+    );
+}
 
 export default function NoResultsOverlay() {
     return (
@@ -66,3 +101,5 @@ export default function NoResultsOverlay() {
         </StyledGridOverlay>
     );
 }
+
+export { CustomToolbar, NoResultsOverlay };

@@ -11,7 +11,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Collapse, IconButton, Chip, ChipProps } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
-import NoResultsOverlay from './NoResultsOverlay';
+import { NoResultsOverlay, CustomToolbar } from './TableUIHelpers';
+import { SelectChangeEvent } from '@mui/material/Select';
 import { IReport } from '@/models';
 import { useReports } from '@/hooks/report/useReports';
 import ButtonLink from '../ButtonLink';
@@ -28,6 +29,7 @@ import {
     GridFilterModel,
     getGridSingleSelectOperators,
 } from '@mui/x-data-grid';
+import { boolean } from 'yup';
 
 const EXPANDED_ROW_STYLE = {
     whiteSpace: 'pre-wrap',
@@ -92,14 +94,31 @@ function getChipProps(params: GridRenderCellParams): ChipProps {
 export default function Table() {
     const [clickedIndex, setClickedIndex] = useState<string | null>(null);
     const [queryOptions, setQueryOptions] = useState<GridFilterItem[]>([]);
+    const [sortOptions, setSortOptions] = useState<boolean | undefined>(undefined);
+
+    const hasFilter = queryOptions.length > 0;
 
     //Fetch the updated filter settings, then pass the settings to the backend
     const onFilterChange = useCallback((filterModel: GridFilterModel) => {
         setQueryOptions([...filterModel.items]);
-        console.log(filterModel)
+        setSortOptions(undefined);
     }, []);
 
-    const { reports, isLoading, loadReports, refreshReports } = useReports(queryOptions);
+    const onSortChange = useCallback((event: SelectChangeEvent) => {
+        const ascending =
+            event.target.value === 'true'
+                ? true
+                : event.target.value === 'false'
+                ? false
+                : undefined;
+        setSortOptions(ascending);
+    }, []);
+
+    const { reports, isLoading, loadReports, refreshReports } = useReports(
+        queryOptions,
+        sortOptions
+    );
+
     const isEmpty = useMemo<boolean>(
         () => !isLoading && reports?.length === 0,
         [isLoading, reports]
@@ -259,7 +278,14 @@ export default function Table() {
                 loading={isLoading}
                 slots={{
                     loadingOverlay: LinearProgress,
-                    noRowsOverlay: NoResultsOverlay
+                    noRowsOverlay: NoResultsOverlay,
+                    toolbar: () => (
+                        <CustomToolbar
+                            sortOptions={`${sortOptions}`}
+                            onSortChange={onSortChange}
+                            hasFilter={hasFilter}
+                        />
+                    ),
                 }}
             />
         </div>
