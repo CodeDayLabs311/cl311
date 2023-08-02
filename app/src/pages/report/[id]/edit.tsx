@@ -43,9 +43,7 @@ export default function ReportEdit() {
     );
 
     const handleSubmit = async () => {
-        if (!isUndefined(draftReport)) {
-            // Update date and time last edited to current timestamp every time the report is edited
-            draftReport!.dateTimeLastEdited = new Date().toLocaleString('en-US'); 
+        if (!isUndefined(draftReport)) { 
             await updateReport(draftReport!);
             router.push(detailsHref);
         }

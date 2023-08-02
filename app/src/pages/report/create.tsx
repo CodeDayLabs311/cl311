@@ -44,10 +44,6 @@ export default function ReportCreate() {
 
     const handleSubmit = async () => {
         if (!isUndefined(draftReport)) {
-            // Set the status of the report to 'Submitted' when the report is submitted
-            draftReport!.statusOfReport = 'Submitted';
-            // Set date and time of submission to current timestamp when the report is submitted
-            draftReport!.dateTimeOfSubmission = new Date().toLocaleString('en-US'); 
             const createdReport = await createReport(draftReport!);
             router.push(`/report/${createdReport.reportId}`);
         }
