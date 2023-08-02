@@ -2,10 +2,17 @@ import * as Yup from 'yup';
 import { ReportCategories } from '@/models';
 
 // Validate names, emails, phone numbers, and addresses
+// Name regex - allows unicode characters, spaces, and must not be empty
 const nameRegExp = /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi;
+
+// Email regex - allows most valid email formats including TLDs
 const emailRegExp =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+// Phone regex - allows optional country code, area code, spaces/dashes
 const phoneRegExp = /^\+?(\d{1,3})?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d$/;
+
+// Address regex - allows letters, numbers, commas, dashes, apostrophes, min length 3
 const addressRegExp = /^[a-zA-Z0-9\s,'-]{3,}$/;
 
 // Validate that either email address or phone number is provided
