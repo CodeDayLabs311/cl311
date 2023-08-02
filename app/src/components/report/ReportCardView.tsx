@@ -15,6 +15,13 @@ export type ReportCardProps = {
     report: IReport;
 };
 
+function translateISOTimestamp(ISOTimestamp: string): string {
+    const ISOTime = new Date(ISOTimestamp);
+    console.log(ISOTimestamp);
+    const localTime = ISOTime.toLocaleString('en-US');
+    return localTime;
+}
+
 /** Report Card View */
 export default function ReportCard({ report }: ReportCardProps) {
     return (
@@ -88,7 +95,7 @@ export default function ReportCard({ report }: ReportCardProps) {
                             </Typography>
                             <Typography>
                                 <strong>Date and Time of Submission:</strong>{' '}
-                                {report.dateTimeOfSubmission}
+                                {translateISOTimestamp(report.dateTimeOfSubmission)}
                             </Typography>
                         </Box1>
                     </Grid>
