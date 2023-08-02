@@ -102,7 +102,6 @@ export default function Table() {
     const onFilterChange = useCallback((filterModel: GridFilterModel) => {
         setQueryOptions([...filterModel.items]);
         setSortOptions(undefined);
-        console.log(filterModel);
     }, []);
 
     const onSortChange = useCallback((event: SelectChangeEvent) => {
