@@ -19,12 +19,6 @@ export class ReportDbClient implements IReportClient {
     /** Create report */
     async createReport(report: Omit<IReport, 'reportId'>) {
 
-        const { name, reportCategory, address } = report;
-
-        if (!name || !reportCategory || !address) {
-            throw { status: 400, message: INVALID_REPORT_DATA };
-        }
-
         const reportId = getUuid();
 
         await this.ddbClient.putItem({
@@ -40,10 +34,6 @@ export class ReportDbClient implements IReportClient {
 
     /** Get report */
     async getReport(reportId: string) {
-
-        if (!reportId || typeof reportId !== 'string') {
-            throw { status: 400, message: MISSING_ID };
-        }
 
         const key: Pick<IDBReport, 'ReportID'> = {
             ReportID: {
@@ -108,11 +98,6 @@ export class ReportDbClient implements IReportClient {
 
     /** Put report */
     async putReport(report: IReport) {
-        const { reportId } = report;
-
-        if (!reportId || typeof reportId !== 'string') {
-            throw { status: 400, message: MISSING_ID };
-        }
 
         await this.ddbClient.putItem({
             TableName: getTableName(),
