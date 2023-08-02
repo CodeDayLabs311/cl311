@@ -102,6 +102,7 @@ export default function Table() {
     const onFilterChange = useCallback((filterModel: GridFilterModel) => {
         setQueryOptions([...filterModel.items]);
         setSortOptions(undefined);
+        console.log(filterModel)
     }, []);
 
     const onSortChange = useCallback((event: SelectChangeEvent) => {
@@ -155,6 +156,7 @@ export default function Table() {
         {
             field: ReportFields.Name,
             headerName: 'Name',
+            filterable: false,
             width: columnWidth.name,
             renderCell: (cellValues: GridRenderCellParams<any>) => {
                 return (
@@ -213,11 +215,13 @@ export default function Table() {
         {
             field: ReportFields.Address,
             headerName: 'Location',
+            filterable: false,
             width: columnWidth.address,
         },
         {
             field: ReportFields.Date_Time_Of_Submission,
             headerName: 'Date Reported',
+            filterable: false,
             type: 'date',
             valueGetter: ({ value }) => value && new Date(value),
             width: columnWidth.dateTimeOfSubmission,
