@@ -51,8 +51,8 @@ function CustomToolbar({ sortOptions, onSortChange, hasFilter }: CustomToolbarPr
                         onChange={onSortChange}
                         label="Sort By"
                     >
-                        <MenuItem value={'false'}>Most Recent</MenuItem>
-                        <MenuItem value={'true'}>Least Recent</MenuItem>
+                        <MenuItem value={'false'}>Newest First</MenuItem>
+                        <MenuItem value={'true'}>Oldest First</MenuItem>
                         <MenuItem value={undefined}>Unsorted</MenuItem>
                     </Select>
                 </FormControl>

@@ -28,7 +28,7 @@ export const useReports = (queryOptions: GridFilterItem[], sortOptions?: boolean
     const loadReports = useCallback(async () => {
         setIsLoading(true)
         try {
-            if (queryOptions.length !== 0) {
+            if (queryOptions.length > 0 && queryOptions[0].value !== undefined) {
                 /**
                  * field: the report field that was applied a filter, ex: Status, Issues
                  * value: the filter value, ex: Status filter was set to 'Submitted'

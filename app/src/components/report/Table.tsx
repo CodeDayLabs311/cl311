@@ -96,13 +96,13 @@ export default function Table() {
     const [queryOptions, setQueryOptions] = useState<GridFilterItem[]>([]);
     const [sortOptions, setSortOptions] = useState<boolean | undefined>(undefined);
 
-    const hasFilter = queryOptions.length > 0;
+    const hasFilter = queryOptions.length > 0 && queryOptions[0].value !== undefined;
 
     //Fetch the updated filter settings, then pass the settings to the backend
     const onFilterChange = useCallback((filterModel: GridFilterModel) => {
         setQueryOptions([...filterModel.items]);
         setSortOptions(undefined);
-        console.log(filterModel)
+        console.log(filterModel);
     }, []);
 
     const onSortChange = useCallback((event: SelectChangeEvent) => {
