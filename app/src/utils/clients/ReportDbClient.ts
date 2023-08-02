@@ -3,7 +3,7 @@ import { AttributeValue, DynamoDB } from '@aws-sdk/client-dynamodb';
 import { getDynamoDbClient } from '../api';
 import { getUuid, isUndefined } from '../common';
 import { getStage, getTenant } from '../environment';
-import { NOT_FOUND, MISSING_ID, INVALID_PAGINATION_TOKEN, INVALID_REPORT_DATA } from '@/models';
+import { NOT_FOUND, INVALID_PAGINATION_TOKEN } from '@/models';
 
 const BASE_TABLE_NAME = 'ReportsTable';
 const CATEGORY_INDEX_NAME = 'CategoryIndex';
@@ -18,7 +18,6 @@ export class ReportDbClient implements IReportClient {
 
     /** Create report */
     async createReport(report: Omit<IReport, 'reportId'>) {
-
         const reportId = getUuid();
 
         await this.ddbClient.putItem({
@@ -34,7 +33,6 @@ export class ReportDbClient implements IReportClient {
 
     /** Get report */
     async getReport(reportId: string) {
-
         const key: Pick<IDBReport, 'ReportID'> = {
             ReportID: {
                 S: reportId,
@@ -98,7 +96,6 @@ export class ReportDbClient implements IReportClient {
 
     /** Put report */
     async putReport(report: IReport) {
-
         await this.ddbClient.putItem({
             TableName: getTableName(),
             Item: marshalReport(report),
