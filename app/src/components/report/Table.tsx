@@ -104,13 +104,17 @@ export default function Table() {
     }, []);
 
     const onSortChange = useCallback((event: SelectChangeEvent) => {
-        const ascending =
-            event.target.value === 'true'
-                ? true
-                : event.target.value === 'false'
-                ? false
-                : undefined;
-        setSortOptions(ascending);
+        switch (event.target.value) {
+            case 'true':
+                setSortOptions(true);
+                return;
+            case 'false':
+                setSortOptions(false);
+                return;
+            default:
+                setSortOptions(undefined);
+                return;
+        }
     }, []);
 
     const { reports, isLoading, loadReports, refreshReports } = useReports(

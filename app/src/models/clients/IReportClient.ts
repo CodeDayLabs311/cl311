@@ -12,7 +12,6 @@ export interface IReportClient {
         paginationToken: string | undefined;
     }>;
 
-    
     /** Filter by category and/or sort by newest/oldest submitted reports
      * @param {string} category - The category of the reports to filter by, ex: Illegal Dumping
      * @param {boolean} ascending - The sort order by submission time, ex: newest, oldest
