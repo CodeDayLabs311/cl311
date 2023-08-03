@@ -99,7 +99,8 @@ export default function ReportCardEdit({
             <Form.Group className="mb-3" controlId="EditReport.Address">
                 <Form.Label>Address</Form.Label>
                 <Form.Control
-                    type="text"
+                    as="textarea"
+                    rows={2}
                     placeholder="Please enter your issue location"
                     defaultValue={report?.address}
                     onChange={(event) => updateReport({ address: event.target.value })}
@@ -110,7 +111,7 @@ export default function ReportCardEdit({
                 <Form.Label>Issue Description</Form.Label>
                 <Form.Control
                     as="textarea"
-                    rows={3}
+                    rows={4}
                     placeholder="Please enter your issue description"
                     defaultValue={report?.issueDescription}
                     onChange={(event) => updateReport({ issueDescription: event.target.value })}
