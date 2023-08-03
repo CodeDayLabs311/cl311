@@ -1,4 +1,5 @@
 import { HttpMethod, IReportClient, IReport } from '@/models';
+import { ICreateReportResponse } from '@/pages/api/report/create';
 import { IGetReportResponse } from '@/pages/api/report/[id]';
 import { IListReportResponse } from '@/pages/api/report/list';
 
@@ -20,7 +21,7 @@ export class ReportApiClient implements IReportClient {
                 'Content-Type': 'application/json',
             },
         });
-        const json: IGetReportResponse = await response.json();
+        const json: ICreateReportResponse = await response.json();
 
         return json.report;
     }

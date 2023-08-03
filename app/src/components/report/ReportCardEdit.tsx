@@ -3,8 +3,7 @@ import { Spinner, Stack, Button, Form } from 'react-bootstrap';
 import ButtonLink from '../ButtonLink';
 import { ReportCategories } from '@/models';
 import { useFormik, FormikHelpers } from 'formik';
-import { isUndefined } from '@/utils';
-import { VALIDATION_SCHEMA } from '../../utils/validation/ValidSchema';
+import { isUndefined, VALIDATION_SCHEMA } from '@/utils';
 
 //Initial values for report form
 type NewReport = Omit<IReport, 'reportId'>;
