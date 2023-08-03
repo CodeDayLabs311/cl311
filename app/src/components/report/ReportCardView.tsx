@@ -77,14 +77,10 @@ export default function ReportCard({ report }: ReportCardProps) {
                                 <strong>Attachments:</strong>
                             </Typography>
                             <Image
-                                src="https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg"
-                                alt="Attachment image"
-                                style={{
-                                    height: '500px',
-                                    width: '580px',
-                                    overflow: 'hidden',
-                                    objectFit: 'cover',
-                                }}
+                                src="/https://smaller-pictures.appspot.com/images/dreamstime_xxl_65780868_small.jpg" // Fake image for now
+                                width={500}
+                                height={500}
+                                alt="Attachment Image"
                             />
                         </GroupedBox>
                         <GroupedBox>
