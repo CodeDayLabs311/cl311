@@ -75,12 +75,12 @@ export default function ReportEdit({
     });
 
     return (
-        <Form className={styles.reportForm} onSubmit={formik.handleSubmit}>
-            <div className={styles.formColumn}>
-                <Form.Label className={styles.sectionLabel}>Contact Information</Form.Label>
+        <Form className={styles['report-form']} onSubmit={formik.handleSubmit}>
+            <div className={styles['form-column']}>
+                <Form.Label className={styles['section-label']}>Contact Information</Form.Label>
 
-                <Form.Group className={styles.formGroup} controlId="EditReport.Name">
-                    <Form.Label className={styles.label}>Name</Form.Label>
+                <Form.Group className={styles['form-group']} controlId="EditReport.Name">
+                    <Form.Label className={styles['label']}>Name</Form.Label>
                     <Form.Control
                         name="name"
                         type="text"
@@ -88,17 +88,17 @@ export default function ReportEdit({
                         value={formik.values.name}
                         onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
-                        className={styles.input}
+                        className={styles['input']}
                     />
                 </Form.Group>
                 {formik.touched.name && formik.errors.name && (
                     <p className="text-danger">{formik.errors.name}</p>
                 )}
 
-                <Form.Group className={styles.formGroup} controlId="EditReport.EmailAddress">
-                    <Form.Label className={styles.label}>Email Address</Form.Label>
+                <Form.Group className={styles['form-group']} controlId="EditReport.EmailAddress">
+                    <Form.Label className={styles['label']}>Email Address</Form.Label>
                     <Form.Control
-                        className={styles.input}
+                        className={styles['input']}
                         name="emailAddress"
                         type="email"
                         placeholder="Please enter your email address"
@@ -111,10 +111,10 @@ export default function ReportEdit({
                     <p className="text-danger">{formik.errors.emailAddress}</p>
                 )}
 
-                <Form.Group className={styles.formGroup} controlId="EditReport.PhoneNumber">
-                    <Form.Label className={styles.label}>Phone Number</Form.Label>
+                <Form.Group className={styles['form-group']} controlId="EditReport.PhoneNumber">
+                    <Form.Label className={styles['label']}>Phone Number</Form.Label>
                     <Form.Control
-                        className={styles.input}
+                        className={styles['input']}
                         name="phoneNumber"
                         type="tel"
                         placeholder="Please enter your phone number"
@@ -127,14 +127,14 @@ export default function ReportEdit({
                     <p className="text-danger">{formik.errors.phoneNumber}</p>
                 )}
 
-                <Form.Group className={styles.formGroup} controlId="EditReport.Email">
-                    <Form.Label className={styles.label}>Communication Preferences</Form.Label>
+                <Form.Group className={styles['form-group']} controlId="EditReport.Email">
+                    <Form.Label className={styles['label']}>Communication Preferences</Form.Label>
                     <div className={styles.statusUpdates}>
                         <Form.Check
                             name="email"
                             type="checkbox"
                             label="Email"
-                            className={styles.checkControl}
+                            className={styles['check-control']}
                             checked={formik.values.email}
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
@@ -148,7 +148,7 @@ export default function ReportEdit({
                             name="sms"
                             type="checkbox"
                             label="SMS"
-                            className={styles.checkControl}
+                            className={styles['check-control']}
                             checked={formik.values.sms}
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
@@ -160,12 +160,12 @@ export default function ReportEdit({
                 )}
             </div>
 
-            <div className={styles.formColumn}>
-                <Form.Label className={styles.sectionLabel}>Issue</Form.Label>
-                <Form.Group className={styles.formGroup} controlId="EditReport.Address">
-                    <Form.Label className={styles.label}>Address</Form.Label>
+            <div className={styles['form-column']}>
+                <Form.Label className={styles['section-label']}>Issue</Form.Label>
+                <Form.Group className={styles['form-group']} controlId="EditReport.Address">
+                    <Form.Label className={styles['label']}>Address</Form.Label>
                     <Form.Control
-                        className={styles.input}
+                        className={styles['input']}
                         name="address"
                         type="text"
                         placeholder="Please enter your issue location"
@@ -178,10 +178,13 @@ export default function ReportEdit({
                     <p className="text-danger">{formik.errors.address}</p>
                 )}
 
-                <Form.Group className={styles.formGroup} controlId="EditReport.IssueDescription">
-                    <Form.Label className={styles.label}>Description</Form.Label>
+                <Form.Group
+                    className={styles['form-group']}
+                    controlId="EditReport.IssueDescription"
+                >
+                    <Form.Label className={styles['label']}>Description</Form.Label>
                     <Form.Control
-                        className={styles.input}
+                        className={styles['input']}
                         name="issueDescription"
                         as="textarea"
                         rows={3}
@@ -195,10 +198,10 @@ export default function ReportEdit({
                     <p className="text-danger">{formik.errors.issueDescription}</p>
                 )}
 
-                <Form.Group className={styles.formGroup} controlId="EditReport.Attachments">
-                    <Form.Label className={styles.label}>Attachments</Form.Label>
+                <Form.Group className={styles['form-group']} controlId="EditReport.Attachments">
+                    <Form.Label className={styles['label']}>Attachments</Form.Label>
                     <Form.Control
-                        className={styles.input}
+                        className={styles['input']}
                         name="attachments"
                         type="text"
                         placeholder="Please enter your attachments"
@@ -208,8 +211,8 @@ export default function ReportEdit({
                     />
                 </Form.Group>
 
-                <Form.Group className={styles.formGroup} controlId="EditReport.ReportCategory">
-                    <Form.Label className={styles.label}>Type</Form.Label>
+                <Form.Group className={styles['form-group']} controlId="EditReport.ReportCategory">
+                    <Form.Label className={styles['label']}>Type</Form.Label>
                     {[
                         ReportCategories.Illegal_Dumping,
                         ReportCategories.Clogged_Storm_Drain,
@@ -228,7 +231,7 @@ export default function ReportEdit({
                                 type="radio"
                                 label={category}
                                 value={category}
-                                className={styles.checkControl}
+                                className={styles['check-control']}
                                 checked={formik.values.reportCategory === category}
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
@@ -258,12 +261,16 @@ export default function ReportEdit({
                     <p className="text-danger">{formik.errors.otherCategory}</p>
                 )}
 
-                <div className={styles.buttonContainer}>
-                    <ButtonLink className={styles.btnCancel} variant="secondary" href={cancelHref}>
+                <div className={styles['button-container']}>
+                    <ButtonLink
+                        className={styles['btn-cancel']}
+                        variant="secondary"
+                        href={cancelHref}
+                    >
                         Cancel
                     </ButtonLink>
                     <Button
-                        className={styles.btnCreate}
+                        className={styles['btn-create']}
                         variant="primary"
                         type="submit"
                         disabled={formik.isSubmitting}
