@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import Stack from 'react-bootstrap/Stack';
 import ButtonLink from '../ButtonLink';
-import { ReportCategories, StatusOfReport } from '@/models';
+import { ReportCategories } from '@/models';
 
 export type ReportEditProps = {
     report: Omit<IReport, 'reportId'> | undefined;
@@ -17,7 +17,7 @@ export type ReportEditProps = {
 };
 
 /** Report editor, used for create and edit flows */
-export default function ReportEdit({
+export default function ReportCardEdit({
     report,
     setReport,
     submitLabel,
@@ -88,7 +88,7 @@ export default function ReportEdit({
                         label={category}
                         name="category"
                         key={category}
-                        defaultValue={report?.reportCategory}
+                        checked={report?.reportCategory === category}
                         onChange={() => {
                             updateReport({ reportCategory: category });
                         }}
@@ -154,26 +154,6 @@ export default function ReportEdit({
                         });
                     }}
                 />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="EditReport.StatusOfReport">
-                <Form.Label>Status Of Report</Form.Label>
-                {[
-                    StatusOfReport.Submitted,
-                    StatusOfReport.In_Progress,
-                    StatusOfReport.Completed,
-                    StatusOfReport.On_Hold,
-                    StatusOfReport.Rejected,
-                ].map((status) => (
-                    <Form.Check
-                        type="radio"
-                        label={status}
-                        name="status"
-                        key={status}
-                        checked={report?.statusOfReport === status}
-                        onChange={() => updateReport({ statusOfReport: status })}
-                    />
-                ))}
             </Form.Group>
 
             <Stack direction="horizontal" gap={3} className="justify-content-end">

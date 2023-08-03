@@ -88,7 +88,13 @@ export default function ReportCard({ report }: ReportCardProps) {
                             </Typography>
                             <Typography>
                                 <strong>Date and Time of Submission:</strong>{' '}
-                                {report.dateTimeOfSubmission}
+                                {new Date(report.dateTimeOfSubmission).toLocaleString('en-US')}
+                            </Typography>
+                            <Typography>
+                                <strong>Date and Time Last Edited:</strong>{' '}
+                                {report.dateTimeLastEdited
+                                    ? new Date(report.dateTimeLastEdited).toLocaleString('en-US')
+                                    : 'Never Edited'}
                             </Typography>
                         </GroupedBox>
                     </Grid>

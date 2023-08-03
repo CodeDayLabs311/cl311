@@ -1,4 +1,4 @@
-import ReportEdit from '@/components/report/ReportEdit';
+import ReportCardEdit from '@/components/report/ReportCardEdit';
 import PageHeader from '@/components/PageHeader';
 import { useReportClient } from '@/hooks';
 import { IReport } from '@/models';
@@ -22,8 +22,9 @@ const getInitialReport = (): NewReport => ({
     attachments: '',
     email: false,
     sms: false,
-    statusOfReport: 'Submitted',
-    dateTimeOfSubmission: new Date().toLocaleString('en-US'),
+    statusOfReport: '',
+    dateTimeOfSubmission: '',
+    dateTimeLastEdited: '',
 });
 
 /** Create a new report */
@@ -57,7 +58,7 @@ export default function ReportCreate() {
                 <Container>
                     <Stack gap={3}>
                         <PageHeader>New Report</PageHeader>
-                        <ReportEdit
+                        <ReportCardEdit
                             report={draftReport!}
                             setReport={setDraftReport}
                             submitLabel="Create"
