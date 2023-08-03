@@ -46,6 +46,15 @@ export default async function handler(
         // Validate the request body against the validation schema
         try {
             await VALIDATION_SCHEMA.validate(params, { abortEarly: false });
+
+            // Check if the 'params.reportId' is undefined
+            const isValidRequest = isUndefined(params?.reportId);
+
+            if (!isValidRequest) {
+                // Don't store bad data in the database!
+                return res.status(400).json({ message: BAD_REQUEST });
+            }
+
         } catch (validationError) {
             // Check if the validationError is an instance of Yup.ValidationError
             if (validationError instanceof Yup.ValidationError) {
