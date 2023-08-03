@@ -25,6 +25,10 @@ export default function Home() {
                             Report list under construction {' '}
                             <Link href="/report">report</Link>.
                         </p>
+                        <p>
+                            Image attachment under construction {' '}
+                            <Link href="/attachment">image attachment</Link>
+                        </p>
                     </Stack>
                 </Container>
             </main>
