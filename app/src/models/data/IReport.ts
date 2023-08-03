@@ -15,6 +15,7 @@ export interface IReport {
     sms: boolean;
     statusOfReport: string;
     dateTimeOfSubmission: string;
+    dateTimeLastEdited: string;
 }
 
 /** Report (DynamoDB model) */
@@ -34,4 +35,5 @@ export interface IDBReport {
     Sms: { BOOL: boolean };
     StatusOfReport: { S: string };
     DateTimeOfSubmission: { S: string };
+    DateTimeLastEdited: { S: string };
 }

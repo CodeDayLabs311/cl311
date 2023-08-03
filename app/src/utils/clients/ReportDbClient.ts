@@ -17,14 +17,20 @@ export class ReportDbClient implements IReportClient {
     }
 
     /** Create report */
-    async createReport(report: Omit<IReport, 'reportId'>) {
+    async createReport(
+        report: Omit<IReport, 'reportId' | 'statusOfReport' | 'dateTimeOfSubmission'>
+    ) {
         const reportId = getUuid();
+        const statusOfReport = 'Submitted';
+        const dateTimeOfSubmission = new Date().toISOString();
 
         await this.ddbClient.putItem({
             TableName: getTableName(),
             Item: marshalReport({
                 ...report,
                 reportId,
+                statusOfReport,
+                dateTimeOfSubmission,
             }),
         });
 
@@ -91,9 +97,11 @@ export class ReportDbClient implements IReportClient {
 
     /** Put report */
     async putReport(report: IReport) {
+        const dateTimeLastEdited = new Date().toISOString();
+
         await this.ddbClient.putItem({
             TableName: getTableName(),
-            Item: marshalReport(report),
+            Item: marshalReport({ ...report, dateTimeLastEdited }),
         });
 
         return this.getReport(report.reportId);
@@ -150,6 +158,9 @@ function marshalReport(report: IReport): Record<string, AttributeValue> {
         DateTimeOfSubmission: {
             S: report!.dateTimeOfSubmission,
         },
+        DateTimeLastEdited: {
+            S: report!.dateTimeLastEdited,
+        },
     };
 
     return marshalledReport as unknown as Record<string, AttributeValue>;
@@ -181,5 +192,6 @@ function unmarshalReport(report?: IDBReport): IReport | undefined {
         sms: report?.Sms?.BOOL!,
         statusOfReport: report?.StatusOfReport?.S!,
         dateTimeOfSubmission: report?.DateTimeOfSubmission?.S!,
+        dateTimeLastEdited: report?.DateTimeLastEdited?.S!,
     };
 }

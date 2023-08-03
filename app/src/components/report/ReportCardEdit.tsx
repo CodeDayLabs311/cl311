@@ -22,8 +22,9 @@ const getInitialReport = (): NewReport => ({
     attachments: '',
     email: false,
     sms: false,
-    statusOfReport: 'Submitted',
-    dateTimeOfSubmission: new Date().toLocaleString('en-US'),
+    statusOfReport: '',
+    dateTimeOfSubmission: '',
+    dateTimeLastEdited: '',
 });
 
 export type ReportEditProps = {
@@ -35,7 +36,7 @@ export type ReportEditProps = {
 };
 
 /** Report editor, used for create and edit flows */
-export default function ReportEdit({
+export default function ReportCardEdit({
     report,
     submitLabel,
     onCreate,
@@ -192,7 +193,7 @@ export default function ReportEdit({
                 <Form.Control
                     name="issueDescription"
                     as="textarea"
-                    rows={3}
+                    rows={4}
                     placeholder="Please enter your issue description"
                     value={formik.values.issueDescription}
                     onBlur={formik.handleBlur}
