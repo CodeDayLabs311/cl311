@@ -10,6 +10,8 @@ import {
     IDText,
     StyledButton,
 } from '@/styles/StyleCardView';
+import { ReportCategories } from '@/models';
+import Image from 'next/image';
 
 export type ReportCardProps = {
     report: IReport;
@@ -36,7 +38,10 @@ export default function ReportCard({ report }: ReportCardProps) {
                         </GroupedBox>
                         <GroupedBox>
                             <Typography>
-                                <strong>Report Category:</strong> {report.reportCategory}
+                                <strong>Report Category:</strong>{' '}
+                                {report.reportCategory === ReportCategories.Other
+                                    ? report.otherCategory // Show the custom category value if "Other" is selected
+                                    : report.reportCategory}
                             </Typography>
                         </GroupedBox>
                         <GroupedBox>
@@ -71,15 +76,11 @@ export default function ReportCard({ report }: ReportCardProps) {
                             <Typography>
                                 <strong>Attachments:</strong>
                             </Typography>
-                            <img
-                                src="https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg"
-                                alt="Attachment image"
-                                style={{
-                                    height: '500px',
-                                    width: '580px',
-                                    overflow: 'hidden',
-                                    objectFit: 'cover',
-                                }}
+                            <Image
+                                src="/https://smaller-pictures.appspot.com/images/dreamstime_xxl_65780868_small.jpg" // Fake image for now
+                                width={500}
+                                height={500}
+                                alt="Attachment Image"
                             />
                         </GroupedBox>
                         <GroupedBox>

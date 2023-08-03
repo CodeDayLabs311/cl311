@@ -131,6 +131,9 @@ function marshalReport(report: IReport): Record<string, AttributeValue> {
         ReportCategory: {
             S: report!.reportCategory,
         },
+        OtherCategory: {
+            S: report!.otherCategory,
+        },
         Address: {
             S: report!.address,
         },
@@ -180,6 +183,7 @@ function unmarshalReport(report?: IDBReport): IReport | undefined {
         emailAddress: report?.EmailAddress?.S!,
         phoneNumber: report?.PhoneNumber?.S!,
         reportCategory: report?.ReportCategory?.S!,
+        otherCategory: report?.OtherCategory?.S!,
         address: report?.Address?.S!,
         gpsCoordinates: report?.GpsCoordinates?.S!,
         issueDescription: report?.IssueDescription?.S!,
