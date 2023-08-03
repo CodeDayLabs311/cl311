@@ -29,7 +29,6 @@ import {
     GridFilterModel,
     getGridSingleSelectOperators,
 } from '@mui/x-data-grid';
-import { boolean } from 'yup';
 
 const EXPANDED_ROW_STYLE = {
     whiteSpace: 'pre-wrap',

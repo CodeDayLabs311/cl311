@@ -70,7 +70,7 @@ export class ReportDbClient implements IReportClient {
     }
 
     /** List reports by category */
-    async listReportsByCategory(category: string,  ascending?: boolean, paginationToken?: string) {
+    async listReportsByCategory(category: string, ascending?: boolean, paginationToken?: string) {
         // TODO handle pagination
 
         const queryData = await this.ddbClient.query({

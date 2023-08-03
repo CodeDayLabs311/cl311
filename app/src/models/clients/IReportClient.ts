@@ -12,13 +12,23 @@ export interface IReportClient {
         paginationToken: string | undefined;
     }>;
 
+    
+    /** Filter by category and/or sort by newest/oldest submitted reports
+     * @param {string} category - The category of the reports to filter by, ex: Illegal Dumping
+     * @param {boolean} ascending - The sort order by submission time, ex: newest, oldest
+     * @param {string} paginationToken - A token to fetch the next set of reports in pagination.
+     */
     listReportsByCategory(
         category: string,
         ascending?: boolean,
         paginationToken?: string
     ): Promise<{ reports: IReport[]; paginationToken: string | undefined }>;
 
-    /** Filter by status, etc.*/
+    /** Filter by status and/or sort by newest/oldest submitted reports
+     * @param {string} status - The status of the reports to filter by, ex: Submitted
+     * @param {boolean} ascending - The sort order by submission time, ex: newest, oldest
+     * @param {string} paginationToken - A token to fetch the next set of reports in pagination.
+     */
     listReportsByStatus(
         status: string,
         ascending?: boolean,

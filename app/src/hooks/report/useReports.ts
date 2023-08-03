@@ -19,14 +19,17 @@ export type UseReportsResult = {
 };
 
 // TODO: add sort and filter category in the parameter of useReports()
-export const useReports = (queryOptions: GridFilterItem[], sortOptions?: boolean): UseReportsResult => {
+export const useReports = (
+    queryOptions: GridFilterItem[],
+    sortOptions?: boolean
+): UseReportsResult => {
     const reportClient = useReportClient();
     const [reports, setReports] = useState<IReport[]>([]);
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
     // TODO: add sort and filter category here
     const loadReports = useCallback(async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
             if (queryOptions.length > 0 && queryOptions[0].value !== undefined) {
                 /**
@@ -34,12 +37,12 @@ export const useReports = (queryOptions: GridFilterItem[], sortOptions?: boolean
                  * value: the filter value, ex: Status filter was set to 'Submitted'
                  * */
                 const { field, value } = queryOptions[0];
-    
+
                 if (field === ReportFields.Status_Of_Report && value) {
                     const result = await reportClient.listReportsByStatus(value, sortOptions);
                     setReports(result?.reports || []);
-                }else if (field === ReportFields.Report_Category && value){
-                    const result = await reportClient.listReportsByCategory(value, sortOptions)
+                } else if (field === ReportFields.Report_Category && value) {
+                    const result = await reportClient.listReportsByCategory(value, sortOptions);
                     setReports(result?.reports || []);
                 }
             } else {
@@ -47,25 +50,24 @@ export const useReports = (queryOptions: GridFilterItem[], sortOptions?: boolean
                 setReports(result?.reports || []);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
-        
     }, [reportClient, setReports, queryOptions, sortOptions]);
 
     const refreshReports = useCallback(async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         setReports([]);
         await loadReports();
-        setIsLoading(false)
+        setIsLoading(false);
     }, [loadReports, setReports]);
 
     // Load automatically on entering page
     useEffectAsync(async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         await loadReports();
-        setIsLoading(false)
+        setIsLoading(false);
     }, [loadReports]);
 
     return {

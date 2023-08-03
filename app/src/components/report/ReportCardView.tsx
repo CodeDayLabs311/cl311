@@ -17,7 +17,6 @@ export type ReportCardProps = {
 
 function translateISOTimestamp(ISOTimestamp: string): string {
     const ISOTime = new Date(ISOTimestamp);
-    console.log(ISOTimestamp);
     const localTime = ISOTime.toLocaleString('en-US');
     return localTime;
 }
