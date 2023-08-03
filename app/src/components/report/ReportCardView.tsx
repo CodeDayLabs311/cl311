@@ -11,6 +11,7 @@ import {
     StyledButton,
 } from '@/styles/StyleCardView';
 import { ReportCategories } from '@/models';
+import Image from 'next/image';
 
 export type ReportCardProps = {
     report: IReport;
@@ -75,7 +76,7 @@ export default function ReportCard({ report }: ReportCardProps) {
                             <Typography>
                                 <strong>Attachments:</strong>
                             </Typography>
-                            <img
+                            <Image
                                 src="https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg"
                                 alt="Attachment image"
                                 style={{
