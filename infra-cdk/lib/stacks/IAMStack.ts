@@ -22,24 +22,25 @@ export class IAMStack extends cdk.Stack {
         this.iamPolicy = new iam.Policy(this, `CL311Policy-${props.stage}-${props.tenant}`, {
             policyName: `CL311Policy-${props.stage}-${props.tenant}`,
             statements: [
-                // Allow access to DynamoDB table and S3 Buckets
                 new iam.PolicyStatement({
                     actions: [
                         'dynamodb:Scan',
                         'dynamodb:GetItem',
                         'dynamodb:PutItem',
                         'dynamodb:Query',
-                        's3:GetObject',
-                        's3:PutObject',
-                        's3:DeleteObject',
                     ],
                     resources: [
                         `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.tableName}`,
                         `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.tableName}/index/*`,
                         `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.reportsTableName}`,
                         `arn:aws:dynamodb:${ENVIRONMENT.region}:${ENVIRONMENT.account}:table/${props.reportsTableName}/index/*`,
-                        `arn:aws:s3:::${props.bucketStack.bucket.bucketName}`,
-                        `arn:aws:s3:::${props.bucketStack.bucket.bucketName}/*`,
+                    ],
+                }),
+                new iam.PolicyStatement({
+                    actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject'],
+                    resources: [
+                        `arn:aws:s3:::${props.reportsBucketName}`,
+                        `arn:aws:s3:::${props.reportsBucketName}/*`,
                     ],
                 }),
             ],

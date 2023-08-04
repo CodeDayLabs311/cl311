@@ -11,6 +11,7 @@ import {
     StyledButton,
 } from '@/styles/StyleCardView';
 import { ReportCategories } from '@/models';
+import Image from 'next/image';
 
 export type ReportCardProps = {
     report: IReport;
@@ -75,15 +76,11 @@ export default function ReportCard({ report }: ReportCardProps) {
                             <Typography>
                                 <strong>Attachments:</strong>
                             </Typography>
-                            <img
-                                src="https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg"
-                                alt="Attachment image"
-                                style={{
-                                    height: '500px',
-                                    width: '580px',
-                                    overflow: 'hidden',
-                                    objectFit: 'cover',
-                                }}
+                            <Image
+                                src="/https://smaller-pictures.appspot.com/images/dreamstime_xxl_65780868_small.jpg" // Fake image for now
+                                width={500}
+                                height={500}
+                                alt="Attachment Image"
                             />
                         </GroupedBox>
                         <GroupedBox>
@@ -92,7 +89,13 @@ export default function ReportCard({ report }: ReportCardProps) {
                             </Typography>
                             <Typography>
                                 <strong>Date and Time of Submission:</strong>{' '}
-                                {report.dateTimeOfSubmission}
+                                {new Date(report.dateTimeOfSubmission).toLocaleString('en-US')}
+                            </Typography>
+                            <Typography>
+                                <strong>Date and Time Last Edited:</strong>{' '}
+                                {report.dateTimeLastEdited
+                                    ? new Date(report.dateTimeLastEdited).toLocaleString('en-US')
+                                    : 'Never Edited'}
                             </Typography>
                         </GroupedBox>
                     </Grid>
