@@ -5,6 +5,9 @@ import { ReportCategories } from '@/models';
 import { useFormik, FormikHelpers } from 'formik';
 import { isUndefined } from '@/utils';
 import { VALIDATION_SCHEMA } from '../../utils/validation/ValidSchema';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import styles from '../../styles/Report.module.css';
 
 //Initial values for report form
 type NewReport = Omit<IReport, 'reportId'>;
@@ -76,185 +79,255 @@ export default function ReportCardEdit({
     });
 
     return (
-        <Form onSubmit={formik.handleSubmit}>
-            <Form.Label>Contact Information</Form.Label>
+        <Form className={styles['report-form']} onSubmit={formik.handleSubmit}>
+            <div className={styles['form-column']}>
+                <Form.Label className={styles['section-label']}>Contact Information</Form.Label>
 
-            <Form.Group className="mb-3" controlId="EditReport.Name">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                    name="name"
-                    type="text"
-                    placeholder="Please enter your name"
-                    value={formik.values.name}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                />
-            </Form.Group>
-            {formik.touched.name && formik.errors.name && (
-                <p className="text-danger">{formik.errors.name}</p>
-            )}
+                <Form.Group className={styles['form-group']} controlId="EditReport.Name">
+                    <Form.Label className={styles['label']}>Name</Form.Label>
+                    <Form.Control
+                        name="name"
+                        type="text"
+                        placeholder="Please enter your name"
+                        value={formik.values.name}
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                        className={styles['input']}
+                        isInvalid={formik.touched.name && !!formik.errors.name}
+                    />
+                    {formik.touched.name && formik.errors.name ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.name}
+                        </div>
+                    ) : formik.touched.name && !formik.errors.name ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="EditReport.EmailAddress">
-                <Form.Label>Email Address</Form.Label>
-                <Form.Control
-                    name="emailAddress"
-                    type="email"
-                    placeholder="Please enter your email address"
-                    value={formik.values.emailAddress}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                />
-            </Form.Group>
-            {formik.touched.emailAddress && formik.errors.emailAddress && (
-                <p className="text-danger">{formik.errors.emailAddress}</p>
-            )}
+                <Form.Group className={styles['form-group']} controlId="EditReport.EmailAddress">
+                    <Form.Label className={styles['label']}>Email Address</Form.Label>
+                    <Form.Control
+                        name="emailAddress"
+                        type="email"
+                        placeholder="Please enter your email address"
+                        value={formik.values.emailAddress}
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                        className={styles['input']}
+                        isInvalid={!!(formik.touched.emailAddress && formik.errors.emailAddress)}
+                    />
+                    {formik.touched.emailAddress && formik.errors.emailAddress ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.emailAddress}
+                        </div>
+                    ) : formik.touched.emailAddress && !formik.errors.emailAddress ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="EditReport.PhoneNumber">
-                <Form.Label>Phone Number</Form.Label>
-                <Form.Control
-                    name="phoneNumber"
-                    type="tel"
-                    placeholder="Please enter your phone number"
-                    value={formik.values.phoneNumber}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                />
-            </Form.Group>
-            {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-                <p className="text-danger">{formik.errors.phoneNumber}</p>
-            )}
+                <Form.Group className={styles['form-group']} controlId="EditReport.PhoneNumber">
+                    <Form.Label className={styles['label']}>Phone Number</Form.Label>
+                    <Form.Control
+                        name="phoneNumber"
+                        type="tel"
+                        placeholder="Please enter your phone number"
+                        value={formik.values.phoneNumber}
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                        className={styles['input']}
+                        isInvalid={!!(formik.touched.phoneNumber && formik.errors.phoneNumber)}
+                    />
+                    {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.phoneNumber}
+                        </div>
+                    ) : formik.touched.phoneNumber && !formik.errors.phoneNumber ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="EditReport.ReportCategory">
-                <Form.Label>Report Category</Form.Label>
-                {[
-                    ReportCategories.Illegal_Dumping,
-                    ReportCategories.Clogged_Storm_Drain,
-                    ReportCategories.Potholes,
-                    ReportCategories.Graffiti,
-                    ReportCategories.Street_Light_Outage,
-                    ReportCategories.Sidewalk_Damage,
-                    ReportCategories.Traffic_Signal_Malfunction,
-                    ReportCategories.Abandoned_Vehicles,
-                    ReportCategories.Noise_Complaint,
-                    ReportCategories.Other,
-                ].map((category) => (
-                    <div key={category}>
-                        <Form.Check
-                            name="reportCategory"
-                            type="radio"
-                            label={category}
-                            value={category}
-                            checked={formik.values.reportCategory === category}
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                        />
-                        {/* Show the additional input field only when 'Other' is selected */}
-                        {category === ReportCategories.Other &&
-                            formik.values.reportCategory === category && (
-                                <div>
-                                    <Form.Label>Other Category:</Form.Label>
-                                    <Form.Control
-                                        name="otherCategory"
-                                        value={formik.values.otherCategory}
-                                        type="text"
-                                        placeholder="Please enter your other category"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                    />
-                                </div>
-                            )}
+                <Form.Label className={styles['section-label']}>Report Category</Form.Label>
+                <Form.Group className={styles['form-group']} controlId="EditReport.ReportCategory">
+                    {[
+                        ReportCategories.Illegal_Dumping,
+                        ReportCategories.Clogged_Storm_Drain,
+                        ReportCategories.Potholes,
+                        ReportCategories.Graffiti,
+                        ReportCategories.Street_Light_Outage,
+                        ReportCategories.Sidewalk_Damage,
+                        ReportCategories.Traffic_Signal_Malfunction,
+                        ReportCategories.Abandoned_Vehicles,
+                        ReportCategories.Noise_Complaint,
+                        ReportCategories.Other,
+                    ].map((category) => (
+                        <div key={category}>
+                            <Form.Check
+                                name="reportCategory"
+                                type="radio"
+                                label={category}
+                                value={category}
+                                checked={formik.values.reportCategory === category}
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                className={styles['check-control']}
+                            />
+                            {/* Show the additional input field only when 'Other' is selected */}
+                            {category === ReportCategories.Other &&
+                                formik.values.reportCategory === category && (
+                                    <div>
+                                        <Form.Label>Other Category:</Form.Label>
+                                        <Form.Control
+                                            name="otherCategory"
+                                            value={formik.values.otherCategory}
+                                            type="text"
+                                            placeholder="Please enter your other category"
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                        />
+                                    </div>
+                                )}
+                        </div>
+                    ))}
+                </Form.Group>
+                {formik.touched.reportCategory && formik.errors.reportCategory ? (
+                    <div className="text-danger">
+                        <ErrorOutlineIcon /> {formik.errors.reportCategory}
                     </div>
-                ))}
-            </Form.Group>
-            {formik.touched.reportCategory && formik.errors.reportCategory && (
-                <p className="text-danger">{formik.errors.reportCategory}</p>
-            )}
-            {formik.touched.otherCategory && formik.errors.otherCategory && (
-                <p className="text-danger">{formik.errors.otherCategory}</p>
-            )}
+                ) : formik.touched.reportCategory && !formik.errors.reportCategory ? (
+                    <div style={{ color: 'blue' }}>
+                        <CheckCircleOutlineIcon />
+                    </div>
+                ) : null}
+                {formik.touched.otherCategory && formik.errors.otherCategory && (
+                    <p className="text-danger">{formik.errors.otherCategory}</p>
+                )}
+            </div>
 
-            <Form.Group className="mb-3" controlId="EditReport.Address">
-                <Form.Label>Address</Form.Label>
-                <Form.Control
-                    name="address"
-                    type="text"
-                    placeholder="Please enter your issue location"
-                    value={formik.values.address}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                />
-            </Form.Group>
-            {formik.touched.address && formik.errors.address && (
-                <p className="text-danger">{formik.errors.address}</p>
-            )}
+            <div className={styles['form-column']}>
+                <Form.Label className={styles['section-label']}>Issue</Form.Label>
+                <Form.Group className={styles['form-group']} controlId="EditReport.Address">
+                    <Form.Label className={styles['label']}>Address</Form.Label>
+                    <Form.Control
+                        name="address"
+                        type="text"
+                        placeholder="Please enter your issue location"
+                        value={formik.values.address}
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                        className={styles['input']}
+                        isInvalid={formik.touched.address && !!formik.errors.address}
+                    />
+                    {formik.touched.address && formik.errors.address ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.address}
+                        </div>
+                    ) : formik.touched.address && !formik.errors.address ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="EditReport.IssueDescription">
-                <Form.Label>Issue Description</Form.Label>
-                <Form.Control
-                    name="issueDescription"
-                    as="textarea"
-                    rows={4}
-                    placeholder="Please enter your issue description"
-                    value={formik.values.issueDescription}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                />
-            </Form.Group>
-            {formik.touched.issueDescription && formik.errors.issueDescription && (
-                <p className="text-danger">{formik.errors.issueDescription}</p>
-            )}
+                <Form.Group
+                    className={styles['form-group']}
+                    controlId="EditReport.IssueDescription"
+                >
+                    <Form.Label className={styles['label']}>Description</Form.Label>
+                    <Form.Control
+                        name="issueDescription"
+                        as="textarea"
+                        rows={4}
+                        placeholder="Please enter your issue description"
+                        value={formik.values.issueDescription}
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                        className={styles['input']}
+                        isInvalid={
+                            formik.touched.issueDescription && !!formik.errors.issueDescription
+                        }
+                    />
+                    {formik.touched.issueDescription && formik.errors.issueDescription ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.issueDescription}
+                        </div>
+                    ) : formik.touched.issueDescription && !formik.errors.issueDescription ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="EditReport.Attachments">
-                <Form.Label>Attachments</Form.Label>
-                <Form.Control
-                    name="attachments"
-                    type="text"
-                    placeholder="Please enter your attachments"
-                    value={formik.values.attachments}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                />
-            </Form.Group>
+                <Form.Group className={styles['form-group']} controlId="EditReport.Attachments">
+                    <Form.Label className={styles['label']}>Attachments</Form.Label>
+                    <Form.Control
+                        name="attachments"
+                        type="text"
+                        placeholder="Please enter your attachments"
+                        value={formik.values.attachments}
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                        className={styles['input']}
+                    />
+                </Form.Group>
 
-            <Form.Label>Status Updates</Form.Label>
+                <Form.Label className={styles['section-label']}>Status Updates</Form.Label>
+                <Form.Group className={styles['form-group']} controlId="EditReport.Email">
+                    <Form.Check
+                        name="email"
+                        type="checkbox"
+                        label="Email"
+                        checked={formik.values.email}
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                    />
+                </Form.Group>
+                {formik.touched.email && formik.errors.email && (
+                    <p className="text-danger">{formik.errors.email}</p>
+                )}
 
-            <Form.Group className="mb-3" controlId="EditReport.Email">
-                <Form.Check
-                    name="email"
-                    type="checkbox"
-                    label="Email"
-                    checked={formik.values.email}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                />
-            </Form.Group>
-            {formik.touched.email && formik.errors.email && (
-                <p className="text-danger">{formik.errors.email}</p>
-            )}
+                <Form.Group className={styles['form-group']} controlId="EditReport.Sms">
+                    <Form.Check
+                        name="sms"
+                        type="checkbox"
+                        label="SMS"
+                        checked={formik.values.sms}
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                    />
+                </Form.Group>
+                {formik.touched.sms && formik.errors.sms && (
+                    <p className="text-danger">{formik.errors.sms}</p>
+                )}
 
-            <Form.Group className="mb-3" controlId="EditReport.Sms">
-                <Form.Check
-                    name="sms"
-                    type="checkbox"
-                    label="SMS"
-                    checked={formik.values.sms}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                />
-            </Form.Group>
-            {formik.touched.sms && formik.errors.sms && (
-                <p className="text-danger">{formik.errors.sms}</p>
-            )}
-
-            <Stack direction="horizontal" gap={3} className="justify-content-end">
-                <div className="my-auto"></div>
-                <ButtonLink variant="secondary" href={cancelHref}>
-                    Cancel
-                </ButtonLink>
-                <Button variant="primary" type="submit" disabled={formik.isSubmitting}>
-                    {formik.isSubmitting ? <Spinner animation="border" size="sm" /> : submitLabel}
-                </Button>
-            </Stack>
+                <Stack direction="horizontal" gap={3} className={styles['button-container']}>
+                    <div className="my-auto"></div>
+                    <ButtonLink
+                        className={styles['btn-cancel']}
+                        variant="secondary"
+                        href={cancelHref}
+                    >
+                        Cancel
+                    </ButtonLink>
+                    <Button
+                        className={styles['btn-create']}
+                        variant="primary"
+                        type="submit"
+                        disabled={formik.isSubmitting}
+                    >
+                        {formik.isSubmitting ? (
+                            <Spinner animation="border" size="sm" />
+                        ) : (
+                            submitLabel
+                        )}
+                    </Button>
+                </Stack>
+            </div>
         </Form>
     );
 }
