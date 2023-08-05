@@ -5,6 +5,8 @@ import { ReportCategories } from '@/models';
 import { useFormik, FormikHelpers } from 'formik';
 import { isUndefined } from '@/utils';
 import { VALIDATION_SCHEMA } from '../../utils/validation/ValidSchema';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import styles from '../../styles/Report.module.css';
 
 //Initial values for report form
@@ -91,11 +93,18 @@ export default function ReportCardEdit({
                         onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         className={styles['input']}
+                        isInvalid={formik.touched.name && !!formik.errors.name}
                     />
+                    {formik.touched.name && formik.errors.name ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.name}
+                        </div>
+                    ) : formik.touched.name && !formik.errors.name ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
                 </Form.Group>
-                {formik.touched.name && formik.errors.name && (
-                    <p className="text-danger">{formik.errors.name}</p>
-                )}
 
                 <Form.Group className={styles['form-group']} controlId="EditReport.EmailAddress">
                     <Form.Label className={styles['label']}>Email Address</Form.Label>
@@ -107,11 +116,18 @@ export default function ReportCardEdit({
                         onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         className={styles['input']}
+                        isInvalid={!!(formik.touched.emailAddress && formik.errors.emailAddress)}
                     />
+                    {formik.touched.emailAddress && formik.errors.emailAddress ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.emailAddress}
+                        </div>
+                    ) : formik.touched.emailAddress && !formik.errors.emailAddress ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
                 </Form.Group>
-                {formik.touched.emailAddress && formik.errors.emailAddress && (
-                    <p className="text-danger">{formik.errors.emailAddress}</p>
-                )}
 
                 <Form.Group className={styles['form-group']} controlId="EditReport.PhoneNumber">
                     <Form.Label className={styles['label']}>Phone Number</Form.Label>
@@ -123,11 +139,18 @@ export default function ReportCardEdit({
                         onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         className={styles['input']}
+                        isInvalid={!!(formik.touched.phoneNumber && formik.errors.phoneNumber)}
                     />
+                    {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.phoneNumber}
+                        </div>
+                    ) : formik.touched.phoneNumber && !formik.errors.phoneNumber ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
                 </Form.Group>
-                {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-                    <p className="text-danger">{formik.errors.phoneNumber}</p>
-                )}
 
                 <Form.Label className={styles['section-label']}>Report Category</Form.Label>
                 <Form.Group className={styles['form-group']} controlId="EditReport.ReportCategory">
@@ -172,9 +195,15 @@ export default function ReportCardEdit({
                         </div>
                     ))}
                 </Form.Group>
-                {formik.touched.reportCategory && formik.errors.reportCategory && (
-                    <p className="text-danger">{formik.errors.reportCategory}</p>
-                )}
+                {formik.touched.reportCategory && formik.errors.reportCategory ? (
+                    <div className="text-danger">
+                        <ErrorOutlineIcon /> {formik.errors.reportCategory}
+                    </div>
+                ) : formik.touched.reportCategory && !formik.errors.reportCategory ? (
+                    <div style={{ color: 'blue' }}>
+                        <CheckCircleOutlineIcon />
+                    </div>
+                ) : null}
                 {formik.touched.otherCategory && formik.errors.otherCategory && (
                     <p className="text-danger">{formik.errors.otherCategory}</p>
                 )}
@@ -192,11 +221,18 @@ export default function ReportCardEdit({
                         onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         className={styles['input']}
+                        isInvalid={formik.touched.address && !!formik.errors.address}
                     />
+                    {formik.touched.address && formik.errors.address ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.address}
+                        </div>
+                    ) : formik.touched.address && !formik.errors.address ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
                 </Form.Group>
-                {formik.touched.address && formik.errors.address && (
-                    <p className="text-danger">{formik.errors.address}</p>
-                )}
 
                 <Form.Group
                     className={styles['form-group']}
@@ -212,11 +248,20 @@ export default function ReportCardEdit({
                         onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         className={styles['input']}
+                        isInvalid={
+                            formik.touched.issueDescription && !!formik.errors.issueDescription
+                        }
                     />
+                    {formik.touched.issueDescription && formik.errors.issueDescription ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.issueDescription}
+                        </div>
+                    ) : formik.touched.issueDescription && !formik.errors.issueDescription ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
                 </Form.Group>
-                {formik.touched.issueDescription && formik.errors.issueDescription && (
-                    <p className="text-danger">{formik.errors.issueDescription}</p>
-                )}
 
                 <Form.Group className={styles['form-group']} controlId="EditReport.Attachments">
                     <Form.Label className={styles['label']}>Attachments</Form.Label>
