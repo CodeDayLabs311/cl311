@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import ButtonLink from './ButtonLink';
+import { Container, Navbar, Nav } from 'react-bootstrap';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import { DARK_PRIMARY } from '@/styles/ColorScheme';
+import BasicMenu from './BasicMenu';
 
 /** Bootstrap Navbar Brand Link that functions as NextJs Link */
 function BrandLink({ label, href }: { label: string; href: string }) {
@@ -10,20 +10,13 @@ function BrandLink({ label, href }: { label: string; href: string }) {
         <>
             {/* @ts-ignore */}
             <Navbar.Brand as={Link} href={href}>
-                {label}
+                <EngineeringIcon
+                    style={{ color: DARK_PRIMARY, marginRight: '0.2rem', fontSize: '2.5rem' }}
+                />
+                <span style={{ fontWeight: 'bold', color: DARK_PRIMARY, fontSize: '1.5rem' }}>
+                    {label}
+                </span>
             </Navbar.Brand>
-        </>
-    );
-}
-
-/** Bootstrap Navbar Link that functions as NextJs Link */
-function NavLink({ label, href }: { label: string; href: string }) {
-    return (
-        <>
-            {/* @ts-ignore */}
-            <Nav.Link as={Link} href={href} variant="primary">
-                {label}
-            </Nav.Link>
         </>
     );
 }
@@ -34,23 +27,7 @@ export default function PageNav() {
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
                 <BrandLink label="CL311" href="/" />
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <NavLink label="GuestBook" href="/guestbook" />
-                        <NavLink label="Report" href="/report" />
-                    </Nav>
-                </Navbar.Collapse>
-                <Navbar.Collapse className="justify-content-end">
-                    <Nav>
-                        <ButtonLink variant="success" href="/guestbook/create" style={{marginRight: '1rem'}}>
-                            Add GuestBook
-                        </ButtonLink>
-                        <ButtonLink variant="success" href="/report/create">
-                            Add Report
-                        </ButtonLink>
-                    </Nav>
-                </Navbar.Collapse>
+                <BasicMenu />
             </Container>
         </Navbar>
     );

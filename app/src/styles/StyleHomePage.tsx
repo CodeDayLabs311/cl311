@@ -51,4 +51,13 @@ const StyledSubHeading = styled('span')({
     marginBottom: '20px',
 });
 
-export { StyledButton, TextBtn, Frame, StyledHeading, StyledSubHeading };
+const ItemsHeader = styled(Box)({
+    width: '70%',
+});
+
+const BoldText = styled('span')({
+    fontWeight: 'bold',
+    marginRight: '20px',
+});
+
+export { StyledButton, TextBtn, Frame, StyledHeading, StyledSubHeading, ItemsHeader, BoldText };
