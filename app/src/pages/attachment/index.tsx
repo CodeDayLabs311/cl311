@@ -1,36 +1,44 @@
 import React from 'react';
 import Link from 'next/link';
 
-const Attachment = () => (
-    <>
-        <p>Upload a .png or .jpg image (max 1MB).</p>
-        <input onChange={uploadPhoto} type="file" accept="image/png, image/jpeg" />
-    </>
-);
+const Attachment = () => {
 
-const uploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]!;
-    const filename = encodeURIComponent(file.name);
-    const fileType = encodeURIComponent(file.type);
+    const uploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]!;
+        const filename = encodeURIComponent(file.name);
+        const fileType = encodeURIComponent(file.type);
 
-    const res = await fetch(`/api/upload-url?file=${filename}&fileType=${fileType}`);
-    const { url, fields } = await res.json();
-    const formData = new FormData();
+        const res = await fetch(`/api/attachment/upload-url?file=${filename}&fileType=${fileType}`);
+        if (!res.ok) {
+            console.error('Failed to get the signed URL.');
+            return;
+        }
 
-    Object.entries({ ...fields, file }).forEach(([key, value]) => {
-        formData.append(key, value as string);
-    });
+        const { url, fields } = await res.json();
+        const formData = new FormData();
 
-    const upload = await fetch(url, {
-        method: 'POST',
-        body: formData,
-    });
+        Object.entries({ ...fields, file }).forEach(([key, value]) => {
+            formData.append(key, value as string);
+        });
 
-    if (upload.ok) {
-        console.log('Uploaded successfully!');
-    } else {
-        console.error('Upload failed.');
-    }
-};
+        const upload = await fetch(url, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (upload.ok) {
+            console.log('Uploaded successfully!');
+        } else {
+            console.error('Upload failed.');
+        }
+    };
+
+    return (
+        <>
+            <p>Upload a .png or .jpg image (max 1MB).</p>
+            <input onChange={uploadPhoto} type="file" accept="image/png, image/jpeg" />
+        </>
+    );
+}
 
 export default Attachment;
