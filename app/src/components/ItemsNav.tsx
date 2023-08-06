@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { ItemsHeader, BoldText } from '@/styles/StyleHomePage';
 
-export default function ColorTabs() {
+export default function ItemsNav() {
     const [value, setValue] = React.useState('one');
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {

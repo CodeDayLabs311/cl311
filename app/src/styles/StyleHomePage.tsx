@@ -58,6 +58,7 @@ const ItemsHeader = styled(Box)({
 const BoldText = styled('span')({
     fontWeight: 'bold',
     marginRight: '20px',
+    color: DARK_PRIMARY,
 });
 
 export { StyledButton, TextBtn, Frame, StyledHeading, StyledSubHeading, ItemsHeader, BoldText };

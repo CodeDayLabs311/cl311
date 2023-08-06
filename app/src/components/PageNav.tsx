@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import { DARK_PRIMARY } from '@/styles/ColorScheme';
-import BasicMenu from './BasicMenu';
+import ItemsNav from './ItemsNav';
 
 /** Bootstrap Navbar Brand Link that functions as NextJs Link */
 function BrandLink({ label, href }: { label: string; href: string }) {
@@ -27,7 +27,7 @@ export default function PageNav() {
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
                 <BrandLink label="CL311" href="/" />
-                <BasicMenu />
+                <ItemsNav />
             </Container>
         </Navbar>
     );
