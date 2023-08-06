@@ -9,6 +9,7 @@ import {
     FooterDetails,
     IDText,
     StyledButton,
+    TextBtn,
 } from '@/styles/StyleCardView';
 import { ReportCategories } from '@/models';
 import Image from 'next/image';
@@ -109,7 +110,7 @@ export default function ReportCard({ report }: ReportCardProps) {
                         </p>
                         <div className="vr"></div>
                         <StyledButton variant="secondary" href={`/report/${report.reportId}/edit`}>
-                            Edit
+                            <TextBtn>Edit</TextBtn>
                         </StyledButton>
                     </Stack>
                 </GroupedBox>

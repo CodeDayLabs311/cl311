@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab';
 import { ItemsHeader, BoldText } from '@/styles/StyleHomePage';
 
 export default function ItemsNav() {
-    const [value, setValue] = React.useState('one');
+    const [value, setValue] = React.useState<string | undefined>();
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -12,13 +12,7 @@ export default function ItemsNav() {
 
     return (
         <ItemsHeader>
-            <Tabs
-                value={value}
-                onChange={handleChange}
-                textColor="primary"
-                indicatorColor="primary"
-                aria-label="primary tabs example"
-            >
+            <Tabs value={value} onChange={handleChange}>
                 <Tab value="one" label={<BoldText>Dashboard</BoldText>} href="/dashboard" />
                 <Tab value="two" label={<BoldText>Add Report</BoldText>} href="/report/create" />
                 <Tab value="three" label={<BoldText>Report List</BoldText>} href="/report" />
