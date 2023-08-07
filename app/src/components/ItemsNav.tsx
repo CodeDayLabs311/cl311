@@ -17,8 +17,8 @@ export default function ItemsNav() {
             <Tabs
                 value={value}
                 onChange={handleChange}
-                textColor="primary" 
-                indicatorColor="primary" 
+                textColor="primary"
+                indicatorColor="primary"
                 aria-label="primary tabs example"
             >
                 <Tab value="/dashboard" label={<BoldText>Dashboard</BoldText>} href="/dashboard" />
