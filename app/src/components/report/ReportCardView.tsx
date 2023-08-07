@@ -17,6 +17,12 @@ export type ReportCardProps = {
     report: IReport;
 };
 
+function translateISOTimestamp(ISOTimestamp: string): string {
+    const ISOTime = new Date(ISOTimestamp);
+    const localTime = ISOTime.toLocaleString('en-US');
+    return localTime;
+}
+
 /** Report Card View */
 export default function ReportCard({ report }: ReportCardProps) {
     return (
@@ -89,12 +95,12 @@ export default function ReportCard({ report }: ReportCardProps) {
                             </Typography>
                             <Typography>
                                 <strong>Date and Time of Submission:</strong>{' '}
-                                {new Date(report.dateTimeOfSubmission).toLocaleString('en-US')}
+                                {translateISOTimestamp(report.dateTimeOfSubmission)}
                             </Typography>
                             <Typography>
                                 <strong>Date and Time Last Edited:</strong>{' '}
                                 {report.dateTimeLastEdited
-                                    ? new Date(report.dateTimeLastEdited).toLocaleString('en-US')
+                                    ? translateISOTimestamp(report.dateTimeLastEdited)
                                     : 'Never Edited'}
                             </Typography>
                         </GroupedBox>
