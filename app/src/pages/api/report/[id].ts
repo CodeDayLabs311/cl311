@@ -88,7 +88,6 @@ export default async function handler(
             const report = await reportClient.getReport(id as string);
 
             if (isUndefined(report)) {
-                report;
                 return res.status(404).send({ message: NOT_FOUND });
             }
 
