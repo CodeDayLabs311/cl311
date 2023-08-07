@@ -3,7 +3,14 @@ import { Construct } from 'constructs';
 import { ENVIRONMENT } from '../core/constants';
 import { Stage, Tenant } from '../core/enums';
 import { BaseStackProps } from '../core/types';
-import { DevIAMStack, IAMStack, MessagesTableStack, NextJsStack, ReportsTableStack } from '../stacks';
+import {
+    DevIAMStack,
+    IAMStack,
+    MessagesTableStack,
+    NextJsStack,
+    ReportsTableStack,
+    ReportsBucketStack,
+} from '../stacks';
 
 export type ApplicationStageProps = BaseStackProps;
 
@@ -21,6 +28,15 @@ export class ApplicationStage extends cdk.Stage {
         const messagesTableStack = new MessagesTableStack(
             this,
             `MessagesTableStack-${props.stage}-${props.tenant}`,
+            {
+                ...baseStackProps,
+            }
+        );
+
+        // S3 Bucket for storing images
+        const s3BucketStack = new ReportsBucketStack(
+            this,
+            `S3BucketStack-${props.stage}-${props.tenant}`,
             {
                 ...baseStackProps,
             }

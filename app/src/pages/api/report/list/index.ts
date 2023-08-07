@@ -28,6 +28,7 @@ export interface IListReportResponse {
  *  - 405: when non-allowed method is used
  *  - 500: internal server error
  */
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<IListReportResponse | IApiErrorResponse>
@@ -44,7 +45,7 @@ export default async function handler(
 
     try {
         const reportClient = new ReportDbClient();
-
+      
         if (status) {
             const { reports, paginationToken } = await reportClient.listReportsByStatus(
                 status,

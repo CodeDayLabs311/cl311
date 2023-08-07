@@ -11,6 +11,8 @@ export interface IReportClient {
         reports: IReport[];
         paginationToken: string | undefined;
     }>;
+    /** Put report */
+    putReport(report: IReport): Promise<IReport | undefined>;
 
     /** Filter by category and/or sort by newest/oldest submitted reports
      * @param {string} category - The category of the reports to filter by, ex: Illegal Dumping

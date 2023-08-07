@@ -6,6 +6,7 @@ export interface IReport {
     emailAddress: string;
     phoneNumber: string;
     reportCategory: string;
+    otherCategory: string;
     address: string;
     gpsCoordinates: string;
     issueDescription: string;
@@ -14,6 +15,7 @@ export interface IReport {
     sms: boolean;
     statusOfReport: string;
     dateTimeOfSubmission: string;
+    dateTimeLastEdited: string;
 }
 
 /** Report (DynamoDB model) */
@@ -24,6 +26,7 @@ export interface IDBReport {
     EmailAddress: { S: string };
     PhoneNumber: { S: string };
     ReportCategory: { S: string };
+    OtherCategory: { S: string };
     Address: { S: string };
     GpsCoordinates: { S: string };
     IssueDescription: { S: string };
@@ -32,4 +35,5 @@ export interface IDBReport {
     Sms: { BOOL: boolean };
     StatusOfReport: { S: string };
     DateTimeOfSubmission: { S: string };
+    DateTimeLastEdited: { S: string };
 }
