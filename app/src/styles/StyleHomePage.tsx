@@ -17,7 +17,7 @@ const StyledButton = styled(ButtonLink)({
     boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)',
     fontWeight: 'bold',
     height: '70px',
-    width: '250px',
+    width: '300px',
     '&:hover': {
         background: `linear-gradient(45deg, ${PRIMARY_BACKGROUND}, ${MEDIUM_PRIMARY})`,
     },

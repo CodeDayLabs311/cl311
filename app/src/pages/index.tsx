@@ -33,8 +33,8 @@ export default function Home() {
                                 </StyledSubHeading>
                             </Grid>
                             <Grid container justifyContent="center">
-                                <StyledButton variant="secondary" href="/report/dashboard">
-                                    <TextBtn>Dashboard</TextBtn>
+                                <StyledButton variant="secondary" href="/report/create">
+                                    <TextBtn>Report An Issue</TextBtn>
                                 </StyledButton>
                             </Grid>
                             <Grid container spacing={4}>

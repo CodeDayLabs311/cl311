@@ -13,15 +13,15 @@ export default function ItemsNav() {
     return (
         <ItemsHeader>
             <Tabs value={value} onChange={handleChange}>
-                <Tab value="one" label={<BoldText>Dashboard</BoldText>} href="/dashboard" />
-                <Tab value="two" label={<BoldText>Add Report</BoldText>} href="/report/create" />
-                <Tab value="three" label={<BoldText>Report List</BoldText>} href="/report" />
+                <Tab value="dashboard" label={<BoldText>Dashboard</BoldText>} href="/dashboard" />
+                <Tab value="add-report" label={<BoldText>Add Report</BoldText>} href="/report/create" />
+                <Tab value="report-list" label={<BoldText>Report List</BoldText>} href="/report" />
                 <Tab
-                    value="four"
+                    value="add-guestbook"
                     label={<BoldText>Add Guestbook</BoldText>}
                     href="/guestbook/create"
                 />
-                <Tab value="five" label={<BoldText>Guestbook List</BoldText>} href="/guestbook" />
+                <Tab value="guestbook-list" label={<BoldText>Guestbook List</BoldText>} href="/guestbook" />
             </Tabs>
         </ItemsHeader>
     );
