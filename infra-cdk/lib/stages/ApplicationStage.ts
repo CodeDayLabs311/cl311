@@ -55,6 +55,7 @@ export class ApplicationStage extends cdk.Stage {
         const iamStack = new IAMStack(this, `IAMStack-${props.stage}-${props.tenant}`, {
             tableName: messagesTableStack.getTableName(),
             reportsTableName: reportsTableStack.getTableName(),
+            reportsBucketName: s3BucketStack.getBucketName(),
             ...baseStackProps,
         });
 
