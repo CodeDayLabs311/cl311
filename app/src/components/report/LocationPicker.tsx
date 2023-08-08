@@ -1,8 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import Map, { Marker, LngLat, MarkerDragEvent } from 'react-map-gl';
+import Map, { useControl, Marker, LngLat, MarkerDragEvent } from 'react-map-gl';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { Form } from 'react-bootstrap';
+
+const MAPBOX_ACCESS_TOKEN= process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+
+function LocationSearchBar() {
+    const geocoder = new MapboxGeocoder({
+        accessToken: MAPBOX_ACCESS_TOKEN,
+        mapboxgl: mapboxgl,
+        marker: true,
+        placeholder:'Where do you report it?',
+    });
+
+    useControl(() => geocoder);
+
+    return null;
+}
 
 export default function LocationPicker() {
     const [viewState, setViewState] = useState({
@@ -32,7 +49,8 @@ export default function LocationPicker() {
             }}
         >
             <Map
-                mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+                mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
+                reuseMaps={true} //remove this if map breaks
                 initialViewState={{ ...viewState }}
                 style={{ width: 600, height: 400 }}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
@@ -44,6 +62,7 @@ export default function LocationPicker() {
                     draggable={true}
                     onDragEnd={handleDragEnd}
                 />
+                <LocationSearchBar/>
             </Map>
 
             <Form className="locationSearchBar">
