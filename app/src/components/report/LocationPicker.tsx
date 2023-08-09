@@ -12,8 +12,7 @@ import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import { Form } from 'react-bootstrap';
-import { error } from 'console';
+import { Form, Button } from 'react-bootstrap';
 
 const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
@@ -32,7 +31,7 @@ function LocationSearchBar({ placeMarker }: LocationSearchBarProps) {
     useControl(() => geocoder);
 
     geocoder.on('result', (event) => {
-        // console.log(event);
+        console.log(event);
         placeMarker(event.result.geometry.coordinates);
     });
 
@@ -47,6 +46,7 @@ export default function LocationPicker() {
     });
 
     const [reportLocation, setReportLocation] = useState<number[]>([]);
+    const [reportAddress, setReportAddress] = useState<string | undefined>(undefined);
 
     function handleDragEnd(event: MarkerDragEvent) {
         const { lng, lat } = event.lngLat;
@@ -59,12 +59,30 @@ export default function LocationPicker() {
         setReportLocation([longitude, latitude]);
     }
 
+    async function reverseGeolocation() {
+        const endpoint = 'mapbox.places';
+        const [longitude, latitude] = reportLocation;
+
+        if (!longitude || !latitude) return;
+
+        try {
+            const response = await fetch(
+                `https://api.mapbox.com/geocoding/v5/${endpoint}/${longitude},${latitude}.json?types=address,poi,place&access_token=${MAPBOX_ACCESS_TOKEN}`
+            );
+            const json = await response.json();
+            // console.log(json)
+            const address = json.features[0].place_name;
+            setReportAddress(address);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div
             style={{
-                height: '400px',
-                marginBottom: '20px',
-                // overflow: 'hidden',
+                height: 'auto',
+                width: '600px',
             }}
         >
             <Map
@@ -87,7 +105,9 @@ export default function LocationPicker() {
                 <GeolocateControl
                     position="bottom-right"
                     onGeolocate={handleGeolocate}
-                    onError={(error) => console.log(error)}
+                    onError={(error) => {
+                        window.alert(error.message);
+                    }}
                 />
             </Map>
 
@@ -95,6 +115,10 @@ export default function LocationPicker() {
                 <Form.Group>
                     <Form.Control placeholder="Coordinate" value={reportLocation.map(String)} />
                 </Form.Group>
+                <Form.Group>
+                    <Form.Control placeholder="Addresses" value={reportAddress} />
+                </Form.Group>
+                <Button onClick={reverseGeolocation}>Reverse Geo</Button>
             </Form>
         </div>
     );
