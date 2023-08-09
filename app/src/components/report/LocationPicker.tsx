@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import Map, { useControl, Marker, LngLat, MarkerDragEvent } from 'react-map-gl';
+import Map, { useControl, useMap, Marker, LngLat, MarkerDragEvent } from 'react-map-gl';
 import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { Form } from 'react-bootstrap';
 
-const MAPBOX_ACCESS_TOKEN= process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
-function LocationSearchBar() {
+type LocationSearchBarProps = {
+    placeMarker: (location: number[]) => void;
+};
+
+function LocationSearchBar({ placeMarker }: LocationSearchBarProps) {
     const geocoder = new MapboxGeocoder({
         accessToken: MAPBOX_ACCESS_TOKEN,
         mapboxgl: mapboxgl,
-        marker: true,
-        placeholder:'Where do you report it?',
+        marker: false,
+        placeholder: 'Where do you report it?',
     });
 
     useControl(() => geocoder);
+
+    geocoder.on('result', (event) => {
+        placeMarker(event.result.geometry.coordinates)
+    });
 
     return null;
 }
@@ -33,11 +41,6 @@ export default function LocationPicker() {
     function handleDragEnd(event: MarkerDragEvent) {
         const { lng, lat } = event.lngLat;
         setReportLocation([lng, lat]);
-        setViewState((prev) => ({
-            ...prev,
-            longitude: lng,
-            latitude: lat,
-        }));
     }
 
     return (
@@ -55,14 +58,14 @@ export default function LocationPicker() {
                 style={{ width: 600, height: 400 }}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
             >
-                <Marker
-                    longitude={viewState.longitude}
-                    latitude={viewState.latitude}
+                {reportLocation.length > 0 && <Marker
+                    longitude={reportLocation[0]}
+                    latitude={reportLocation[1]}
                     color="red"
                     draggable={true}
                     onDragEnd={handleDragEnd}
-                />
-                <LocationSearchBar/>
+                />}
+                <LocationSearchBar placeMarker={setReportLocation} />
             </Map>
 
             <Form className="locationSearchBar">
