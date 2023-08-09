@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import Map, { useControl, useMap, Marker, LngLat, MarkerDragEvent } from 'react-map-gl';
+import Map, {
+    useControl,
+    useMap,
+    Marker,
+    LngLat,
+    MarkerDragEvent,
+    GeolocateControl,
+    GeolocateResultEvent,
+} from 'react-map-gl';
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { Form } from 'react-bootstrap';
+import { error } from 'console';
 
 const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
@@ -23,7 +32,8 @@ function LocationSearchBar({ placeMarker }: LocationSearchBarProps) {
     useControl(() => geocoder);
 
     geocoder.on('result', (event) => {
-        placeMarker(event.result.geometry.coordinates)
+        // console.log(event);
+        placeMarker(event.result.geometry.coordinates);
     });
 
     return null;
@@ -43,6 +53,12 @@ export default function LocationPicker() {
         setReportLocation([lng, lat]);
     }
 
+    function handleGeolocate(event: GeolocateResultEvent) {
+        // console.log(event);
+        const { longitude, latitude } = event.coords;
+        setReportLocation([longitude, latitude]);
+    }
+
     return (
         <div
             style={{
@@ -58,14 +74,21 @@ export default function LocationPicker() {
                 style={{ width: 600, height: 400 }}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
             >
-                {reportLocation.length > 0 && <Marker
-                    longitude={reportLocation[0]}
-                    latitude={reportLocation[1]}
-                    color="red"
-                    draggable={true}
-                    onDragEnd={handleDragEnd}
-                />}
+                {reportLocation.length > 0 && (
+                    <Marker
+                        longitude={reportLocation[0]}
+                        latitude={reportLocation[1]}
+                        color="red"
+                        draggable={true}
+                        onDragEnd={handleDragEnd}
+                    />
+                )}
                 <LocationSearchBar placeMarker={setReportLocation} />
+                <GeolocateControl
+                    position="bottom-right"
+                    onGeolocate={handleGeolocate}
+                    onError={(error) => console.log(error)}
+                />
             </Map>
 
             <Form className="locationSearchBar">
