@@ -9,7 +9,7 @@ export default function ButtonLink(props: ButtonLinkProps) {
     return (
         <>
             {/* @ts-ignore */}
-            <Button as={Link} {...props}>
+            <Button as={Link} {...props} variant="outlined">
                 {props.children}
             </Button>
         </>
