@@ -53,12 +53,12 @@ export default function FAQ() {
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 <StyledText>
-                                    What should I do if I'm not sure about the issue location?
+                                    What should I do if I&apos;m not sure about the issue location?
                                 </StyledText>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>
-                                    If you're unsure about the issue's location, please provide as
+                                    If you&apos;re unsure about the issue&apos;s location, please provide as
                                     much information as possible, such as landmarks, nearby
                                     addresses, or any other helpful details. Additionally, we do
                                     have a Location Map Picker available to help you precisely
@@ -100,7 +100,7 @@ export default function FAQ() {
                                     If you need to provide additional information after the initial
                                     submission, please contact our support team by using the contact
                                     form on our website. Alternatively, you can access your report
-                                    in the Report List section, where you'll find an Edit button
+                                    in the Report List section, where you&apos;ll find an Edit button
                                     that allows you to update your report with any relevant details.
                                 </Typography>
                             </AccordionDetails>
@@ -139,7 +139,7 @@ export default function FAQ() {
                             <AccordionDetails>
                                 <Typography>
                                     We value your feedback and suggestions for enhancing our
-                                    platform's functionality and user experience. Please feel free
+                                    platform&apos;s functionality and user experience. Please feel free
                                     to share your thoughts with us through the provided contact
                                     form, email [{ContactInformation.Customer_Support}], or city
                                     helpline {ContactInformation.City_Helpline}.
