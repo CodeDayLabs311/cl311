@@ -20,6 +20,34 @@ type LocationSearchBarProps = {
     placeMarker: (location: number[]) => void;
 };
 
+type ViewStateType = {
+    longitude: number;
+    latitude: number;
+    zoom: number;
+};
+
+/** Save user reported location in local storage */
+function submitLocation(reportCoords: number[]) {
+    localStorage.setItem('lastReportedLocation', JSON.stringify(reportCoords));
+}
+
+/** Retrieve last user reported location */
+function fetchUserLastLocation() {
+    if (typeof window === 'undefined') return{ longitude: -117.15726, latitude: 32.71533, zoom: 10.5 }
+
+    const lastReportedLocation = localStorage.getItem('lastReportedLocation');
+
+    if (lastReportedLocation) {
+        const [longitude, latitude] = JSON.parse(lastReportedLocation);
+        console.log('Setting to user location:', longitude, latitude); // debug line
+        return { longitude, latitude, zoom: 10.5 };
+    } else {
+        console.log('Setting to default location'); // debug line
+        return{ longitude: -117.15726, latitude: 32.71533, zoom: 10.5 };
+    }
+}
+
+/** Location Search Bar */
 function LocationSearchBar({ placeMarker }: LocationSearchBarProps) {
     const geocoder = new MapboxGeocoder({
         accessToken: MAPBOX_ACCESS_TOKEN,
@@ -38,30 +66,26 @@ function LocationSearchBar({ placeMarker }: LocationSearchBarProps) {
     return null;
 }
 
+/** The map */
 export default function LocationPicker() {
-    const [viewState, setViewState] = useState({
-        longitude: -122.335167,
-        latitude: 47.608013,
-        zoom: 10.5,
-    });
-
-    const [reportLocation, setReportLocation] = useState<number[]>([]);
+    const [viewState, setViewState] = useState<ViewStateType | {}>(fetchUserLastLocation);
+    const [reportCoords, setReportCoords] = useState<number[]>([]);
     const [reportAddress, setReportAddress] = useState<string | undefined>(undefined);
 
     function handleDragEnd(event: MarkerDragEvent) {
         const { lng, lat } = event.lngLat;
-        setReportLocation([lng, lat]);
+        setReportCoords([lng, lat]);
     }
 
     function handleGeolocate(event: GeolocateResultEvent) {
         // console.log(event);
         const { longitude, latitude } = event.coords;
-        setReportLocation([longitude, latitude]);
+        setReportCoords([longitude, latitude]);
     }
 
     async function reverseGeolocation() {
         const endpoint = 'mapbox.places';
-        const [longitude, latitude] = reportLocation;
+        const [longitude, latitude] = reportCoords;
 
         if (!longitude || !latitude) return;
 
@@ -71,8 +95,8 @@ export default function LocationPicker() {
             );
             const json = await response.json();
             // console.log(json)
-            const address = json.features[0].place_name;
-            setReportAddress(address);
+            const results = json.features[0];
+            setReportAddress(results?.place_name || undefined);
         } catch (error) {
             console.log(error);
         }
@@ -92,16 +116,16 @@ export default function LocationPicker() {
                 style={{ width: 600, height: 400 }}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
             >
-                {reportLocation.length > 0 && (
+                {reportCoords.length > 0 && (
                     <Marker
-                        longitude={reportLocation[0]}
-                        latitude={reportLocation[1]}
+                        longitude={reportCoords[0]}
+                        latitude={reportCoords[1]}
                         color="red"
                         draggable={true}
                         onDragEnd={handleDragEnd}
                     />
                 )}
-                <LocationSearchBar placeMarker={setReportLocation} />
+                <LocationSearchBar placeMarker={setReportCoords} />
                 <GeolocateControl
                     position="bottom-right"
                     onGeolocate={handleGeolocate}
@@ -113,12 +137,13 @@ export default function LocationPicker() {
 
             <Form className="locationSearchBar">
                 <Form.Group>
-                    <Form.Control placeholder="Coordinate" value={reportLocation.map(String)} />
+                    <Form.Control placeholder="Coordinates" value={reportCoords.map(String)} />
                 </Form.Group>
                 <Form.Group>
-                    <Form.Control placeholder="Addresses" value={reportAddress} />
+                    <Form.Control placeholder="Address" value={reportAddress} />
                 </Form.Group>
                 <Button onClick={reverseGeolocation}>Reverse Geo</Button>
+                <Button onClick={() => submitLocation(reportCoords)}>Submit Location</Button>
             </Form>
         </div>
     );
