@@ -74,9 +74,11 @@ function LocationSearchBar({ placeMarker, proximity }: LocationSearchBarProps) {
 
 /** The map */
 export default function LocationPicker() {
+    // View Box of the map upon entering a page
     const [viewState, setViewState] = useState<ViewStateType | {}>(fetchUserLastLocation);
-    //Coordinates of the marker (aka reported place)
+    // Coordinates of the marker (aka reported place)
     const [reportCoords, setReportCoords] = useState<number[]>([]);
+    // Address of the marker
     const [reportAddress, setReportAddress] = useState<string | undefined>(undefined);
 
     function handleDragEnd(event: MarkerDragEvent) {
@@ -112,15 +114,15 @@ export default function LocationPicker() {
     return (
         <div
             style={{
-                height: 'auto',
-                width: '600px',
+                height: '100%',
+                width: '100%',
             }}
         >
             <Map
                 mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
                 reuseMaps={true} //remove this if map breaks
                 initialViewState={{ ...viewState }}
-                style={{ width: 600, height: 400 }}
+                style={{ width: '100%', height: '100%', borderRadius: 5 }}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
             >
                 {reportCoords.length > 0 && (
@@ -149,7 +151,7 @@ export default function LocationPicker() {
                 />
             </Map>
 
-            <Form className="locationSearchBar">
+            <Form>
                 <Form.Group>
                     <Form.Control placeholder="Coordinates" value={reportCoords.map(String)} />
                 </Form.Group>
