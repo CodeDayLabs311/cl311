@@ -15,51 +15,57 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { Form, Button } from 'react-bootstrap';
 
 const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+const DEFAULT_COORDINATES = { longitude: -95.844032, latitude: 36.966428, zoom: 3 };
+
+type CoordinatesType = {
+    longitude: number;
+    latitude: number;
+};
+
+type ViewStateType = CoordinatesType & {
+    zoom: number;
+};
 
 type LocationSearchBarProps = {
     placeMarker: (location: number[]) => void;
-};
-
-type ViewStateType = {
-    longitude: number;
-    latitude: number;
-    zoom: number;
+    proximity?: CoordinatesType;
 };
 
 /** Save user reported location in local storage */
 function submitLocation(reportCoords: number[]) {
+    if (typeof window === 'undefined') return;
     localStorage.setItem('lastReportedLocation', JSON.stringify(reportCoords));
 }
 
 /** Retrieve last user reported location */
 function fetchUserLastLocation() {
-    if (typeof window === 'undefined') return{ longitude: -117.15726, latitude: 32.71533, zoom: 10.5 }
+    if (typeof window === 'undefined') return DEFAULT_COORDINATES;
 
     const lastReportedLocation = localStorage.getItem('lastReportedLocation');
 
     if (lastReportedLocation) {
         const [longitude, latitude] = JSON.parse(lastReportedLocation);
-        console.log('Setting to user location:', longitude, latitude); // debug line
         return { longitude, latitude, zoom: 10.5 };
     } else {
-        console.log('Setting to default location'); // debug line
-        return{ longitude: -117.15726, latitude: 32.71533, zoom: 10.5 };
+        return DEFAULT_COORDINATES;
     }
 }
 
 /** Location Search Bar */
-function LocationSearchBar({ placeMarker }: LocationSearchBarProps) {
+function LocationSearchBar({ placeMarker, proximity }: LocationSearchBarProps) {
     const geocoder = new MapboxGeocoder({
         accessToken: MAPBOX_ACCESS_TOKEN,
         mapboxgl: mapboxgl,
         marker: false,
         placeholder: 'Where do you report it?',
+        countries: 'us',
+        proximity,
     });
 
     useControl(() => geocoder);
 
     geocoder.on('result', (event) => {
-        console.log(event);
+        // console.log(event);
         placeMarker(event.result.geometry.coordinates);
     });
 
@@ -125,7 +131,14 @@ export default function LocationPicker() {
                         onDragEnd={handleDragEnd}
                     />
                 )}
-                <LocationSearchBar placeMarker={setReportCoords} />
+                <LocationSearchBar
+                    placeMarker={setReportCoords}
+                    proximity={
+                        reportCoords.length > 0
+                            ? { longitude: reportCoords[0], latitude: reportCoords[1] }
+                            : undefined
+                    }
+                />
                 <GeolocateControl
                     position="bottom-right"
                     onGeolocate={handleGeolocate}
