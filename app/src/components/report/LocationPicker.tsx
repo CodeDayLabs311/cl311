@@ -75,6 +75,7 @@ function LocationSearchBar({ placeMarker, proximity }: LocationSearchBarProps) {
 /** The map */
 export default function LocationPicker() {
     const [viewState, setViewState] = useState<ViewStateType | {}>(fetchUserLastLocation);
+    //Coordinates of the marker (aka reported place)
     const [reportCoords, setReportCoords] = useState<number[]>([]);
     const [reportAddress, setReportAddress] = useState<string | undefined>(undefined);
 
