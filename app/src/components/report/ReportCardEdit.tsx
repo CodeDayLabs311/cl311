@@ -49,15 +49,23 @@ export default function ReportCardEdit({
     onEdit,
     cancelHref,
 }: ReportEditProps) {
-    const { reportCoords, updateReportCoords } = useLocationPicker();
+    const fetchReportCoordinates = (): CoordinatesType | undefined => {
+        if (isUndefined(report)) {
+            return undefined;
+        }
+        const regex = /^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/;
+        if (!regex.test(report!.gpsCoordinates)) return undefined;
+        
+        const [longitude, latitude] = report!.gpsCoordinates.split(',').map(Number);
+        console.log(longitude, latitude);
+        return { longitude, latitude };
+    };
+
+    const { reportCoords, updateReportCoords } = useLocationPicker(fetchReportCoordinates());
 
     const fillOutAddress = (address: string) => {
         formik.setFieldValue('address', address);
     };
-
-    useEffect(() => {
-        console.log('from report edit ', reportCoords);
-    }, [reportCoords]);
 
     const initializeValues = (): InitialValuesType => {
         if (isUndefined(report)) {
@@ -78,7 +86,7 @@ export default function ReportCardEdit({
         const fullReport: InitialValuesType = !isUndefined(reportCoords)
             ? {
                   ...report,
-                  gpsCoordinates: `${reportCoords?.longitude}, ${reportCoords?.latitude}`,
+                  gpsCoordinates: `${reportCoords?.longitude},${reportCoords?.latitude}`,
               }
             : report;
 

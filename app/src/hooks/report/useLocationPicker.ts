@@ -6,9 +6,11 @@ type UseMapResults = {
     updateReportCoords: (newCoords: CoordinatesType) => void;
 };
 
-export const useLocationPicker = (): UseMapResults => {
+export const useLocationPicker = (
+    existingReportCoords: CoordinatesType | undefined
+): UseMapResults => {
     // Coordinates of the marker (aka reported place)
-    const [reportCoords, setReportCoords] = useState<CoordinatesType | undefined>(undefined);
+    const [reportCoords, setReportCoords] = useState<CoordinatesType | undefined>(existingReportCoords);
 
     const updateReportCoords = useCallback((newCoords: CoordinatesType) => {
         setReportCoords(newCoords);
