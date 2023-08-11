@@ -8,6 +8,9 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import styles from '../../styles/Report.module.css';
 import LocationPicker from './LocationPicker';
+import { CoordinatesType } from './LocationPicker';
+import { useLocationPicker } from '@/hooks';
+import { useEffect } from 'react';
 
 //Initial values for report form
 type NewReport = Omit<IReport, 'reportId'>;
@@ -46,6 +49,17 @@ export default function ReportCardEdit({
     onEdit,
     cancelHref,
 }: ReportEditProps) {
+
+    const { reportCoords, updateReportCoords } = useLocationPicker();
+    
+    const fillOutAddress = (address: string) => {
+        formik.setFieldValue('address', address);
+    }
+
+    useEffect(()=>{
+        console.log('from report edit ', reportCoords)
+    },[reportCoords])
+
     const initializeValues = (): InitialValuesType => {
         if (isUndefined(report)) {
             return getInitialReport();
@@ -81,7 +95,7 @@ export default function ReportCardEdit({
     return (
         <Form className={styles['report-form']} onSubmit={formik.handleSubmit}>
             <div className={styles['map-row']}>
-                <LocationPicker />
+                <LocationPicker reportCoords={reportCoords} updateReportCoords={updateReportCoords} fillOutAddress={fillOutAddress} />
             </div>
             <div className={styles['details-row']}>
                 <div className={styles['form-column']}>

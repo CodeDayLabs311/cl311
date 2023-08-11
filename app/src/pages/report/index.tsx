@@ -4,7 +4,6 @@ import PageHeader from '@/components/PageHeader';
 import Container from 'react-bootstrap/Container';
 import Loading from '@/components/Loading';
 import Table from '../../components/report/Table';
-
 export default function ReportList() {
     return (
         <>
