@@ -43,6 +43,7 @@ export default async function handler(
 
         const params = req.body as IReport;
 
+        console.log('params from create api (backend valid) ', params)
         // Validate the request body against the validation schema
         try {
             await VALIDATION_SCHEMA.validate(params, { abortEarly: false });
@@ -56,6 +57,7 @@ export default async function handler(
             }
 
         } catch (validationError) {
+            console.log('error in backend valid ', validationError)
             // Check if the validationError is an instance of Yup.ValidationError
             if (validationError instanceof Yup.ValidationError) {
                 // Validation failed, return error response

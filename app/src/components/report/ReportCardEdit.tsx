@@ -7,7 +7,7 @@ import { isUndefined, VALIDATION_SCHEMA } from '@/utils';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import styles from '../../styles/Report.module.css';
-import LocationPicker from './LocationPicker';
+import LocationPicker, { submitLocation } from './LocationPicker';
 import { CoordinatesType } from './LocationPicker';
 import { useLocationPicker } from '@/hooks';
 import { useEffect } from 'react';
@@ -49,16 +49,15 @@ export default function ReportCardEdit({
     onEdit,
     cancelHref,
 }: ReportEditProps) {
-
     const { reportCoords, updateReportCoords } = useLocationPicker();
-    
+
     const fillOutAddress = (address: string) => {
         formik.setFieldValue('address', address);
-    }
+    };
 
-    useEffect(()=>{
-        console.log('from report edit ', reportCoords)
-    },[reportCoords])
+    useEffect(() => {
+        console.log('from report edit ', reportCoords);
+    }, [reportCoords]);
 
     const initializeValues = (): InitialValuesType => {
         if (isUndefined(report)) {
@@ -73,15 +72,27 @@ export default function ReportCardEdit({
     ) => {
         const { setSubmitting } = formikHelpers;
         setSubmitting(true);
+
+        // console.log(report)
+
+        const fullReport: InitialValuesType = !isUndefined(reportCoords)
+            ? {
+                  ...report,
+                  gpsCoordinates: `${reportCoords?.longitude}, ${reportCoords?.latitude}`,
+              }
+            : report;
+
+        // console.log(fullReport)
         try {
             if (onEdit && 'reportId' in report) {
-                await onEdit(report as IReport);
+                await onEdit(fullReport as IReport);
             } else if (onCreate) {
-                await onCreate(report as NewReport);
+                await onCreate(fullReport as NewReport);
             }
         } catch (error) {
             console.log('Failed to Create Report', error);
         } finally {
+            submitLocation(reportCoords);
             setSubmitting(false);
         }
     };
@@ -95,7 +106,11 @@ export default function ReportCardEdit({
     return (
         <Form className={styles['report-form']} onSubmit={formik.handleSubmit}>
             <div className={styles['map-row']}>
-                <LocationPicker reportCoords={reportCoords} updateReportCoords={updateReportCoords} fillOutAddress={fillOutAddress} />
+                <LocationPicker
+                    reportCoords={reportCoords}
+                    updateReportCoords={updateReportCoords}
+                    fillOutAddress={fillOutAddress}
+                />
             </div>
             <div className={styles['details-row']}>
                 <div className={styles['form-column']}>

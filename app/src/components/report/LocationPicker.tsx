@@ -40,7 +40,7 @@ type LocationPickerProps = {
 };
 
 /** Save user reported location in local storage */
-function submitLocation(reportCoords: CoordinatesType) {
+export function submitLocation(reportCoords: CoordinatesType | undefined) {
     if (typeof window === 'undefined' || isUndefined(reportCoords)) return;
     localStorage.setItem('lastReportedLocation', JSON.stringify(reportCoords));
 }
