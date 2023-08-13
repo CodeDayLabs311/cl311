@@ -12,7 +12,7 @@ export const useLocationPicker = (
     // Coordinates of the marker (aka reported place)
     const [reportCoords, setReportCoords] = useState<CoordinatesType | undefined>(existingReportCoords);
 
-    const updateReportCoords = useCallback((newCoords: CoordinatesType) => {
+    const updateReportCoords = useCallback((newCoords: CoordinatesType | undefined) => {
         setReportCoords(newCoords);
     }, []);
 

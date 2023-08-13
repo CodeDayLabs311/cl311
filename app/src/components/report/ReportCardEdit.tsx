@@ -1,5 +1,5 @@
 import { IReport } from '@/models';
-import { Spinner, Stack, Button, Form } from 'react-bootstrap';
+import { Spinner, Stack, Button, Form, ButtonGroup } from 'react-bootstrap';
 import ButtonLink from '../ButtonLink';
 import { ReportCategories } from '@/models';
 import { useFormik, FormikHelpers } from 'formik';
@@ -10,7 +10,7 @@ import styles from '../../styles/Report.module.css';
 import LocationPicker, { submitLocation } from './LocationPicker';
 import { CoordinatesType } from './LocationPicker';
 import { useLocationPicker } from '@/hooks';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 //Initial values for report form
 type NewReport = Omit<IReport, 'reportId'>;
@@ -49,9 +49,13 @@ export default function ReportCardEdit({
     onEdit,
     cancelHref,
 }: ReportEditProps) {
+    // Check if the user wants to use map for location picker
+    const [useMap, setUseMap] = useState<boolean>(false);
+
+    // Fetch location of existing report to display marker on edit page only
     const fetchReportCoordinates = (): CoordinatesType | undefined => {
         if (isUndefined(report)) return undefined;
-        
+
         const regex = /^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/;
         if (!regex.test(report!.gpsCoordinates)) return undefined;
 
@@ -60,10 +64,24 @@ export default function ReportCardEdit({
         return { longitude, latitude };
     };
 
-    const { reportCoords, updateReportCoords } = useLocationPicker(fetchReportCoordinates());
-
     const fillOutAddress = (address: string) => {
         formik.setFieldValue('address', address);
+    };
+
+    // Track current coordinate of report
+    const { reportCoords, updateReportCoords } = useLocationPicker(fetchReportCoordinates());
+
+    const openMap = () => {
+        setUseMap(true);
+        formik.setFieldValue('address', '');
+    };
+
+    const closeMap = () => {
+        setUseMap(false);
+        formik.setFieldValue('address', '');
+        if (!isUndefined(reportCoords)) {
+            updateReportCoords(undefined);
+        }
     };
 
     const initializeValues = (): InitialValuesType => {
@@ -112,13 +130,26 @@ export default function ReportCardEdit({
 
     return (
         <Form className={styles['report-form']} onSubmit={formik.handleSubmit}>
-            <div className={styles['map-row']}>
-                <LocationPicker
-                    reportCoords={reportCoords}
-                    updateReportCoords={updateReportCoords}
-                    fillOutAddress={fillOutAddress}
-                />
-            </div>
+            <ButtonGroup
+                role="group"
+                aria-label="Enter address mannually or Use map for location picker"
+            >
+                <Button variant={!useMap ? 'primary' : 'secondary'} onClick={closeMap}>
+                    I want to enter the address mannually
+                </Button>
+                <Button variant={useMap ? 'primary' : 'secondary'} onClick={openMap}>
+                    I want to use the map to mark the location
+                </Button>
+            </ButtonGroup>
+            {useMap && (
+                <div className={styles['map-row']}>
+                    <LocationPicker
+                        reportCoords={reportCoords}
+                        updateReportCoords={updateReportCoords}
+                        fillOutAddress={fillOutAddress}
+                    />
+                </div>
+            )}
             <div className={styles['details-row']}>
                 <div className={styles['form-column']}>
                     <Form.Label className={styles['section-label']}>Contact Information</Form.Label>
@@ -270,6 +301,7 @@ export default function ReportCardEdit({
                             onChange={formik.handleChange}
                             className={styles['input']}
                             isInvalid={formik.touched.address && !!formik.errors.address}
+                            readOnly={useMap}
                         />
                         {formik.touched.address && formik.errors.address ? (
                             <div className="text-danger">
