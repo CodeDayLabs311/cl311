@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 
 const Attachment = () => {
-
     const uploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]!;
         const filename = encodeURIComponent(file.name);
@@ -39,6 +38,6 @@ const Attachment = () => {
             <input onChange={uploadPhoto} type="file" accept="image/png, image/jpeg" />
         </>
     );
-}
+};
 
 export default Attachment;

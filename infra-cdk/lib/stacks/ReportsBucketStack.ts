@@ -22,7 +22,7 @@ export class ReportsBucketStack extends cdk.Stack {
             bucketName: this.getBucketName(),
             blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
             removalPolicy: cdk.RemovalPolicy.RETAIN,
-            cors: [ //CORS configuration added
+            cors: [
                 {
                     allowedHeaders: ['*'],
                     allowedOrigins: ['*'],
