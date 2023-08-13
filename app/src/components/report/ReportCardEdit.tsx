@@ -50,12 +50,11 @@ export default function ReportCardEdit({
     cancelHref,
 }: ReportEditProps) {
     const fetchReportCoordinates = (): CoordinatesType | undefined => {
-        if (isUndefined(report)) {
-            return undefined;
-        }
+        if (isUndefined(report)) return undefined;
+        
         const regex = /^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/;
         if (!regex.test(report!.gpsCoordinates)) return undefined;
-        
+
         const [longitude, latitude] = report!.gpsCoordinates.split(',').map(Number);
         console.log(longitude, latitude);
         return { longitude, latitude };

@@ -82,15 +82,20 @@ function LocationSearchBar({ placeMarker, proximity }: LocationSearchBarProps) {
 }
 
 /** The map */
-export default function LocationPicker({ reportCoords, updateReportCoords, fillOutAddress }: LocationPickerProps) {
+export default function LocationPicker({
+    reportCoords,
+    updateReportCoords,
+    fillOutAddress,
+}: LocationPickerProps) {
     // View Box of the map upon entering a page
     const [viewState, setViewState] = useState<ViewStateType | {}>(fetchUserLastLocation);
     // Address of the marker
     const [reportAddress, setReportAddress] = useState<string | undefined>(undefined);
+    // Disable the marker after user already submit location
+    const [draggableMarker, setDraggableMarker] = useState<boolean>(true);
 
     function updateLocationAndAddress(newCoords: CoordinatesType) {
         updateReportCoords(newCoords);
-        // fillOutAddress(newCoords)
     }
 
     function handleDragEnd(event: MarkerDragEvent) {
@@ -107,6 +112,11 @@ export default function LocationPicker({ reportCoords, updateReportCoords, fillO
 
     // Translate coordinates to address
     async function reverseGeolocation() {
+        if (!draggableMarker) {
+            setDraggableMarker(true);
+            return;
+        }
+
         if (isUndefined(reportCoords)) return;
 
         const { longitude, latitude } = reportCoords!;
@@ -119,10 +129,10 @@ export default function LocationPicker({ reportCoords, updateReportCoords, fillO
                 `https://api.mapbox.com/geocoding/v5/${endpoint}/${longitude},${latitude}.json?types=address,poi,place&access_token=${MAPBOX_ACCESS_TOKEN}`
             );
             const json = await response.json();
-            // console.log(json)
             const results = json.features[0];
             fillOutAddress(results.place_name);
-            // setReportAddress(results?.place_name || undefined);
+            // Disable marker after submitted location
+            setDraggableMarker(false);
         } catch (error) {
             console.log(error);
         }
@@ -147,8 +157,9 @@ export default function LocationPicker({ reportCoords, updateReportCoords, fillO
                         longitude={reportCoords!.longitude}
                         latitude={reportCoords!.latitude}
                         color="red"
-                        draggable={true}
+                        draggable={draggableMarker}
                         onDragEnd={handleDragEnd}
+                        onClick={() => console.log('clicked me!')}
                     />
                 )}
                 <LocationSearchBar
@@ -170,7 +181,9 @@ export default function LocationPicker({ reportCoords, updateReportCoords, fillO
                     }}
                 />
             </Map>
-            <Button onClick={reverseGeolocation}>Report at this location</Button>
+            <Button onClick={reverseGeolocation}>
+                {draggableMarker ? 'Report at this location' : 'Update new location'}
+            </Button>
 
             {/* <Form>
                 <Form.Group>
