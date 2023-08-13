@@ -36,7 +36,7 @@ type LocationSearchBarProps = {
 
 type LocationPickerProps = {
     reportCoords: CoordinatesType | undefined;
-    existingCoords: boolean;
+    wasMarkerSet: boolean;
     updateReportCoords: (newCoords: CoordinatesType) => void;
     fillOutAddress: (address: string) => void;
 };
@@ -45,20 +45,6 @@ type LocationPickerProps = {
 export function submitLocation(reportCoords: CoordinatesType | undefined) {
     if (typeof window === 'undefined' || isUndefined(reportCoords)) return;
     localStorage.setItem('lastReportedLocation', JSON.stringify(reportCoords));
-}
-
-/** Retrieve last user reported location */
-function fetchUserLastLocation() {
-    if (typeof window === 'undefined') return DEFAULT_COORDINATES;
-
-    const lastReportedLocation = localStorage.getItem('lastReportedLocation');
-
-    if (lastReportedLocation) {
-        const { longitude, latitude } = JSON.parse(lastReportedLocation);
-        return { longitude, latitude, zoom: 10.5 };
-    } else {
-        return DEFAULT_COORDINATES;
-    }
 }
 
 /** Location Search Bar */
@@ -88,14 +74,29 @@ export default function LocationPicker({
     reportCoords,
     updateReportCoords,
     fillOutAddress,
-    existingCoords,
+    wasMarkerSet,
 }: LocationPickerProps) {
+    /** Retrieve last user reported location for the view of the map upon loading page*/
+    function fetchUserLastLocation(): ViewStateType {
+        if (typeof window === 'undefined') return DEFAULT_COORDINATES;
+
+        if (isUndefined(reportCoords)) {
+            const lastReportedLocation = localStorage.getItem('lastReportedLocation');
+
+            if (lastReportedLocation) {
+                const { longitude, latitude } = JSON.parse(lastReportedLocation);
+                return { longitude, latitude, zoom: 10.5 };
+            } else {
+                return DEFAULT_COORDINATES;
+            }
+        } else {
+            return { ...reportCoords!, zoom: 10.5 };
+        }
+    }
     // View Box of the map upon entering a page
     const [viewState, setViewState] = useState<ViewStateType | {}>(fetchUserLastLocation);
-    // Address of the marker
-    const [reportAddress, setReportAddress] = useState<string | undefined>(undefined);
-    // Disable the marker after user already submit location
-    const [draggableMarker, setDraggableMarker] = useState<boolean>(existingCoords);
+    // Disable the marker after user already submit location - also used to check if the location has already been submitted
+    const [draggableMarker, setDraggableMarker] = useState<boolean>(wasMarkerSet);
     // Ref to open modal alert
     const modalRef = useRef<ModalHandle | null>(null);
 
@@ -104,9 +105,9 @@ export default function LocationPicker({
         updateReportCoords({ longitude: lng, latitude: lat });
     }
 
-    // Track user location and put the marker there
+    // Track user location and put the marker there only if the location is not submitted
     function handleGeolocate(event: GeolocateResultEvent) {
-        // console.log(event);
+        if (!draggableMarker) return;
         const { longitude, latitude } = event.coords;
         updateReportCoords({ longitude, latitude });
     }

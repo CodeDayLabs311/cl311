@@ -3,7 +3,7 @@ import React, { useState, useCallback } from 'react';
 
 type UseMapResults = {
     reportCoords: CoordinatesType | undefined;
-    updateReportCoords: (newCoords: CoordinatesType) => void;
+    updateReportCoords: (newCoords: CoordinatesType | undefined) => void;
 };
 
 export const useLocationPicker = (

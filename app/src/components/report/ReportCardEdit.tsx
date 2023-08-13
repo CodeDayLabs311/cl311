@@ -61,11 +61,11 @@ export default function ReportCardEdit({
         return { longitude, latitude };
     };
 
-    const existingCoordsOrNull  = fetchReportCoordinates();
-    const wasMapUsed = existingCoordsOrNull  ? true : false;
+    const existingCoordsOrNull = fetchReportCoordinates();
+    const wasMapUsed = existingCoordsOrNull ? true : false;
 
     // Track current coordinate of report
-    const { reportCoords, updateReportCoords } = useLocationPicker(existingCoordsOrNull );
+    const { reportCoords, updateReportCoords } = useLocationPicker(existingCoordsOrNull);
 
     // Check if the user chooses use map for location picker
     const [useMap, setUseMap] = useState<boolean>(wasMapUsed);
@@ -149,7 +149,7 @@ export default function ReportCardEdit({
                         reportCoords={reportCoords}
                         updateReportCoords={updateReportCoords}
                         fillOutAddress={fillOutAddress}
-                        existingCoords={!wasMapUsed}
+                        wasMarkerSet={!wasMapUsed}
                     />
                 </div>
             )}
