@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Map, {
     useControl,
     useMap,
@@ -15,6 +15,7 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { Form, Button } from 'react-bootstrap';
 import { isUndefined } from '@/utils';
 import { useLocationPicker } from '@/hooks';
+import MyModal, { ModalHandle } from './MyModal';
 
 const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 const DEFAULT_COORDINATES = { longitude: -95.844032, latitude: 36.966428, zoom: 3 };
@@ -93,30 +94,29 @@ export default function LocationPicker({
     const [reportAddress, setReportAddress] = useState<string | undefined>(undefined);
     // Disable the marker after user already submit location
     const [draggableMarker, setDraggableMarker] = useState<boolean>(true);
-
-    function updateLocationAndAddress(newCoords: CoordinatesType) {
-        updateReportCoords(newCoords);
-    }
+    // Ref to open modal alert
+    const modalRef = useRef<ModalHandle | null>(null);
 
     function handleDragEnd(event: MarkerDragEvent) {
         const { lng, lat } = event.lngLat;
-        updateLocationAndAddress({ longitude: lng, latitude: lat });
+        updateReportCoords({ longitude: lng, latitude: lat });
     }
 
     // Track user location and put the marker there
     function handleGeolocate(event: GeolocateResultEvent) {
         // console.log(event);
         const { longitude, latitude } = event.coords;
-        updateLocationAndAddress({ longitude, latitude });
+        updateReportCoords({ longitude, latitude });
+    }
+
+    // Reset current location and get new location
+    function resetLocationAndAddress() {
+        setDraggableMarker(true);
+        fillOutAddress('');
     }
 
     // Translate coordinates to address
     async function reverseGeolocation() {
-        if (!draggableMarker) {
-            setDraggableMarker(true);
-            return;
-        }
-
         if (isUndefined(reportCoords)) return;
 
         const { longitude, latitude } = reportCoords!;
@@ -151,6 +151,10 @@ export default function LocationPicker({
                 initialViewState={{ ...viewState }}
                 style={{ width: '100%', height: '100%', borderRadius: 5 }}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
+                onClick={() => {
+                    if (draggableMarker) return;
+                    modalRef.current?.openModal();
+                }}
             >
                 {!isUndefined(reportCoords) && (
                     <Marker
@@ -159,11 +163,10 @@ export default function LocationPicker({
                         color="red"
                         draggable={draggableMarker}
                         onDragEnd={handleDragEnd}
-                        onClick={() => console.log('clicked me!')}
                     />
                 )}
                 <LocationSearchBar
-                    placeMarker={updateLocationAndAddress}
+                    placeMarker={updateReportCoords}
                     proximity={
                         !isUndefined(reportCoords)
                             ? {
@@ -181,9 +184,22 @@ export default function LocationPicker({
                     }}
                 />
             </Map>
-            <Button onClick={reverseGeolocation}>
-                {draggableMarker ? 'Report at this location' : 'Update new location'}
-            </Button>
+            <MyModal
+                ref={modalRef}
+                header="Alert!"
+                description="Do you want to change the location? This will reset the current address."
+                resetLocation={resetLocationAndAddress}
+            />
+            <div
+                style={{
+                    marginTop: 10,
+                    textAlign: 'center',
+                }}
+            >
+                <Button disabled={!draggableMarker} onClick={reverseGeolocation}>
+                    {draggableMarker ? 'Report at this location' : 'Location already submitted'}
+                </Button>
+            </div>
 
             {/* <Form>
                 <Form.Group>
