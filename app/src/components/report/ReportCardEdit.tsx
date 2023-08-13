@@ -49,9 +49,6 @@ export default function ReportCardEdit({
     onEdit,
     cancelHref,
 }: ReportEditProps) {
-    // Check if the user wants to use map for location picker
-    const [useMap, setUseMap] = useState<boolean>(false);
-
     // Fetch location of existing report to display marker on edit page only
     const fetchReportCoordinates = (): CoordinatesType | undefined => {
         if (isUndefined(report)) return undefined;
@@ -64,12 +61,14 @@ export default function ReportCardEdit({
         return { longitude, latitude };
     };
 
-    const fillOutAddress = (address: string) => {
-        formik.setFieldValue('address', address);
-    };
+    const existingCoordsOrNull  = fetchReportCoordinates();
+    const wasMapUsed = existingCoordsOrNull  ? true : false;
 
     // Track current coordinate of report
-    const { reportCoords, updateReportCoords } = useLocationPicker(fetchReportCoordinates());
+    const { reportCoords, updateReportCoords } = useLocationPicker(existingCoordsOrNull );
+
+    // Check if the user chooses use map for location picker
+    const [useMap, setUseMap] = useState<boolean>(wasMapUsed);
 
     const openMap = () => {
         setUseMap(true);
@@ -84,6 +83,9 @@ export default function ReportCardEdit({
         }
     };
 
+    const fillOutAddress = (address: string) => {
+        formik.setFieldValue('address', address);
+    };
     const initializeValues = (): InitialValuesType => {
         if (isUndefined(report)) {
             return getInitialReport();
@@ -147,6 +149,7 @@ export default function ReportCardEdit({
                         reportCoords={reportCoords}
                         updateReportCoords={updateReportCoords}
                         fillOutAddress={fillOutAddress}
+                        existingCoords={!wasMapUsed}
                     />
                 </div>
             )}

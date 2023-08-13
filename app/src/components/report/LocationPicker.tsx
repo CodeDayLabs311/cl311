@@ -36,6 +36,7 @@ type LocationSearchBarProps = {
 
 type LocationPickerProps = {
     reportCoords: CoordinatesType | undefined;
+    existingCoords: boolean;
     updateReportCoords: (newCoords: CoordinatesType) => void;
     fillOutAddress: (address: string) => void;
 };
@@ -87,13 +88,14 @@ export default function LocationPicker({
     reportCoords,
     updateReportCoords,
     fillOutAddress,
+    existingCoords,
 }: LocationPickerProps) {
     // View Box of the map upon entering a page
     const [viewState, setViewState] = useState<ViewStateType | {}>(fetchUserLastLocation);
     // Address of the marker
     const [reportAddress, setReportAddress] = useState<string | undefined>(undefined);
     // Disable the marker after user already submit location
-    const [draggableMarker, setDraggableMarker] = useState<boolean>(true);
+    const [draggableMarker, setDraggableMarker] = useState<boolean>(existingCoords);
     // Ref to open modal alert
     const modalRef = useRef<ModalHandle | null>(null);
 
