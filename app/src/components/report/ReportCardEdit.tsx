@@ -169,7 +169,7 @@ export default function ReportCardEdit({
             <MyModal
                 ref={modalRef}
                 header="Alert!"
-                description="Do you switch location input mode? This will reset the current address."
+                description="Do you switch the location input mode? This will reset the current address."
                 denyMessage="No, I do not want to switch"
                 confirmMessage={`Yes, I want to switch to ${useMap ? 'manual input' : 'map'} mode`}
                 onConfirm={() => {
