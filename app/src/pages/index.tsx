@@ -56,6 +56,10 @@ export default function Home() {
                                     />
                                 </Grid>
                             </Grid>
+                            <p>
+                                Image attachment under construction {' '}
+                                <Link href="/attachment">image attachment</Link>
+                            </p>
                         </Stack>
                     </Container>
                 </Frame>
