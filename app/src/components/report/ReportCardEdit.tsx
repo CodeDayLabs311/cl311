@@ -10,7 +10,7 @@ import styles from '../../styles/Report.module.css';
 import LocationPicker, { submitLocation } from './LocationPicker';
 import { CoordinatesType } from './LocationPicker';
 import { useLocationPicker } from '@/hooks';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import MyModal, { ModalHandle } from './MyModal';
 
 //Initial values for report form
@@ -61,18 +61,18 @@ export default function ReportCardEdit({
         if (!regex.test(report!.gpsCoordinates)) return undefined;
 
         const [longitude, latitude] = report!.gpsCoordinates.split(',').map(Number);
-        console.log(longitude, latitude);
         return { longitude, latitude };
     };
-
     const existingCoordsOrNull = fetchReportCoordinates();
-    const wasMapUsed = existingCoordsOrNull ? true : false;
+
+    //Check if the existing report was submitted with a map or not
+    const submittedFormWithMap = existingCoordsOrNull ? true : false;
 
     // Track current coordinate of report
     const { reportCoords, updateReportCoords } = useLocationPicker(existingCoordsOrNull);
 
     // Check if the user chooses to use map for location picker
-    const [useMap, setUseMap] = useState<boolean>(wasMapUsed);
+    const [useMap, setUseMap] = useState<boolean>(submittedFormWithMap);
 
     const openMap = () => {
         setUseMap(true);
@@ -90,6 +90,10 @@ export default function ReportCardEdit({
     const fillOutAddress = (address: string) => {
         formik.setFieldValue('address', address);
     };
+    // Used to check if the location is submitted/filled
+    const isLocationFilled = () => {
+        return formik.values.address !== '';
+    };
 
     const initializeValues = (): InitialValuesType => {
         if (isUndefined(report)) {
@@ -105,8 +109,6 @@ export default function ReportCardEdit({
         const { setSubmitting } = formikHelpers;
         setSubmitting(true);
 
-        // console.log(report)
-
         const fullReport: InitialValuesType = !isUndefined(reportCoords)
             ? {
                   ...report,
@@ -114,7 +116,6 @@ export default function ReportCardEdit({
               }
             : report;
 
-        // console.log(fullReport)
         try {
             if (onEdit && 'reportId' in report) {
                 await onEdit(fullReport as IReport);
@@ -186,7 +187,8 @@ export default function ReportCardEdit({
                         reportCoords={reportCoords}
                         updateReportCoords={updateReportCoords}
                         fillOutAddress={fillOutAddress}
-                        wasMarkerSet={!wasMapUsed}
+                        initialMarkerState={!isLocationFilled()}
+                        locationSubmitted={isLocationFilled()}
                     />
                 </div>
             )}

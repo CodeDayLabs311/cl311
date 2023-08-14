@@ -36,7 +36,8 @@ type LocationSearchBarProps = {
 
 type LocationPickerProps = {
     reportCoords: CoordinatesType | undefined;
-    wasMarkerSet: boolean;
+    initialMarkerState: boolean;
+    locationSubmitted: boolean;
     updateReportCoords: (newCoords: CoordinatesType) => void;
     fillOutAddress: (address: string) => void;
 };
@@ -61,7 +62,6 @@ function LocationSearchBar({ placeMarker, proximity }: LocationSearchBarProps) {
     useControl(() => geocoder);
 
     geocoder.on('result', (event) => {
-        // console.log(event);
         const [longitude, latitude] = event.result.geometry.coordinates;
         placeMarker({ longitude, latitude });
     });
@@ -74,7 +74,8 @@ export default function LocationPicker({
     reportCoords,
     updateReportCoords,
     fillOutAddress,
-    wasMarkerSet,
+    initialMarkerState,
+    locationSubmitted,
 }: LocationPickerProps) {
     /** Retrieve last user reported location for the view of the map upon loading page*/
     function fetchUserLastLocation(): ViewStateType {
@@ -95,8 +96,8 @@ export default function LocationPicker({
     }
     // View Box of the map upon entering a page
     const [viewState, setViewState] = useState<ViewStateType | {}>(fetchUserLastLocation);
-    // Disable the marker after user already submit location - also used to check if the location has already been submitted
-    const [draggableMarker, setDraggableMarker] = useState<boolean>(wasMarkerSet);
+    // Disable the marker after user already submit location
+    const [draggableMarker, setDraggableMarker] = useState<boolean>(initialMarkerState);
     // Ref to open modal alert
     const modalRef = useRef<ModalHandle | null>(null);
 
@@ -201,8 +202,8 @@ export default function LocationPicker({
                     textAlign: 'center',
                 }}
             >
-                <Button disabled={!draggableMarker} onClick={reverseGeolocation}>
-                    {draggableMarker ? 'Report at this location' : 'Location already submitted'}
+                <Button disabled={locationSubmitted} onClick={reverseGeolocation}>
+                    {!locationSubmitted ? 'Report at this location' : 'Location already submitted'}
                 </Button>
             </div>
 
