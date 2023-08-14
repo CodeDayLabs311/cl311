@@ -27,12 +27,14 @@
     "react": "18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dom": "18.2.0",
+    "recharts": "^2.7.3",
     "typescript": "5.0.4",
     "uuid": "^9.0.0",
     "yup": "^1.2.0"
   },
   "devDependencies": {
     "@types/uuid": "^9.0.2",
+    "@types/yup": "^0.32.0",
     "sass": "^1.63.3"
   }
 }

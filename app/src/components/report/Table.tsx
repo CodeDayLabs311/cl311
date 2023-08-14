@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import InfoIcon from '@mui/icons-material/Info';
@@ -6,12 +6,15 @@ import WarningIcon from '@mui/icons-material/Warning';
 import CheckIcon from '@mui/icons-material/Check';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Collapse, IconButton, Chip, ChipProps } from '@mui/material';
+import LinearProgress from '@mui/material/LinearProgress';
+import { NoResultsOverlay, CustomToolbar } from './TableUIHelpers';
+import { SelectChangeEvent } from '@mui/material/Select';
 import { IReport } from '@/models';
+import { useReports } from '@/hooks/report/useReports';
 import ButtonLink from '../ButtonLink';
 import Box from '@mui/material/Box';
 import { StatusOfReport, ReportCategories, ReportFields } from '@/models';
@@ -22,16 +25,15 @@ import {
     GridActionsCellItem,
     GridRowParams,
     GridRenderCellParams,
+    GridFilterItem,
+    GridFilterModel,
+    getGridSingleSelectOperators,
 } from '@mui/x-data-grid';
 
 const EXPANDED_ROW_STYLE = {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'break-word',
     paddingBottom: '10px',
-};
-
-type TableProps = {
-    rows: IReport[];
 };
 
 const columnWidth = {
@@ -88,8 +90,42 @@ function getChipProps(params: GridRenderCellParams): ChipProps {
     }
 }
 
-export default function Table({ rows }: TableProps) {
-    const [clickedIndex, setClickedIndex] = useState(-1);
+export default function Table() {
+    const [clickedIndex, setClickedIndex] = useState<string | null>(null);
+    const [queryOptions, setQueryOptions] = useState<GridFilterItem[]>([]);
+    const [sortOptions, setSortOptions] = useState<boolean | undefined>(undefined);
+
+    const hasFilter = queryOptions.length > 0 && queryOptions[0].value !== undefined;
+
+    //Fetch the updated filter settings, then pass the settings to the backend
+    const onFilterChange = useCallback((filterModel: GridFilterModel) => {
+        setQueryOptions([...filterModel.items]);
+        setSortOptions(undefined);
+    }, []);
+
+    const onSortChange = useCallback((event: SelectChangeEvent) => {
+        switch (event.target.value) {
+            case 'true':
+                setSortOptions(true);
+                return;
+            case 'false':
+                setSortOptions(false);
+                return;
+            default:
+                setSortOptions(undefined);
+                return;
+        }
+    }, []);
+
+    const { reports, isLoading, loadReports, refreshReports } = useReports(
+        queryOptions,
+        sortOptions
+    );
+
+    const isEmpty = useMemo<boolean>(
+        () => !isLoading && reports?.length === 0,
+        [isLoading, reports]
+    );
 
     const columns: GridColDef[] = [
         {
@@ -102,15 +138,15 @@ export default function Table({ rows }: TableProps) {
                 return (
                     <IconButton
                         aria-label={
-                            cellValues.value === clickedIndex ? 'Collapse row' : 'Expand row'
+                            cellValues.row.reportId === clickedIndex ? 'Collapse row' : 'Expand row'
                         }
                         onClick={() => {
-                            clickedIndex === cellValues.value
-                                ? setClickedIndex(-1)
-                                : setClickedIndex(cellValues.value);
+                            clickedIndex === cellValues.row.reportId
+                                ? setClickedIndex(null)
+                                : setClickedIndex(cellValues.row.reportId);
                         }}
                     >
-                        {cellValues.value === clickedIndex ? (
+                        {cellValues.row.reportId === clickedIndex ? (
                             <ExpandLessIcon />
                         ) : (
                             <ExpandMoreIcon />
@@ -122,6 +158,7 @@ export default function Table({ rows }: TableProps) {
         {
             field: ReportFields.Name,
             headerName: 'Name',
+            filterable: false,
             width: columnWidth.name,
             renderCell: (cellValues: GridRenderCellParams<any>) => {
                 return (
@@ -130,8 +167,8 @@ export default function Table({ rows }: TableProps) {
                             {/* First row item, ex: the name will be displayed here */}
                             {cellValues.value ? cellValues.value : 'Anonymous'}
                             <Collapse
-                                in={cellValues.id === clickedIndex}
-                                aria-expanded={cellValues.value === clickedIndex}
+                                in={cellValues.row.reportId === clickedIndex}
+                                aria-expanded={cellValues.row.reportId === clickedIndex}
                             >
                                 <Box sx={EXPANDED_ROW_STYLE}>
                                     {/* Expanded row item */}
@@ -152,6 +189,9 @@ export default function Table({ rows }: TableProps) {
             //TODO: update the valueOptions to match the options in creationPage
             valueOptions: Object.values(ReportCategories),
             width: columnWidth.reportCategory,
+            filterOperators: getGridSingleSelectOperators().filter(
+                (operator) => operator.value === 'is'
+            ),
             renderCell: (cellValues: GridRenderCellParams<any>) => {
                 return (
                     <Box>
@@ -159,8 +199,8 @@ export default function Table({ rows }: TableProps) {
                             {/* First row item */}
                             {cellValues.value}
                             <Collapse
-                                in={cellValues.id === clickedIndex}
-                                aria-expanded={cellValues.value === clickedIndex}
+                                in={cellValues.row.reportId === clickedIndex}
+                                aria-expanded={cellValues.row.reportId === clickedIndex}
                             >
                                 <Box sx={EXPANDED_ROW_STYLE}>
                                     {/* Expanded row item */}
@@ -177,11 +217,13 @@ export default function Table({ rows }: TableProps) {
         {
             field: ReportFields.Address,
             headerName: 'Location',
+            filterable: false,
             width: columnWidth.address,
         },
         {
             field: ReportFields.Date_Time_Of_Submission,
             headerName: 'Date Reported',
+            filterable: false,
             type: 'date',
             valueGetter: ({ value }) => value && new Date(value),
             width: columnWidth.dateTimeOfSubmission,
@@ -193,6 +235,9 @@ export default function Table({ rows }: TableProps) {
             type: 'singleSelect',
             valueOptions: Object.values(StatusOfReport),
             width: columnWidth.statusOfReport,
+            filterOperators: getGridSingleSelectOperators().filter(
+                (operator) => operator.value === 'is'
+            ),
             renderCell: (params: GridRenderCellParams<any>) => {
                 return <Chip variant="outlined" size="small" {...getChipProps(params)} />;
             },
@@ -227,13 +272,27 @@ export default function Table({ rows }: TableProps) {
     ];
 
     return (
-        <div style={{ height: '100%', width: '100%', minWidth: '800px' }}>
+        <div style={{ height: 800, width: '100%', minWidth: '800px' }}>
             <DataGrid
                 getRowHeight={() => 'auto'}
-                rows={rows}
+                rows={reports}
                 showCellVerticalBorder={true}
                 getRowId={(row) => row.reportId}
                 columns={columns}
+                filterMode="server"
+                onFilterModelChange={onFilterChange}
+                loading={isLoading}
+                slots={{
+                    loadingOverlay: LinearProgress,
+                    noRowsOverlay: NoResultsOverlay,
+                    toolbar: () => (
+                        <CustomToolbar
+                            sortOptions={`${sortOptions}`}
+                            onSortChange={onSortChange}
+                            hasFilter={hasFilter}
+                        />
+                    ),
+                }}
             />
         </div>
     );

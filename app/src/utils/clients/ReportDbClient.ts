@@ -6,7 +6,8 @@ import { getStage, getTenant } from '../environment';
 import { NOT_FOUND } from '@/models';
 
 const BASE_TABLE_NAME = 'ReportsTable';
-const CATEGORY_INDEX_NAME = 'CategoryIndex';
+const CATEGORY_INDEX_NAME = 'ReportCategoryIndex';
+const STATUS_INDEX_NAME = 'ReportStatusIndex';
 
 /** Client to interact with report DynamoDB */
 export class ReportDbClient implements IReportClient {
@@ -75,18 +76,47 @@ export class ReportDbClient implements IReportClient {
     }
 
     /** List reports by category */
-    async listReportsByCategory(category: string, paginationToken?: string) {
+    async listReportsByCategory(category: string, ascending?: boolean, paginationToken?: string) {
         // TODO handle pagination
 
         const queryData = await this.ddbClient.query({
             TableName: getTableName(),
             IndexName: CATEGORY_INDEX_NAME,
-            KeyConditionExpression: 'Category = :category',
+            KeyConditionExpression: 'ReportCategory = :category',
             ExpressionAttributeValues: {
                 ':category': {
                     S: category,
                 },
             },
+            ScanIndexForward: ascending ?? false,
+        });
+
+        return {
+            reports: unmarshalReports(queryData.Items as unknown as IDBReport[]),
+            paginationToken: undefined,
+        };
+    }
+    /** List reports by status
+     *
+     * ascending - true: oldest to newest
+     * descending- false: newest to oldest
+     */
+    async listReportsByStatus(status: string, ascending?: boolean, paginationToken?: string) {
+        // TODO handle pagination
+
+        const queryData = await this.ddbClient.query({
+            TableName: getTableName(),
+            IndexName: STATUS_INDEX_NAME,
+            KeyConditionExpression: '#status = :status',
+            ExpressionAttributeNames: {
+                '#status': 'StatusOfReport',
+            },
+            ExpressionAttributeValues: {
+                ':status': {
+                    S: status,
+                },
+            },
+            ScanIndexForward: ascending ?? false,
         });
 
         return {

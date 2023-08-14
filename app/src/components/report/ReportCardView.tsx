@@ -9,6 +9,7 @@ import {
     FooterDetails,
     IDText,
     StyledButton,
+    TextBtn,
 } from '@/styles/StyleCardView';
 import { ReportCategories } from '@/models';
 import Image from 'next/image';
@@ -16,6 +17,12 @@ import Image from 'next/image';
 export type ReportCardProps = {
     report: IReport;
 };
+
+function translateISOTimestamp(ISOTimestamp: string): string {
+    const ISOTime = new Date(ISOTimestamp);
+    const localTime = ISOTime.toLocaleString('en-US');
+    return localTime;
+}
 
 /** Report Card View */
 export default function ReportCard({ report }: ReportCardProps) {
@@ -89,12 +96,12 @@ export default function ReportCard({ report }: ReportCardProps) {
                             </Typography>
                             <Typography>
                                 <strong>Date and Time of Submission:</strong>{' '}
-                                {new Date(report.dateTimeOfSubmission).toLocaleString('en-US')}
+                                {translateISOTimestamp(report.dateTimeOfSubmission)}
                             </Typography>
                             <Typography>
                                 <strong>Date and Time Last Edited:</strong>{' '}
                                 {report.dateTimeLastEdited
-                                    ? new Date(report.dateTimeLastEdited).toLocaleString('en-US')
+                                    ? translateISOTimestamp(report.dateTimeLastEdited)
                                     : 'Never Edited'}
                             </Typography>
                         </GroupedBox>
@@ -109,7 +116,7 @@ export default function ReportCard({ report }: ReportCardProps) {
                         </p>
                         <div className="vr"></div>
                         <StyledButton variant="secondary" href={`/report/${report.reportId}/edit`}>
-                            Edit
+                            <TextBtn>Edit</TextBtn>
                         </StyledButton>
                     </Stack>
                 </GroupedBox>
