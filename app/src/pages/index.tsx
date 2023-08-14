@@ -12,6 +12,7 @@ import { Grid } from '@mui/material';
 import HomeImg from '../styles/images/HomeImg.svg';
 import HomeImg2 from '../styles/images/HomeImg2.png';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
     return (
@@ -57,7 +58,7 @@ export default function Home() {
                                 </Grid>
                             </Grid>
                             <p>
-                                Image attachment under construction {' '}
+                                Image attachment under construction{' '}
                                 <Link href="/attachment">image attachment</Link>
                             </p>
                         </Stack>
