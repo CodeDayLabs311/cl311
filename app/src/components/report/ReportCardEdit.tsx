@@ -10,7 +10,8 @@ import styles from '../../styles/Report.module.css';
 import LocationPicker, { submitLocation } from './LocationPicker';
 import { CoordinatesType } from './LocationPicker';
 import { useLocationPicker } from '@/hooks';
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
+import MyModal, { ModalHandle } from './MyModal';
 
 //Initial values for report form
 type NewReport = Omit<IReport, 'reportId'>;
@@ -49,6 +50,9 @@ export default function ReportCardEdit({
     onEdit,
     cancelHref,
 }: ReportEditProps) {
+    // Ref to open modal alert
+    const modalRef = useRef<ModalHandle | null>(null);
+
     // Fetch location of existing report to display marker on edit page only
     const fetchReportCoordinates = (): CoordinatesType | undefined => {
         if (isUndefined(report)) return undefined;
@@ -67,17 +71,17 @@ export default function ReportCardEdit({
     // Track current coordinate of report
     const { reportCoords, updateReportCoords } = useLocationPicker(existingCoordsOrNull);
 
-    // Check if the user chooses use map for location picker
+    // Check if the user chooses to use map for location picker
     const [useMap, setUseMap] = useState<boolean>(wasMapUsed);
 
     const openMap = () => {
         setUseMap(true);
-        formik.setFieldValue('address', '');
+        fillOutAddress('');
     };
 
     const closeMap = () => {
         setUseMap(false);
-        formik.setFieldValue('address', '');
+        fillOutAddress('');
         if (!isUndefined(reportCoords)) {
             updateReportCoords(undefined);
         }
@@ -86,6 +90,7 @@ export default function ReportCardEdit({
     const fillOutAddress = (address: string) => {
         formik.setFieldValue('address', address);
     };
+
     const initializeValues = (): InitialValuesType => {
         if (isUndefined(report)) {
             return getInitialReport();
@@ -136,13 +141,45 @@ export default function ReportCardEdit({
                 role="group"
                 aria-label="Enter address mannually or Use map for location picker"
             >
-                <Button variant={!useMap ? 'primary' : 'secondary'} onClick={closeMap}>
+                <Button
+                    variant={!useMap ? 'primary' : 'secondary'}
+                    onClick={() => {
+                        if (!formik.values.address) {
+                            closeMap();
+                            return;
+                        }
+                        modalRef.current?.openModal();
+                    }}
+                >
                     I want to enter the address mannually
                 </Button>
-                <Button variant={useMap ? 'primary' : 'secondary'} onClick={openMap}>
+                <Button
+                    variant={useMap ? 'primary' : 'secondary'}
+                    onClick={() => {
+                        if (!formik.values.address) {
+                            openMap();
+                            return;
+                        }
+                        modalRef.current?.openModal();
+                    }}
+                >
                     I want to use the map to mark the location
                 </Button>
             </ButtonGroup>
+            <MyModal
+                ref={modalRef}
+                header="Alert!"
+                description="Do you switch location input mode? This will reset the current address."
+                denyMessage="No, I do not want to switch"
+                confirmMessage={`Yes, I want to switch to ${useMap ? 'manual input' : 'map'} mode`}
+                onConfirm={() => {
+                    if (useMap) {
+                        closeMap();
+                    } else {
+                        openMap();
+                    }
+                }}
+            />
             {useMap && (
                 <div className={styles['map-row']}>
                     <LocationPicker

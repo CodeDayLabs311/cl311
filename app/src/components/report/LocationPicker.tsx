@@ -191,7 +191,9 @@ export default function LocationPicker({
                 ref={modalRef}
                 header="Alert!"
                 description="Do you want to change the location? This will reset the current address."
-                resetLocation={resetLocationAndAddress}
+                denyMessage="No, keep the current location"
+                confirmMessage="Yes, I want to update the location"
+                onConfirm={resetLocationAndAddress}
             />
             <div
                 style={{

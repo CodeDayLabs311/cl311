@@ -23,8 +23,10 @@ const buttonStyle = {
 type MyModalProps = {
     header: string;
     description: string;
+    confirmMessage: string;
+    denyMessage: string;
     /** Reset current location and get new location */
-    resetLocation: () => void;
+    onConfirm: () => void;
 };
 
 export type ModalHandle = {
@@ -32,7 +34,7 @@ export type ModalHandle = {
 };
 
 function MyModal(
-    { header, description, resetLocation }: MyModalProps,
+    { header, description, onConfirm, confirmMessage, denyMessage }: MyModalProps,
     ref: React.Ref<ModalHandle>
 ) {
     const [open, setOpen] = useState(false);
@@ -60,17 +62,17 @@ function MyModal(
                         {description}
                     </Typography>
                     <Button style={buttonStyle} className="btn btn-secondary" onClick={handleClose}>
-                        No, keep the current location
+                        {denyMessage}
                     </Button>
                     <Button
                         style={buttonStyle}
                         className="btn btn-warning"
                         onClick={() => {
-                            resetLocation();
+                            onConfirm();
                             handleClose();
                         }}
                     >
-                        Yes, I want to update the location
+                        {confirmMessage}
                     </Button>
                 </Box>
             </Modal>
