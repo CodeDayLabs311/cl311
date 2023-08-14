@@ -34,6 +34,6 @@ export class ReportsBucketStack extends cdk.Stack {
 
     /** Get S3 Bucket name */
     getBucketName(): string {
-        return `${BASE_BUCKET_NAME}-${this.stage}-${this.tenant}`;
+        return `${BASE_BUCKET_NAME}-${this.stage}-${this.tenant}`.toLowerCase();
     }
 }
