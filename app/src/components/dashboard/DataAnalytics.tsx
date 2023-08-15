@@ -16,48 +16,48 @@ import { SmallBox, ChartBox, TagHead, TagText } from '@/styles/StyleDashboard';
 export default function DataAnalytics() {
     const totalIssues = 1250;
     const dataIssueType = [
-        { name: 'Clogged Storm Drain', value: 100 },
-        { name: 'Potholes', value: 50 },
-        { name: 'Graffiti', value: 150 },
-        { name: 'Street Light Outage', value: 70 },
-        { name: 'Sidewalk Damage', value: 50 },
+        { name: 'Clogged Storm Drain', value: 230 },
+        { name: 'Potholes', value: 130 },
+        { name: 'Graffiti', value: 180 },
+        { name: 'Street Light Outage', value: 90 },
+        { name: 'Sidewalk Damage', value: 70 },
         { name: 'Traffic Signal Malfunction', value: 100 },
         { name: 'Abandoned Vehicles', value: 120 },
-        { name: 'Noise Complaint', value: 20 },
-        { name: 'Other', value: 70 },
+        { name: 'Noise Complaint', value: 250 },
+        { name: 'Other', value: 80 },
     ];
     const dataLocation = [
         {
-            name: 'Location A',
-            reports: 4000,
+            name: 'Capitol Hill',
+            reports: 110,
         },
         {
-            name: 'Location B',
-            reports: 3500,
+            name: 'Ballard',
+            reports: 120,
         },
         {
-            name: 'Location C',
-            reports: 3000,
+            name: 'Fremont',
+            reports: 156,
         },
         {
-            name: 'Location D',
-            reports: 2500,
+            name: 'Queen Anne',
+            reports: 187,
         },
         {
-            name: 'Location E',
-            reports: 2000,
+            name: 'Belltown',
+            reports: 190,
         },
         {
-            name: 'Location F',
-            reports: 1500,
+            name: 'University District',
+            reports: 230,
         },
         {
-            name: 'Location G',
-            reports: 1000,
+            name: 'Beacon Hill',
+            reports: 257,
         },
     ];
 
-    const resolvedPercentage = 85;
+    const resolvedPercentage = 78;
     return (
         <Box pt={2} px={2}>
             <Box textAlign="center" mb={4}>
