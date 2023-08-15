@@ -16,15 +16,15 @@ import { SmallBox, ChartBox, TagHead, TagText } from '@/styles/StyleDashboard';
 export default function DataAnalytics() {
     const totalIssues = 1250;
     const dataIssueType = [
-        { name: 'Clogged Storm Drain', value: 230 },
-        { name: 'Potholes', value: 130 },
-        { name: 'Graffiti', value: 180 },
-        { name: 'Street Light Outage', value: 90 },
-        { name: 'Sidewalk Damage', value: 70 },
-        { name: 'Traffic Signal Malfunction', value: 100 },
-        { name: 'Abandoned Vehicles', value: 120 },
-        { name: 'Noise Complaint', value: 250 },
-        { name: 'Other', value: 80 },
+        { name: 'Clogged Storm Drain', value: 70 },
+        { name: 'Potholes', value: 80 },
+        { name: 'Graffiti', value: 90 },
+        { name: 'Street Light Outage', value: 100 },
+        { name: 'Sidewalk Damage', value: 120 },
+        { name: 'Traffic Signal Malfunction', value: 130 },
+        { name: 'Abandoned Vehicles', value: 180 },
+        { name: 'Noise Complaint', value: 230 },
+        { name: 'Other', value: 250 },
     ];
     const dataLocation = [
         {
