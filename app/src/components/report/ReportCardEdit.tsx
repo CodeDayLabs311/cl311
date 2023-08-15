@@ -193,19 +193,19 @@ export default function ReportCardEdit({
                                 )}
                         </div>
                     ))}
+                    {formik.touched.reportCategory && formik.errors.reportCategory ? (
+                        <div className="text-danger">
+                            <ErrorOutlineIcon /> {formik.errors.reportCategory}
+                        </div>
+                    ) : formik.touched.reportCategory && !formik.errors.reportCategory ? (
+                        <div style={{ color: 'blue' }}>
+                            <CheckCircleOutlineIcon />
+                        </div>
+                    ) : null}
+                    {formik.touched.otherCategory && formik.errors.otherCategory && (
+                        <p className="text-danger">{formik.errors.otherCategory}</p>
+                    )}
                 </Form.Group>
-                {formik.touched.reportCategory && formik.errors.reportCategory ? (
-                    <div className="text-danger">
-                        <ErrorOutlineIcon /> {formik.errors.reportCategory}
-                    </div>
-                ) : formik.touched.reportCategory && !formik.errors.reportCategory ? (
-                    <div style={{ color: 'blue' }}>
-                        <CheckCircleOutlineIcon />
-                    </div>
-                ) : null}
-                {formik.touched.otherCategory && formik.errors.otherCategory && (
-                    <p className="text-danger">{formik.errors.otherCategory}</p>
-                )}
             </div>
 
             <div className={styles['form-column']}>
