@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Map, {
     useControl,
-    useMap,
     Marker,
-    LngLat,
     MarkerDragEvent,
     GeolocateControl,
     GeolocateResultEvent,
@@ -12,9 +10,8 @@ import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import { Form, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { isUndefined } from '@/utils';
-import { useLocationPicker } from '@/hooks';
 import ConfirmationModal, { ModalHandle } from './ConfirmationModal';
 
 const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
@@ -152,7 +149,7 @@ export default function LocationPicker({
         >
             <Map
                 mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
-                reuseMaps={true} //remove this if map breaks
+                reuseMaps={true}
                 initialViewState={{ ...viewState }}
                 style={{ width: '100%', height: '100%', borderRadius: 5 }}
                 mapStyle="mapbox://styles/mapbox/streets-v9"

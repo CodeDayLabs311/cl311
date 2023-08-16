@@ -10,7 +10,7 @@ import styles from '../../styles/Report.module.css';
 import LocationPicker, { submitLocation } from './LocationPicker';
 import { CoordinatesType } from './LocationPicker';
 import { useLocationPicker } from '@/hooks';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import ConfirmationModal, { ModalHandle } from './ConfirmationModal';
 
 //Initial values for report form
