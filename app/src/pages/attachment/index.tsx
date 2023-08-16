@@ -45,10 +45,6 @@ const Attachment = () => {
         <>
             <p>Upload a .png or .jpg image (max 1MB).</p>
             <input onChange={uploadPhoto} type="file" accept="image/png, image/jpeg" />
-            <p>
-                Image attachment under construction {' '}
-                <Link href="/attachment">image attachment</Link>
-            </p>
         </>
     );
 };
