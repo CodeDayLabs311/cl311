@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
+import Link from 'next/link';
 import {
     Frame,
     StyledHeading,
@@ -12,6 +13,7 @@ import { Grid } from '@mui/material';
 import HomeImg from '../styles/images/HomeImg.svg';
 import HomeImg2 from '../styles/images/HomeImg2.png';
 import Image from 'next/image';
+
 
 export default function Home() {
     return (

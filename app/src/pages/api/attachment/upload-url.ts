@@ -1,27 +1,20 @@
-import S3 from 'aws-sdk/clients/s3';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-const MEGABYTE = 10 ** 6;
+import { S3DbClient } from '../../../utils/clients/S3DbClient';
+import { IS3Object } from '../../../models/data/IS3Object';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const s3 = new S3({
-        apiVersion: '2006-03-01',
-        accessKeyId: process.env.CL_AWS_ACCESS_KEY,
-        secretAccessKey: process.env.CL_AWS_SECRET_ACCESS_KEY,
-        region: process.env.AWS_REGION,
-    });
+    const s3DbClient = new S3DbClient();
 
-    const post = await s3.createPresignedPost({
-        Bucket: process.env.BUCKET_NAME,
-        Fields: {
-            key: req.query.file,
-            'Content-Type': req.query.fileType,
-        },
-        Expires: 60, // seconds
-        Conditions: [
-            ['content-length-range', 0, 1 * MEGABYTE],
-        ],
-    });
+    const s3Object: Omit<IS3Object, 'url'> = {
+        objectId: req.query.file as string,
+        fileType: req.query.fileType as string,
+    };
 
-    return res.status(200).json(post);
+    try {
+        const presignedPost = await s3DbClient.getPresignedPost(s3Object);
+        return res.status(200).json(presignedPost);
+    } catch (error) {
+        console.error('Failed to create presigned post:', error);
+        return res.status(500).json({ error: 'Failed to create presigned post.' });
+    }
 }
