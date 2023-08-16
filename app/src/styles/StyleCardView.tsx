@@ -69,17 +69,30 @@ const PageTitle = styled(Typography)({
 });
 
 const StyledButton = styled(ButtonLink)({
-    borderRadius: '10px',
     background: `linear-gradient(45deg, ${MEDIUM_PRIMARY}, ${PRIMARY_BACKGROUND})`,
-    color: PRIMARY_TEXT,
     border: '2px solid #ccc',
     boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)',
-    fontWeight: 'bold',
     '&:hover': {
         background: `linear-gradient(45deg, ${PRIMARY_BACKGROUND}, ${MEDIUM_PRIMARY})`,
-        color: 'blue',
-        border: '2px solid blue',
     },
 });
 
-export { StyledReportDetails, GroupedBox, Heading, FooterDetails, IDText, PageTitle, StyledButton };
+const TextBtn = styled('span')({
+    color: DARK_PRIMARY,
+    fontWeight: 'bold',
+    fontSize: '1rem',
+    '&:hover': {
+        color: 'blue',
+    },
+});
+
+export {
+    StyledReportDetails,
+    GroupedBox,
+    Heading,
+    FooterDetails,
+    IDText,
+    PageTitle,
+    StyledButton,
+    TextBtn,
+};
