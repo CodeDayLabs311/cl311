@@ -1,10 +1,9 @@
-import React from 'react';
-import Link from 'next/link';
+import React, {useMemo} from 'react';
 import { S3ApiClient } from '../../utils/clients/S3ApiClient';
 import { IS3Object } from '../../models/data/IS3Object';
 
 const Attachment = () => {
-    const s3ApiClient = new S3ApiClient();
+    const s3ApiClient = useMemo(() => new S3ApiClient(), []);
 
     const uploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
