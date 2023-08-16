@@ -11,7 +11,7 @@ import LocationPicker, { submitLocation } from './LocationPicker';
 import { CoordinatesType } from './LocationPicker';
 import { useLocationPicker } from '@/hooks';
 import { useEffect, useRef, useState } from 'react';
-import MyModal, { ModalHandle } from './MyModal';
+import ConfirmationModal, { ModalHandle } from './ConfirmationModal';
 
 //Initial values for report form
 type NewReport = Omit<IReport, 'reportId'>;
@@ -167,7 +167,7 @@ export default function ReportCardEdit({
                     I want to use the map to mark the location
                 </Button>
             </ButtonGroup>
-            <MyModal
+            <ConfirmationModal
                 ref={modalRef}
                 header="Alert!"
                 description="Do you switch the location input mode? This will reset the current address."

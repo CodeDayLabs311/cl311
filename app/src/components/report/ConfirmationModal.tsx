@@ -3,9 +3,10 @@ import Box from '@mui/material/Box';
 import { Button } from 'react-bootstrap';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { SxProps } from '@mui/material';
 
-const style = {
-    position: 'absolute' as 'absolute',
+const STYLE: SxProps = {
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -20,7 +21,7 @@ const buttonStyle = {
     marginTop: 10,
 };
 
-type MyModalProps = {
+type ConfirmationModalProps = {
     header: string;
     description: string;
     confirmMessage: string;
@@ -33,8 +34,8 @@ export type ModalHandle = {
     openModal: () => void;
 };
 
-function MyModal(
-    { header, description, onConfirm, confirmMessage, denyMessage }: MyModalProps,
+function ConfirmationModal(
+    { header, description, onConfirm, confirmMessage, denyMessage }: ConfirmationModalProps,
     ref: React.Ref<ModalHandle>
 ) {
     const [open, setOpen] = useState(false);
@@ -54,7 +55,7 @@ function MyModal(
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={STYLE}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         {header}
                     </Typography>
@@ -80,4 +81,4 @@ function MyModal(
     );
 }
 
-export default forwardRef(MyModal);
+export default forwardRef(ConfirmationModal);

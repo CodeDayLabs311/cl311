@@ -15,7 +15,7 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { Form, Button } from 'react-bootstrap';
 import { isUndefined } from '@/utils';
 import { useLocationPicker } from '@/hooks';
-import MyModal, { ModalHandle } from './MyModal';
+import ConfirmationModal, { ModalHandle } from './ConfirmationModal';
 
 const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 const DEFAULT_COORDINATES = { longitude: -95.844032, latitude: 36.966428, zoom: 3 };
@@ -95,9 +95,10 @@ export default function LocationPicker({
         }
     }
     // View Box of the map upon entering a page
-    const [viewState, setViewState] = useState<ViewStateType | {}>(fetchUserLastLocation);
+    const [viewState, setViewState] = useState<ViewStateType>(fetchUserLastLocation());
     // Disable the marker after user already submit location
-    const [draggableMarker, setDraggableMarker] = useState<boolean>(initialMarkerState);
+    const [isDraggableMarkerEnabled, setIsDraggableMarkerEnabled] =
+        useState<boolean>(initialMarkerState);
     // Ref to open modal alert
     const modalRef = useRef<ModalHandle | null>(null);
 
@@ -108,14 +109,14 @@ export default function LocationPicker({
 
     // Track user location and put the marker there only if the location is not submitted
     function handleGeolocate(event: GeolocateResultEvent) {
-        if (!draggableMarker) return;
+        if (!isDraggableMarkerEnabled) return;
         const { longitude, latitude } = event.coords;
         updateReportCoords({ longitude, latitude });
     }
 
     // Reset current location and get new location
     function resetLocationAndAddress() {
-        setDraggableMarker(true);
+        setIsDraggableMarkerEnabled(true);
         fillOutAddress('');
     }
 
@@ -136,7 +137,7 @@ export default function LocationPicker({
             const results = json.features[0];
             fillOutAddress(results.place_name);
             // Disable marker after submitted location
-            setDraggableMarker(false);
+            setIsDraggableMarkerEnabled(false);
         } catch (error) {
             console.log(error);
         }
@@ -156,7 +157,7 @@ export default function LocationPicker({
                 style={{ width: '100%', height: '100%', borderRadius: 5 }}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
                 onClick={() => {
-                    if (draggableMarker) return;
+                    if (isDraggableMarkerEnabled) return;
                     modalRef.current?.openModal();
                 }}
             >
@@ -165,7 +166,7 @@ export default function LocationPicker({
                         longitude={reportCoords!.longitude}
                         latitude={reportCoords!.latitude}
                         color="red"
-                        draggable={draggableMarker}
+                        draggable={isDraggableMarkerEnabled}
                         onDragEnd={handleDragEnd}
                     />
                 )}
@@ -188,7 +189,7 @@ export default function LocationPicker({
                     }}
                 />
             </Map>
-            <MyModal
+            <ConfirmationModal
                 ref={modalRef}
                 header="Alert!"
                 description="Do you want to change the location? This will reset the current address."
@@ -206,17 +207,6 @@ export default function LocationPicker({
                     {!locationSubmitted ? 'Report at this location' : 'Location already submitted'}
                 </Button>
             </div>
-
-            {/* <Form>
-                <Form.Group>
-                    <Form.Control placeholder="Coordinates" value={`${reportCoords?.longitude || ''}, ${reportCoords?.latitude || ''}`} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Control placeholder="Address" value={reportAddress} />
-                </Form.Group>
-                <Button onClick={reverseGeolocation}>Reverse Geo</Button>
-                <Button onClick={() => submitLocation(reportCoords!)}>Submit Location</Button>
-            </Form> */}
         </div>
     );
 }
