@@ -79,7 +79,6 @@ export default async function handler(
 
         return res.status(200).json({ report: report! });
     } catch (err) {
-        console.error(err);
         return res.status(500).send({ message: INTERNAL_SERVER_ERROR });
     }
 }
