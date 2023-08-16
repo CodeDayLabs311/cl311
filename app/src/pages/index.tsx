@@ -11,6 +11,8 @@ import {
 import { Grid } from '@mui/material';
 import HomeImg from '../styles/images/HomeImg.svg';
 import HomeImg2 from '../styles/images/HomeImg2.png';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
     return (
@@ -39,17 +41,26 @@ export default function Home() {
                             </Grid>
                             <Grid container spacing={4}>
                                 <Grid item xs={12} md={6}>
-                                    <img
+                                    <Image
                                         src={HomeImg.src}
                                         alt="Home Page Image"
-                                        width="110%"
-                                        height="120%"
+                                        width={700}
+                                        height={500}
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <img src={HomeImg2.src} alt="Home Page Image 2" width="100%" />
+                                    <Image
+                                        src={HomeImg2.src}
+                                        alt="Home Page Image 2"
+                                        width={600}
+                                        height={400}
+                                    />
                                 </Grid>
                             </Grid>
+                            <p>
+                                Image attachment under construction{' '}
+                                <Link href="/attachment">image attachment</Link>
+                            </p>
                         </Stack>
                     </Container>
                 </Frame>

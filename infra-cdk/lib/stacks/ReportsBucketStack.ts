@@ -22,11 +22,18 @@ export class ReportsBucketStack extends cdk.Stack {
             bucketName: this.getBucketName(),
             blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
             removalPolicy: cdk.RemovalPolicy.RETAIN,
+            cors: [
+                {
+                    allowedHeaders: ['*'],
+                    allowedOrigins: ['*'],
+                    allowedMethods: [s3.HttpMethods.POST],
+                },
+            ],
         });
     }
 
     /** Get S3 Bucket name */
     getBucketName(): string {
-        return `${BASE_BUCKET_NAME}-${this.stage}-${this.tenant}`;
+        return `${BASE_BUCKET_NAME}-${this.stage}-${this.tenant}`.toLowerCase();
     }
 }
