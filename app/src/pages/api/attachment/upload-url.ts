@@ -1,28 +1,33 @@
-import S3 from 'aws-sdk/clients/s3';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { S3DbClient } from '../../../utils/clients/S3DbClient';
+import { IS3Object } from '../../../models/data/IS3Object';
+import { HttpMethod, METHOD_NOT_ALLOWED } from '@/models';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    console.log('Using BUCKET_NAME:', process.env.BUCKET_NAME);
-    const s3 = new S3({
-        apiVersion: '2006-03-01',
-        accessKeyId: process.env.CL_AWS_ACCESS_KEY,
-        secretAccessKey: process.env.CL_AWS_SECRET_ACCESS_KEY,
-        region: process.env.AWS_REGION,
-    });
+    // Validate request method
+    if (req.method !== HttpMethod.POST) {
+        return res.status(405).send({ message: METHOD_NOT_ALLOWED });
+    }
 
-    const MEGABYTE = 10 ** 6;
+    // Validate query parameters, destructuring assignment
+    const { file, fileType } = req.query;
 
-    const post = await s3.createPresignedPost({
-        Bucket: process.env.BUCKET_NAME,
-        Fields: {
-            key: req.query.file,
-            'Content-Type': req.query.fileType,
-        },
-        Expires: 60, // seconds
-        Conditions: [
-            ['content-length-range', 0, 1 * MEGABYTE], 
-        ],
-    });
+    if (typeof file !== 'string' || typeof fileType !== 'string' || !file || !fileType) {
+        return res.status(400).json({ error: 'Invalid or missing query parameters' });
+    }
 
-    return res.status(200).json(post);
+    const s3DbClient = new S3DbClient();
+
+    const s3Object: Omit<IS3Object, 'url'> = {
+        objectId: file,
+        fileType: fileType,
+    };
+
+    try {
+        const presignedPost = await s3DbClient.getPresignedPost(s3Object);
+        return res.status(200).json(presignedPost);
+    } catch (error) {
+        console.error('Failed to create presigned post:', error);
+        return res.status(500).json({ error: 'Failed to create presigned post.' });
+    }
 }

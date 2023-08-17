@@ -1,34 +1,42 @@
-import React from 'react';
-import Link from 'next/link';
+import React, {useMemo} from 'react';
+import { S3ApiClient } from '../../utils/clients/S3ApiClient';
+import { IS3Object } from '../../models/data/IS3Object';
 
 const Attachment = () => {
-    const uploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]!;
-        const filename = encodeURIComponent(file.name);
-        const fileType = encodeURIComponent(file.type);
+    const s3ApiClient = useMemo(() => new S3ApiClient(), []);
 
-        const res = await fetch(`/api/attachment/upload-url?file=${filename}&fileType=${fileType}`);
-        if (!res.ok) {
-            console.error('Failed to get the signed URL.');
+    const uploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) {
+            console.error('No file selected.');
             return;
         }
 
-        const { url, fields } = await res.json();
-        const formData = new FormData();
+        const s3Object: Omit<IS3Object, 'url'> = {
+            objectId: encodeURIComponent(file.name),
+            fileType: encodeURIComponent(file.type),
+        };
 
-        Object.entries({ ...fields, file }).forEach(([key, value]) => {
-            formData.append(key, value as string);
-        });
+        try {
+            const { url, fields } = await s3ApiClient.getPresignedPost(s3Object);
 
-        const upload = await fetch(url, {
-            method: 'POST',
-            body: formData,
-        });
+            const formData = new FormData();
+            Object.entries({ ...fields, file }).forEach(([key, value]) => {
+                formData.append(key, value as string);
+            });
 
-        if (upload.ok) {
-            console.log('Uploaded successfully!');
-        } else {
-            console.error('Upload failed.');
+            const upload = await fetch(url, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (upload.ok) {
+                console.log('Uploaded successfully!');
+            } else {
+                console.error('Upload failed.');
+            }
+        } catch (error) {
+            console.error('Error uploading the file:', error);
         }
     };
 
