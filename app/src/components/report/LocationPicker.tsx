@@ -14,7 +14,7 @@ import { Button } from 'react-bootstrap';
 import { isUndefined } from '@/utils';
 import ConfirmationModal, { ModalHandle } from './ConfirmationModal';
 
-const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYW5kcmV5YnV0ZW5rbyIsImEiOiJjbGwxMWprNW0wcWRoM21td24xZjlkZTAyIn0.4nU5eUHsDa8r2lP1vMkyHg';
 const DEFAULT_COORDINATES = { longitude: -95.844032, latitude: 36.966428, zoom: 3 };
 
 export type CoordinatesType = {
