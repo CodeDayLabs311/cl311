@@ -32,7 +32,6 @@ export const VALIDATION_SCHEMA = Yup.object({
         .max(50, 'Too Long!')
         .required('Name is Required!'),
     emailAddress: Yup.string()
-        .matches(emailRegExp, 'Invalid Email Address!')
         .test(
             'eitherEmailOrPhone',
             'Either Email Address or Phone Number is Required!',
@@ -40,10 +39,12 @@ export const VALIDATION_SCHEMA = Yup.object({
         )
         .when('email', {
             is: true,
-            then: () => Yup.string().required('Email Address is Required!'),
+            then: () =>
+                Yup.string()
+                    .required('Email Address is Required!')
+                    .matches(emailRegExp, 'Invalid Email Address!'),
         }),
     phoneNumber: Yup.string()
-        .matches(phoneRegExp, 'Invalid Phone Number!')
         .test(
             'eitherEmailOrPhone',
             'Either Email Address or Phone Number is Required!',
@@ -51,7 +52,10 @@ export const VALIDATION_SCHEMA = Yup.object({
         )
         .when('sms', {
             is: true,
-            then: () => Yup.string().required('Phone Number is Required!'),
+            then: () =>
+                Yup.string()
+                    .required('Phone Number is Required!')
+                    .matches(phoneRegExp, 'Invalid Phone Number!'),
         }),
     reportCategory: Yup.mixed().required('Category is Required!'),
     otherCategory: Yup.string().when('reportCategory', {
