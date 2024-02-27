@@ -6,3 +6,5 @@
 
 -   `app/` - NextJS application using React (frontend) and Lambda (backend)
 -   `infra-cdk/` - Infrastructure-as-code using AWS CDK
+
+Test
